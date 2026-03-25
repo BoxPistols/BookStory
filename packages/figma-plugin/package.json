@@ -1,0 +1,14 @@
+{
+  "name": "@bookstory/figma-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1",
+    "esbuild": "^0.24",
+    "typescript": "^5"
+  }
+}
