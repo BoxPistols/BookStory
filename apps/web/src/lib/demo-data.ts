@@ -132,7 +132,7 @@ export function generateCode(componentId: string, values: Record<string, unknown
       if (values.disabled) p.push("disabled");
       if (values.error) p.push("error");
       if (values.helperText) p.push(`helperText="${values.helperText}"`);
-      return `import { CustomTextField } from "@sdpf/theme";\n\n<CustomTextField\n  ${p.join("\n  ")}\n/>`;
+      return `import { CustomTextField } from "@myapp/ui";\n\n<CustomTextField\n  ${p.join("\n  ")}\n/>`;
     }
     case "card":
       return `import Card from "@mui/material/Card";\nimport CardContent from "@mui/material/CardContent";\nimport Typography from "@mui/material/Typography";\n\n<Card elevation={${values.elevation}}>\n  <CardContent>\n    <Typography variant="h6">${values.title}</Typography>\n    <Typography variant="body2">${values.content}</Typography>\n  </CardContent>\n</Card>`;

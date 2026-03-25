@@ -20,6 +20,7 @@ const tokenViews = ["colors", "typography", "spacing"] as const;
 export default function Home() {
   const [selectedId, setSelectedId] = useState<string | null>("button");
   const [propValues, setPropValues] = useState<Record<string, Record<string, unknown>>>({});
+  const [inspectActive, setInspectActive] = useState(false);
 
   const handlePropChange = useCallback(
     (name: string, value: unknown) => {
@@ -31,6 +32,11 @@ export default function Home() {
     },
     [selectedId]
   );
+
+  const handleSelect = (id: string) => {
+    setSelectedId(id);
+    setInspectActive(false);
+  };
 
   const currentProps = selectedId ? componentProps[selectedId] || [] : [];
   const currentValues = selectedId ? propValues[selectedId] || {} : {};
@@ -50,7 +56,7 @@ export default function Home() {
       <Sidebar
         items={sidebarItems}
         selectedId={selectedId}
-        onSelect={setSelectedId}
+        onSelect={handleSelect}
       />
 
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
@@ -77,6 +83,7 @@ export default function Home() {
                 code={generateCode(selectedId, mergedValues)}
                 figmaStatus="synced"
                 description={description}
+                onInspectChange={setInspectActive}
               >
                 <ComponentRenderer
                   componentId={selectedId}
@@ -84,11 +91,13 @@ export default function Home() {
                 />
               </Preview>
 
-              <PropsPanel
-                props={currentProps}
-                values={mergedValues}
-                onChange={handlePropChange}
-              />
+              {!inspectActive && (
+                <PropsPanel
+                  props={currentProps}
+                  values={mergedValues}
+                  onChange={handlePropChange}
+                />
+              )}
             </>
           )}
 
