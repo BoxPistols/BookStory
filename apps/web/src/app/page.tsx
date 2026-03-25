@@ -5,25 +5,43 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
-import { Sidebar } from "@/components/Sidebar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import { Sidebar, SidebarItem } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Preview, VariantItem } from "@/components/Preview";
 import { PropsPanel } from "@/components/PropsPanel";
 import { ComponentRenderer } from "@/components/ComponentRenderer";
 import { TokenViewer } from "@/components/TokenViewer";
+import { useCatalog } from "@/lib/use-catalog";
 import {
-  sidebarItems,
+  sidebarItems as demoSidebarItems,
   componentProps,
   componentDescriptions,
   generateCode,
 } from "@/lib/demo-data";
 
 const tokenViews = ["colors", "typography", "spacing"] as const;
+const DEMO_IDS = new Set(demoSidebarItems.map((i) => i.id));
 
 export default function Home() {
   const [selectedId, setSelectedId] = useState<string | null>("button");
   const [propValues, setPropValues] = useState<Record<string, Record<string, unknown>>>({});
   const [inspectActive, setInspectActive] = useState(false);
+  const { catalog } = useCatalog();
+
+  // デモ項目 + カタログ固有項目をマージ
+  const sidebarItems = useMemo<SidebarItem[]>(() => {
+    if (!catalog || catalog.components.length === 0) return demoSidebarItems;
+    const catalogItems: SidebarItem[] = catalog.components
+      .filter((c) => !DEMO_IDS.has(c.id))
+      .map((c) => ({
+        id: c.id,
+        label: c.name,
+        category: "Scanned",
+      }));
+    return [...demoSidebarItems, ...catalogItems];
+  }, [catalog]);
 
   const handlePropChange = useCallback(
     (name: string, value: unknown) => {
@@ -60,8 +78,15 @@ export default function Home() {
 
   const isTokenView =
     selectedId && tokenViews.includes(selectedId as (typeof tokenViews)[number]);
-  const isComponentView = selectedId && !isTokenView;
+  const isCatalogOnly = selectedId && !DEMO_IDS.has(selectedId);
+  const isComponentView = selectedId && !isTokenView && !isCatalogOnly;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
+
+  // カタログ項目の詳細情報
+  const catalogComponent = useMemo(() => {
+    if (!isCatalogOnly || !catalog) return null;
+    return catalog.components.find((c) => c.id === selectedId) ?? null;
+  }, [selectedId, isCatalogOnly, catalog]);
 
   // バリアント一覧を自動生成
   const variants = useMemo<VariantItem[]>(() => {
@@ -124,6 +149,63 @@ export default function Home() {
                 },
               ]}
             />
+          )}
+
+          {isCatalogOnly && catalogComponent && (
+            <Box sx={{ flex: 1, p: 5, overflow: "auto" }}>
+              <Typography variant="h5" sx={{ mb: 0.5 }}>
+                {catalogComponent.name}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ fontFamily: "'JetBrains Mono', monospace", mb: 3 }}
+              >
+                {catalogComponent.filePath}
+              </Typography>
+
+              {catalogComponent.props.length > 0 && (
+                <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
+                  <Box sx={{ px: 2, py: 1.5, bgcolor: "action.hover" }}>
+                    <Typography variant="caption" fontWeight={700} sx={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      Props ({catalogComponent.props.length})
+                    </Typography>
+                  </Box>
+                  {catalogComponent.props.map((p) => (
+                    <Box
+                      key={p.name}
+                      sx={{
+                        px: 2,
+                        py: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        borderTop: 1,
+                        borderColor: "divider",
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        fontWeight={600}
+                        sx={{ fontFamily: "'JetBrains Mono', monospace", minWidth: 120 }}
+                      >
+                        {p.name}
+                      </Typography>
+                      <Chip label={p.type} size="small" variant="outlined" />
+                      {p.required && (
+                        <Chip label="required" size="small" color="warning" />
+                      )}
+                    </Box>
+                  ))}
+                </Paper>
+              )}
+
+              {catalogComponent.props.length === 0 && (
+                <Typography variant="body2" color="text.secondary">
+                  Props なし
+                </Typography>
+              )}
+            </Box>
           )}
 
           {isComponentView && (
