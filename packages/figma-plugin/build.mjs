@@ -70,11 +70,13 @@ const uiHtml = `<!DOCTYPE html>
     var serverInput = document.getElementById('server');
     var hasScanned = false;
 
-    // サーバーURLをlocalStorageに保存/復元
-    var saved = localStorage.getItem('bookstory-server');
-    if (saved) serverInput.value = saved;
+    // サーバーURLを保存/復元（Figma sandboxではlocalStorage不可のためtry-catch）
+    try {
+      var saved = localStorage.getItem('bookstory-server');
+      if (saved) serverInput.value = saved;
+    } catch(e) {}
     serverInput.onchange = function() {
-      localStorage.setItem('bookstory-server', serverInput.value);
+      try { localStorage.setItem('bookstory-server', serverInput.value); } catch(e) {}
     };
 
     scanBtn.onclick = function() {
