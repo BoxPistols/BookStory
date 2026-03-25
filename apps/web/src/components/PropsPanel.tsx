@@ -8,6 +8,9 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Slider from "@mui/material/Slider";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { alpha, useTheme } from "@mui/material/styles";
 
 export interface PropDefinition {
@@ -23,9 +26,10 @@ interface PropsPanelProps {
   props: PropDefinition[];
   values: Record<string, unknown>;
   onChange: (name: string, value: unknown) => void;
+  onReset?: () => void;
 }
 
-export function PropsPanel({ props, values, onChange }: PropsPanelProps) {
+export function PropsPanel({ props, values, onChange, onReset }: PropsPanelProps) {
   const theme = useTheme();
 
   if (props.length === 0) return null;
@@ -42,7 +46,7 @@ export function PropsPanel({ props, values, onChange }: PropsPanelProps) {
         flexShrink: 0,
       }}
     >
-      <Box sx={{ px: 2.5, py: 2, borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ px: 2.5, py: 2, borderBottom: 1, borderColor: "divider", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Typography
           variant="caption"
           sx={{
@@ -54,6 +58,17 @@ export function PropsPanel({ props, values, onChange }: PropsPanelProps) {
         >
           Props
         </Typography>
+        {onReset && (
+          <Tooltip title="初期値にリセット" arrow>
+            <IconButton
+              size="small"
+              onClick={onReset}
+              sx={{ color: "text.secondary", width: 24, height: 24 }}
+            >
+              <RestartAltIcon sx={{ fontSize: 16 }} />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
 
       <Box sx={{ p: 2.5, display: "flex", flexDirection: "column", gap: 2.5 }}>

@@ -13,6 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { alpha, useTheme } from "@mui/material/styles";
 import { useState, useRef, useCallback, ReactNode } from "react";
 import { DescriptionPanel } from "./DescriptionPanel";
+import { CodeBlock } from "./CodeBlock";
 import { InspectOverlay, InspectedElement } from "./InspectOverlay";
 import { InspectPanel } from "./InspectPanel";
 import type { ComponentDescription } from "@/lib/demo-data";
@@ -145,25 +146,7 @@ export function Preview({ title, children, code, figmaStatus, description, onIns
           )}
 
           {tab === 1 && (
-            <Paper
-              variant="outlined"
-              sx={{ borderRadius: 2, overflow: "hidden", bgcolor: "background.default" }}
-            >
-              <Box
-                component="pre"
-                sx={{
-                  m: 0,
-                  p: 2.5,
-                  fontSize: "0.75rem",
-                  fontFamily: "'JetBrains Mono', monospace",
-                  color: "text.primary",
-                  whiteSpace: "pre-wrap",
-                  lineHeight: 1.8,
-                }}
-              >
-                {code || "// コードが生成されていません"}
-              </Box>
-            </Paper>
+            <CodeBlock code={code || "// コードが生成されていません"} />
           )}
 
           {tab === 2 && description && <DescriptionPanel description={description} />}

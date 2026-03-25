@@ -38,6 +38,15 @@ export default function Home() {
     setInspectActive(false);
   };
 
+  const handleReset = useCallback(() => {
+    if (!selectedId) return;
+    setPropValues((prev) => {
+      const next = { ...prev };
+      delete next[selectedId];
+      return next;
+    });
+  }, [selectedId]);
+
   const currentProps = selectedId ? componentProps[selectedId] || [] : [];
   const currentValues = selectedId ? propValues[selectedId] || {} : {};
 
@@ -96,6 +105,7 @@ export default function Home() {
                   props={currentProps}
                   values={mergedValues}
                   onChange={handlePropChange}
+                  onReset={handleReset}
                 />
               )}
             </>

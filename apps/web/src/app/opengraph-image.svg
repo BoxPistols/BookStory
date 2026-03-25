@@ -1,18 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0f0d1a"/>
-      <stop offset="100%" stop-color="#1a1726"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#2642be"/>
-      <stop offset="100%" stop-color="#5c6fd6"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="80" y="240" width="64" height="64" rx="14" fill="url(#accent)"/>
-  <text x="112" y="287" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="38" fill="#fff">B</text>
-  <text x="164" y="286" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="48" fill="#e8e0f0">BookStory</text>
-  <text x="80" y="340" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#9b8fbf">Designer-friendly component catalog</text>
-  <text x="80" y="380" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#9b8fbf">Figma to Code, without terminal</text>
+  <rect width="1200" height="630" fill="#1B1B1F"/>
+  <!-- ロゴアイコン -->
+  <rect x="80" y="230" width="64" height="64" rx="14" fill="#FF4785"/>
+  <path d="M93 241c0-2.8 2.2-5 5-5h15v45H98c-2.8 0-5-2.2-5-5v-35z" fill="rgba(255,255,255,0.9)"/>
+  <path d="M118 236h15c2.8 0 5 2.2 5 5v35c0 2.8-2.2 5-5 5h-15v-45z" fill="rgba(255,255,255,0.65)"/>
+  <rect x="113" y="236" width="5" height="45" fill="rgba(255,255,255,0.3)"/>
+  <rect x="96" y="244" width="12" height="6" rx="1.5" fill="#FF4785" opacity="0.7"/>
+  <rect x="96" y="254" width="9" height="6" rx="1.5" fill="#FF4785" opacity="0.5"/>
+  <rect x="96" y="264" width="12" height="6" rx="1.5" fill="#FF4785" opacity="0.35"/>
+  <!-- テキスト -->
+  <text x="164" y="272" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="48" fill="#FAFAFA">BookStory</text>
+  <text x="80" y="340" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#A1A1AA">Designer-friendly component catalog</text>
+  <text x="80" y="380" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#A1A1AA">Figma to Code, without terminal</text>
 </svg>
