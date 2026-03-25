@@ -18,13 +18,66 @@ import { InspectOverlay, InspectedElement } from "./InspectOverlay";
 import { InspectPanel } from "./InspectPanel";
 import type { ComponentDescription } from "@/lib/demo-data";
 
+export interface VariantItem {
+  label: string;
+  node: ReactNode;
+}
+
 interface PreviewProps {
   title: string;
   children: ReactNode;
   code?: string;
   figmaStatus?: "synced" | "outdated" | "missing";
   description?: ComponentDescription;
+  variants?: VariantItem[];
   onInspectChange?: (active: boolean) => void;
+}
+
+function VariantsGrid({ variants }: { variants: VariantItem[] }) {
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+        gap: 2,
+      }}
+    >
+      {variants.map((v) => (
+        <Paper
+          key={v.label}
+          variant="outlined"
+          sx={{
+            borderRadius: 2,
+            overflow: "hidden",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: 80,
+              p: 2,
+              bgcolor: "background.default",
+            }}
+          >
+            {v.node}
+          </Box>
+          <Box sx={{ px: 1.5, py: 1, borderTop: 1, borderColor: "divider" }}>
+            <Typography
+              variant="caption"
+              sx={{
+                fontFamily: "'JetBrains Mono', monospace",
+                color: "text.secondary",
+              }}
+            >
+              {v.label}
+            </Typography>
+          </Box>
+        </Paper>
+      ))}
+    </Box>
+  );
 }
 
 export function Preview({ title, children, code, figmaStatus, description, onInspectChange }: PreviewProps) {
@@ -89,6 +142,7 @@ export function Preview({ title, children, code, figmaStatus, description, onIns
               sx={{ flex: 1, "& .MuiTab-root": { minWidth: 0, px: 0, mr: 2 } }}
             >
               <Tab label="プレビュー" />
+              <Tab label="バリアント" />
               <Tab label="コード" />
               {description?.usage && <Tab label="ドキュメント" />}
             </Tabs>
@@ -145,11 +199,15 @@ export function Preview({ title, children, code, figmaStatus, description, onIns
             </Paper>
           )}
 
-          {tab === 1 && (
+          {tab === 1 && variants && (
+            <VariantsGrid variants={variants} />
+          )}
+
+          {tab === 2 && (
             <CodeBlock code={code || "// コードが生成されていません"} />
           )}
 
-          {tab === 2 && description && <DescriptionPanel description={description} />}
+          {tab === 3 && description && <DescriptionPanel description={description} />}
         </Box>
       </Box>
 

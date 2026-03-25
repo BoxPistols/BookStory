@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Alert from "@mui/material/Alert";
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
-import { Preview } from "@/components/Preview";
+import { Preview, VariantItem } from "@/components/Preview";
 import { PropsPanel } from "@/components/PropsPanel";
 import { ComponentRenderer } from "@/components/ComponentRenderer";
 import { TokenViewer } from "@/components/TokenViewer";
@@ -60,6 +63,44 @@ export default function Home() {
   const isComponentView = selectedId && !isTokenView;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
 
+  // バリアント一覧を自動生成
+  const variants = useMemo<VariantItem[]>(() => {
+    if (!selectedId || !componentProps[selectedId]) return [];
+
+    const variantMap: Record<string, VariantItem[]> = {
+      button: [
+        { label: "contained / primary", node: <Button variant="contained" color="primary">Button</Button> },
+        { label: "contained / secondary", node: <Button variant="contained" color="secondary">Button</Button> },
+        { label: "contained / error", node: <Button variant="contained" color="error">Button</Button> },
+        { label: "outlined / primary", node: <Button variant="outlined" color="primary">Button</Button> },
+        { label: "outlined / secondary", node: <Button variant="outlined" color="secondary">Button</Button> },
+        { label: "text / primary", node: <Button variant="text" color="primary">Button</Button> },
+        { label: "small", node: <Button variant="contained" size="small">Small</Button> },
+        { label: "large", node: <Button variant="contained" size="large">Large</Button> },
+        { label: "disabled", node: <Button variant="contained" disabled>Disabled</Button> },
+      ],
+      chip: [
+        { label: "filled / primary", node: <Chip label="Chip" color="primary" /> },
+        { label: "filled / secondary", node: <Chip label="Chip" color="secondary" /> },
+        { label: "filled / success", node: <Chip label="Chip" color="success" /> },
+        { label: "filled / error", node: <Chip label="Chip" color="error" /> },
+        { label: "outlined / primary", node: <Chip label="Chip" variant="outlined" color="primary" /> },
+        { label: "outlined / secondary", node: <Chip label="Chip" variant="outlined" color="secondary" /> },
+        { label: "small", node: <Chip label="Chip" size="small" /> },
+      ],
+      alert: [
+        { label: "success", node: <Alert severity="success" sx={{ minWidth: 160 }}>Success</Alert> },
+        { label: "info", node: <Alert severity="info" sx={{ minWidth: 160 }}>Info</Alert> },
+        { label: "warning", node: <Alert severity="warning" sx={{ minWidth: 160 }}>Warning</Alert> },
+        { label: "error", node: <Alert severity="error" sx={{ minWidth: 160 }}>Error</Alert> },
+        { label: "filled / success", node: <Alert severity="success" variant="filled" sx={{ minWidth: 160 }}>Filled</Alert> },
+        { label: "outlined / error", node: <Alert severity="error" variant="outlined" sx={{ minWidth: 160 }}>Outlined</Alert> },
+      ],
+    };
+
+    return variantMap[selectedId] || [];
+  }, [selectedId]);
+
   return (
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       <Sidebar
@@ -92,6 +133,7 @@ export default function Home() {
                 code={generateCode(selectedId, mergedValues)}
                 figmaStatus="synced"
                 description={description}
+                variants={variants}
                 onInspectChange={setInspectActive}
               >
                 <ComponentRenderer
