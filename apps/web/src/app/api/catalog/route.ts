@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 
+// GitHub Pages静的エクスポート対応
+export const dynamic = "force-static";
+
 export async function GET() {
   // プロジェクトルートから .bookstory/catalog.json を探す
   const candidates = [
@@ -9,9 +12,9 @@ export async function GET() {
     resolve(process.cwd(), "../../.bookstory/catalog.json"),
   ];
 
-  for (const path of candidates) {
-    if (existsSync(path)) {
-      const data = JSON.parse(readFileSync(path, "utf-8"));
+  for (const filePath of candidates) {
+    if (existsSync(filePath)) {
+      const data = JSON.parse(readFileSync(filePath, "utf-8"));
       return NextResponse.json(data);
     }
   }
