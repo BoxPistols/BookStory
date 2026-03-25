@@ -7,8 +7,14 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
-import { useState, ReactNode } from "react";
+import ToggleButton from "@mui/material/ToggleButton";
+import Tooltip from "@mui/material/Tooltip";
+import SearchIcon from "@mui/icons-material/Search";
+import { alpha, useTheme } from "@mui/material/styles";
+import { useState, useRef, useCallback, ReactNode } from "react";
 import { DescriptionPanel } from "./DescriptionPanel";
+import { InspectOverlay, InspectedElement } from "./InspectOverlay";
+import { InspectPanel } from "./InspectPanel";
 import type { ComponentDescription } from "@/lib/demo-data";
 
 interface PreviewProps {
@@ -17,10 +23,15 @@ interface PreviewProps {
   code?: string;
   figmaStatus?: "synced" | "outdated" | "missing";
   description?: ComponentDescription;
+  onInspectChange?: (active: boolean) => void;
 }
 
-export function Preview({ title, children, code, figmaStatus, description }: PreviewProps) {
+export function Preview({ title, children, code, figmaStatus, description, onInspectChange }: PreviewProps) {
   const [tab, setTab] = useState(0);
+  const [inspectMode, setInspectMode] = useState(false);
+  const [inspectedElement, setInspectedElement] = useState<InspectedElement | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
 
   const statusMap = {
     synced: { label: "同期済み", color: "success" as const },
@@ -29,82 +40,138 @@ export function Preview({ title, children, code, figmaStatus, description }: Pre
   };
   const status = figmaStatus ? statusMap[figmaStatus] : null;
 
+  const handleInspect = useCallback((el: InspectedElement | null) => {
+    setInspectedElement(el);
+  }, []);
+
+  const toggleInspect = () => {
+    const next = !inspectMode;
+    setInspectMode(next);
+    onInspectChange?.(next);
+    if (!next) {
+      setInspectedElement(null);
+    }
+    if (next && tab !== 0) {
+      setTab(0);
+    }
+  };
+
   return (
-    <Box sx={{ flex: 1, overflow: "auto" }}>
-      <Box sx={{ px: 5, py: 4, maxWidth: 960 }}>
-        {/* タイトル */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
-          <Typography variant="h5">{title}</Typography>
-          {status && (
-            <Chip label={status.label} color={status.color} size="small" variant="outlined" />
+    <>
+      <Box sx={{ flex: 1, overflow: "auto" }}>
+        <Box sx={{ px: 5, py: 4, maxWidth: 960 }}>
+          {/* タイトル */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
+            <Typography variant="h5">{title}</Typography>
+            {status && (
+              <Chip label={status.label} color={status.color} size="small" variant="outlined" />
+            )}
+          </Box>
+
+          {description?.summary && (
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.7 }}>
+              {description.summary}
+            </Typography>
           )}
-        </Box>
 
-        {/* 概要（Figma Description の1行目） */}
-        {description?.summary && (
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.7 }}>
-            {description.summary}
-          </Typography>
-        )}
+          {figmaStatus === "outdated" && (
+            <Alert severity="warning" variant="outlined" sx={{ mb: 2, borderRadius: 2 }}>
+              Figma上で変更が検出されました。プラグインの「公開」ボタンで反映してください。
+            </Alert>
+          )}
 
-        {figmaStatus === "outdated" && (
-          <Alert severity="warning" variant="outlined" sx={{ mb: 2, borderRadius: 2 }}>
-            Figma上で変更が検出されました。プラグインの「公開」ボタンで反映してください。
-          </Alert>
-        )}
+          {/* タブ + Inspect トグル */}
+          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+            <Tabs
+              value={tab}
+              onChange={(_, v) => setTab(v)}
+              sx={{ flex: 1, "& .MuiTab-root": { minWidth: 0, px: 0, mr: 2 } }}
+            >
+              <Tab label="プレビュー" />
+              <Tab label="コード" />
+              {description?.usage && <Tab label="ドキュメント" />}
+            </Tabs>
 
-        {/* タブ */}
-        <Tabs
-          value={tab}
-          onChange={(_, v) => setTab(v)}
-          sx={{ mb: 3, "& .MuiTab-root": { minWidth: 0, px: 0, mr: 2 } }}
-        >
-          <Tab label="プレビュー" />
-          <Tab label="コード" />
-          {description?.usage && <Tab label="ドキュメント" />}
-        </Tabs>
+            <Tooltip title={inspectMode ? "Inspect OFF" : "要素を検証"} arrow>
+              <ToggleButton
+                value="inspect"
+                selected={inspectMode}
+                onChange={toggleInspect}
+                size="small"
+                sx={{
+                  border: 1,
+                  borderColor: inspectMode ? "primary.main" : "divider",
+                  borderRadius: 1.5,
+                  width: 32,
+                  height: 32,
+                  color: inspectMode ? "primary.main" : "text.secondary",
+                  bgcolor: inspectMode ? alpha(theme.palette.primary.main, 0.08) : "transparent",
+                  "&:hover": {
+                    bgcolor: inspectMode
+                      ? alpha(theme.palette.primary.main, 0.12)
+                      : "action.hover",
+                  },
+                }}
+              >
+                <SearchIcon sx={{ fontSize: 16 }} />
+              </ToggleButton>
+            </Tooltip>
+          </Box>
 
-        {tab === 0 && (
-          <Paper
-            variant="outlined"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              minHeight: 200,
-              borderRadius: 2,
-              bgcolor: "background.default",
-              p: 4,
-            }}
-          >
-            {children}
-          </Paper>
-        )}
-
-        {tab === 1 && (
-          <Paper
-            variant="outlined"
-            sx={{ borderRadius: 2, overflow: "hidden", bgcolor: "background.default" }}
-          >
-            <Box
-              component="pre"
+          {tab === 0 && (
+            <Paper
+              ref={previewRef}
+              variant="outlined"
               sx={{
-                m: 0,
-                p: 2.5,
-                fontSize: "0.75rem",
-                fontFamily: "'JetBrains Mono', monospace",
-                color: "text.primary",
-                whiteSpace: "pre-wrap",
-                lineHeight: 1.8,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: 200,
+                borderRadius: 2,
+                bgcolor: "background.default",
+                p: 4,
+                position: "relative",
+                cursor: inspectMode ? "crosshair" : "default",
+                userSelect: inspectMode ? "none" : "auto",
               }}
             >
-              {code || "// コードが生成されていません"}
-            </Box>
-          </Paper>
-        )}
+              {children}
+              <InspectOverlay
+                containerRef={previewRef}
+                active={inspectMode && tab === 0}
+                onInspect={handleInspect}
+              />
+            </Paper>
+          )}
 
-        {tab === 2 && description && <DescriptionPanel description={description} />}
+          {tab === 1 && (
+            <Paper
+              variant="outlined"
+              sx={{ borderRadius: 2, overflow: "hidden", bgcolor: "background.default" }}
+            >
+              <Box
+                component="pre"
+                sx={{
+                  m: 0,
+                  p: 2.5,
+                  fontSize: "0.75rem",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  color: "text.primary",
+                  whiteSpace: "pre-wrap",
+                  lineHeight: 1.8,
+                }}
+              >
+                {code || "// コードが生成されていません"}
+              </Box>
+            </Paper>
+          )}
+
+          {tab === 2 && description && <DescriptionPanel description={description} />}
+        </Box>
       </Box>
-    </Box>
+
+      {/* Inspect パネル（Propsパネルの代わりに表示） */}
+      {inspectMode && inspectedElement && <InspectPanel element={inspectedElement} />}
+    </>
   );
 }
