@@ -80,7 +80,7 @@ function VariantsGrid({ variants }: { variants: VariantItem[] }) {
   );
 }
 
-export function Preview({ title, children, code, figmaStatus, description, onInspectChange }: PreviewProps) {
+export function Preview({ title, children, code, figmaStatus, description, variants, onInspectChange }: PreviewProps) {
   const [tab, setTab] = useState(0);
   const [inspectMode, setInspectMode] = useState(false);
   const [inspectedElement, setInspectedElement] = useState<InspectedElement | null>(null);
