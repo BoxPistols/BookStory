@@ -1,18 +1,20 @@
 import { SidebarItem } from "@/components/Sidebar";
 import { PropDefinition } from "@/components/PropsPanel";
 
-// sdpf-theme のストーリー階層に準拠したサイドバー構造
+// Exampleグループとしてまとめたサイドバー構造
 export const sidebarItems: SidebarItem[] = [
-  // デザイントークン（最上位）
-  { id: "colors", label: "Color", category: "Tokens" },
-  { id: "typography", label: "Typography", category: "Tokens" },
-  { id: "spacing", label: "Spacing", category: "Tokens" },
+  // デザイントークン
+  { id: "colors", label: "Color", category: "Example / Tokens" },
+  { id: "typography", label: "Typography", category: "Example / Tokens" },
+  { id: "spacing", label: "Spacing", category: "Example / Tokens" },
   // コンポーネント
-  { id: "button", label: "Button", category: "UI" },
-  { id: "card", label: "Card", category: "UI" },
-  { id: "chip", label: "Chip", category: "UI" },
-  { id: "alert", label: "Alert", category: "UI" },
-  { id: "textfield", label: "TextField", category: "Form" },
+  { id: "button", label: "Button", category: "Example / UI" },
+  { id: "card", label: "Card", category: "Example / UI" },
+  { id: "chip", label: "Chip", category: "Example / UI" },
+  { id: "alert", label: "Alert", category: "Example / UI" },
+  { id: "textfield", label: "TextField", category: "Example / Form" },
+  // スキャン結果（テーブル表示）
+  { id: "scanned", label: "Scanned Components", category: "Catalog" },
 ];
 
 // Figma の Description フィールドから取得される説明
