@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   };
 
   try {
-    // 1. デフォルトブランチを取得
+    // 1. デフォルトブランチ取得
     const repoRes = await fetch(baseUrl, { headers });
     if (!repoRes.ok) {
       return NextResponse.json(
@@ -40,7 +40,33 @@ export async function POST(req: NextRequest) {
     const repoData = await repoRes.json();
     const defaultBranch = repoData.default_branch || "main";
 
-    // 2. カタログJSONを作成
+    // 2. 最新SHAを取得
+    const refRes = await fetch(
+      `${baseUrl}/git/ref/heads/${defaultBranch}`,
+      { headers }
+    );
+    const refData = await refRes.json();
+    const baseSha = refData.object.sha;
+
+    // 3. ブランチ作成
+    const branchName = `bookstory/figma-sync-${Date.now()}`;
+    const branchRes = await fetch(`${baseUrl}/git/refs`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        ref: `refs/heads/${branchName}`,
+        sha: baseSha,
+      }),
+    });
+    if (!branchRes.ok) {
+      const err = await branchRes.json();
+      return NextResponse.json(
+        { error: `ブランチ作成失敗: ${err.message || branchRes.status}` },
+        { status: 502 }
+      );
+    }
+
+    // 4. カタログファイルをコミット
     const catalog = {
       generatedAt: new Date().toISOString(),
       source: "figma",
@@ -52,7 +78,7 @@ export async function POST(req: NextRequest) {
       "utf-8"
     ).toString("base64");
 
-    // 3. 既存ファイルのSHAを取得（上書き更新に必要）
+    // 既存ファイルのSHA取得（ブランチ上）
     let fileSha: string | undefined;
     const existRes = await fetch(
       `${baseUrl}/contents/.bookstory/figma-catalog.json?ref=${defaultBranch}`,
@@ -63,11 +89,10 @@ export async function POST(req: NextRequest) {
       fileSha = existData.sha;
     }
 
-    // 4. mainに直接コミット（PR不要 = デザイナーがマージ操作不要）
     const commitBody: Record<string, string> = {
       message: `BookStory: Figmaデザイン同期 (${components.length} components, ${tokens.length} tokens)`,
       content,
-      branch: defaultBranch,
+      branch: branchName,
     };
     if (fileSha) commitBody.sha = fileSha;
 
@@ -75,11 +100,35 @@ export async function POST(req: NextRequest) {
       `${baseUrl}/contents/.bookstory/figma-catalog.json`,
       { method: "PUT", headers, body: JSON.stringify(commitBody) }
     );
-
     if (!commitRes.ok) {
       const err = await commitRes.json();
       return NextResponse.json(
         { error: `コミット失敗: ${err.message || commitRes.status}` },
+        { status: 502 }
+      );
+    }
+
+    // 5. 自動マージ（デザイナーの操作不要）
+    const mergeRes = await fetch(`${baseUrl}/merges`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        base: defaultBranch,
+        head: branchName,
+        commit_message: `BookStory: Figmaデザイン同期 (${components.length} components, ${tokens.length} tokens)`,
+      }),
+    });
+
+    // 6. ブランチ削除（クリーンアップ）
+    await fetch(`${baseUrl}/git/refs/heads/${branchName}`, {
+      method: "DELETE",
+      headers,
+    });
+
+    if (!mergeRes.ok) {
+      const err = await mergeRes.json();
+      return NextResponse.json(
+        { error: `マージ失敗: ${err.message || mergeRes.status}` },
         { status: 502 }
       );
     }
@@ -90,7 +139,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     return NextResponse.json(
-      { error: String(err) },
+      { error: err instanceof Error ? err.message : String(err) },
       { status: 500 }
     );
   }

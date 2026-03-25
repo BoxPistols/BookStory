@@ -3,6 +3,9 @@
 
 figma.showUI(__html__, { width: 320, height: 400 });
 
+// dynamic-page モードでは全ページの読み込みが必要
+figma.loadAllPagesAsync();
+
 // --- 型定義 ---
 
 interface ExtractedComponent {
@@ -95,11 +98,11 @@ function scanComponents(): ExtractedComponent[] {
 
 // --- トークン抽出 ---
 
-function scanTokens(): ExtractedToken[] {
+async function scanTokens(): Promise<ExtractedToken[]> {
   const tokens: ExtractedToken[] = [];
 
   // ローカルスタイル: カラー
-  const paintStyles = figma.getLocalPaintStyles();
+  const paintStyles = await figma.getLocalPaintStylesAsync();
   for (const style of paintStyles) {
     const paint = style.paints[0];
     if (paint && paint.type === "SOLID") {
@@ -120,7 +123,7 @@ function scanTokens(): ExtractedToken[] {
   }
 
   // ローカルスタイル: テキスト
-  const textStyles = figma.getLocalTextStyles();
+  const textStyles = await figma.getLocalTextStylesAsync();
   for (const style of textStyles) {
     tokens.push({
       name: style.name,
@@ -136,7 +139,7 @@ function scanTokens(): ExtractedToken[] {
   }
 
   // ローカルスタイル: エフェクト（シャドウ等）
-  const effectStyles = figma.getLocalEffectStyles();
+  const effectStyles = await figma.getLocalEffectStylesAsync();
   for (const style of effectStyles) {
     tokens.push({
       name: style.name,
@@ -190,7 +193,7 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       const components = scanComponents();
 
       figma.ui.postMessage({ type: "status", message: "トークンを抽出中...", level: "info" });
-      const tokens = scanTokens();
+      const tokens = await scanTokens();
 
       figma.ui.postMessage({
         type: "scan-result",
@@ -216,7 +219,7 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
 
     try {
       const components = scanComponents();
-      const tokens = scanTokens();
+      const tokens = await scanTokens();
 
       const res = await fetch(serverUrl + "/api/publish", {
         method: "POST",
@@ -240,10 +243,13 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
         });
       }
     } catch (err) {
+      const message = (err && typeof err === "object" && "message" in err)
+        ? (err as { message: string }).message
+        : JSON.stringify(err);
       figma.ui.postMessage({
         type: "publish-result",
         success: false,
-        error: String(err),
+        error: message,
       });
     }
   }
