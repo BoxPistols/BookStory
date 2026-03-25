@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -41,6 +41,19 @@ const sidebarColors = {
 export function Sidebar({ items, selectedId, onSelect }: SidebarProps) {
   const [search, setSearch] = useState("");
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  // `/` キーで検索フォーカス
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "/" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   const filtered = items.filter((item) =>
     item.label.toLowerCase().includes(search.toLowerCase())
@@ -93,6 +106,7 @@ export function Sidebar({ items, selectedId, onSelect }: SidebarProps) {
         >
           <SearchIcon sx={{ fontSize: 16, color: sidebarColors.textMuted }} />
           <InputBase
+            inputRef={searchRef}
             placeholder="検索..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
