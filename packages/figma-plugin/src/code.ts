@@ -185,18 +185,27 @@ function scanTokens(): ExtractedToken[] {
 
 figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) {
   if (msg.type === "scan") {
-    figma.ui.postMessage({ type: "status", message: "スキャン中...", level: "info" });
+    try {
+      figma.ui.postMessage({ type: "status", message: "コンポーネントをスキャン中...", level: "info" });
+      const components = scanComponents();
 
-    const components = scanComponents();
-    const tokens = scanTokens();
+      figma.ui.postMessage({ type: "status", message: "トークンを抽出中...", level: "info" });
+      const tokens = scanTokens();
 
-    figma.ui.postMessage({
-      type: "scan-result",
-      count: components.length,
-      tokenCount: tokens.length,
-      components: components,
-      tokens: tokens,
-    });
+      figma.ui.postMessage({
+        type: "scan-result",
+        count: components.length,
+        tokenCount: tokens.length,
+        components: components,
+        tokens: tokens,
+      });
+    } catch (err) {
+      figma.ui.postMessage({
+        type: "status",
+        message: "スキャンエラー: " + String(err),
+        level: "error",
+      });
+    }
   }
 
   if (msg.type === "publish") {
@@ -221,7 +230,7 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
         figma.ui.postMessage({
           type: "publish-result",
           success: true,
-          url: data.url,
+          message: data.message || "反映完了！",
         });
       } else {
         figma.ui.postMessage({

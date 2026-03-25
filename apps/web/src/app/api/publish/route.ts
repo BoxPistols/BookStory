@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   }
 
   const baseUrl = `https://api.github.com/repos/${GITHUB_REPO}`;
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
     "Content-Type": "application/json",
     Accept: "application/vnd.github.v3+json",
@@ -40,26 +40,7 @@ export async function POST(req: NextRequest) {
     const repoData = await repoRes.json();
     const defaultBranch = repoData.default_branch || "main";
 
-    // 2. 最新の SHA を取得
-    const refRes = await fetch(
-      `${baseUrl}/git/ref/heads/${defaultBranch}`,
-      { headers }
-    );
-    const refData = await refRes.json();
-    const baseSha = refData.object.sha;
-
-    // 3. ブランチ作成
-    const branchName = `bookstory/figma-sync-${Date.now()}`;
-    await fetch(`${baseUrl}/git/refs`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        ref: `refs/heads/${branchName}`,
-        sha: baseSha,
-      }),
-    });
-
-    // 4. カタログファイルをコミット
+    // 2. カタログJSONを作成
     const catalog = {
       generatedAt: new Date().toISOString(),
       source: "figma",
@@ -71,33 +52,41 @@ export async function POST(req: NextRequest) {
       "utf-8"
     ).toString("base64");
 
-    await fetch(`${baseUrl}/contents/.bookstory/figma-catalog.json`, {
-      method: "PUT",
-      headers,
-      body: JSON.stringify({
-        message: `BookStory: Figmaからコンポーネント同期 (${components.length} components, ${tokens.length} tokens)`,
-        content,
-        branch: branchName,
-      }),
-    });
+    // 3. 既存ファイルのSHAを取得（上書き更新に必要）
+    let fileSha: string | undefined;
+    const existRes = await fetch(
+      `${baseUrl}/contents/.bookstory/figma-catalog.json?ref=${defaultBranch}`,
+      { headers }
+    );
+    if (existRes.ok) {
+      const existData = await existRes.json();
+      fileSha = existData.sha;
+    }
 
-    // 5. PR 作成
-    const prRes = await fetch(`${baseUrl}/pulls`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        title: "[BookStory] Figmaデザイン同期",
-        body: `## Figma からの自動同期\n\n- コンポーネント: ${components.length}件\n- トークン: ${tokens.length}件\n\n生成元: BookStory Figma Plugin`,
-        head: branchName,
-        base: defaultBranch,
-      }),
-    });
+    // 4. mainに直接コミット（PR不要 = デザイナーがマージ操作不要）
+    const commitBody: Record<string, string> = {
+      message: `BookStory: Figmaデザイン同期 (${components.length} components, ${tokens.length} tokens)`,
+      content,
+      branch: defaultBranch,
+    };
+    if (fileSha) commitBody.sha = fileSha;
 
-    const prData = await prRes.json();
+    const commitRes = await fetch(
+      `${baseUrl}/contents/.bookstory/figma-catalog.json`,
+      { method: "PUT", headers, body: JSON.stringify(commitBody) }
+    );
+
+    if (!commitRes.ok) {
+      const err = await commitRes.json();
+      return NextResponse.json(
+        { error: `コミット失敗: ${err.message || commitRes.status}` },
+        { status: 502 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      url: prData.html_url,
+      message: `${components.length} コンポーネント / ${tokens.length} トークンを反映しました`,
     });
   } catch (err) {
     return NextResponse.json(
