@@ -2,16 +2,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { alpha } from "@mui/material/styles";
+import { alpha, useTheme } from "@mui/material/styles";
 
 export interface SidebarItem {
   id: string;
@@ -23,6 +25,8 @@ interface SidebarProps {
   items: SidebarItem[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }
 
 // Monokai テーマベースのダーク固定
@@ -38,10 +42,14 @@ const sidebarColors = {
   hover: "rgba(248, 248, 242, 0.05)",
 };
 
-export function Sidebar({ items, selectedId, onSelect }: SidebarProps) {
+const SIDEBAR_WIDTH = 220;
+
+export function Sidebar({ items, selectedId, onSelect, mobileOpen, onMobileClose }: SidebarProps) {
   const [search, setSearch] = useState("");
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
   const searchRef = useRef<HTMLInputElement>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   // `/` キーで検索フォーカス
   useEffect(() => {
@@ -60,12 +68,18 @@ export function Sidebar({ items, selectedId, onSelect }: SidebarProps) {
   );
   const categories = [...new Set(filtered.map((item) => item.category))];
 
-  return (
+  // モバイルでは項目選択時にドロワーを閉じる
+  const handleSelect = (id: string) => {
+    onSelect(id);
+    if (isMobile) onMobileClose?.();
+  };
+
+  const sidebarContent = (
     <Box
       sx={{
-        width: 220,
-        height: "100vh",
-        borderRight: 1,
+        width: SIDEBAR_WIDTH,
+        height: "100%",
+        borderRight: isMobile ? 0 : 1,
         borderColor: sidebarColors.border,
         display: "flex",
         flexDirection: "column",
@@ -165,7 +179,7 @@ export function Sidebar({ items, selectedId, onSelect }: SidebarProps) {
                         <ListItemButton
                           key={item.id}
                           selected={isSelected}
-                          onClick={() => onSelect(item.id)}
+                          onClick={() => handleSelect(item.id)}
                           sx={{
                             py: 0.625,
                             px: 1,
@@ -201,4 +215,21 @@ export function Sidebar({ items, selectedId, onSelect }: SidebarProps) {
       </Box>
     </Box>
   );
+
+  // モバイル: Drawer、デスクトップ: 固定
+  if (isMobile) {
+    return (
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={onMobileClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{ "& .MuiDrawer-paper": { width: SIDEBAR_WIDTH } }}
+      >
+        {sidebarContent}
+      </Drawer>
+    );
+  }
+
+  return sidebarContent;
 }

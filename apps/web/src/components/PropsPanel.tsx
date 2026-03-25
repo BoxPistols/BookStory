@@ -37,11 +37,13 @@ export function PropsPanel({ props, values, onChange, onReset }: PropsPanelProps
   return (
     <Box
       sx={{
-        width: 260,
-        borderLeft: 1,
+        width: { xs: "100%", md: 260 },
+        borderLeft: { xs: 0, md: 1 },
+        borderTop: { xs: 1, md: 0 },
         borderColor: "divider",
         bgcolor: "background.paper",
-        height: "100%",
+        height: { xs: "auto", md: "100%" },
+        maxHeight: { xs: 300, md: "100%" },
         overflow: "auto",
         flexShrink: 0,
       }}

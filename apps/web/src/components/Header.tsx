@@ -4,11 +4,16 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
+import MenuIcon from "@mui/icons-material/Menu";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { useThemeMode } from "@/lib/ThemeContext";
 
-export function Header() {
+interface HeaderProps {
+  onMenuToggle?: () => void;
+}
+
+export function Header({ onMenuToggle }: HeaderProps) {
   const { mode, toggle } = useThemeMode();
 
   return (
@@ -22,6 +27,15 @@ export function Header() {
       }}
     >
       <Toolbar variant="dense" sx={{ minHeight: 44, px: 3 }}>
+        {onMenuToggle && (
+          <IconButton
+            size="small"
+            onClick={onMenuToggle}
+            sx={{ color: "#A6A69C", mr: 1, display: { md: "none" } }}
+          >
+            <MenuIcon sx={{ fontSize: 20 }} />
+          </IconButton>
+        )}
         <Box sx={{ flexGrow: 1 }} />
         <IconButton size="small" onClick={toggle} sx={{ color: "#A6A69C" }}>
           {mode === "light" ? (
