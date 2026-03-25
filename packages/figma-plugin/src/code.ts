@@ -1,7 +1,7 @@
 // BookStory Figma Plugin - メインコード
 // Figma sandbox 内で実行される
 
-figma.showUI(__html__, { width: 320, height: 480 });
+figma.showUI(__html__, { width: 320, height: 400 });
 
 // --- 型定義 ---
 
@@ -50,9 +50,11 @@ function scanComponents(): ExtractedComponent[] {
       for (const child of node.children) {
         if (child.type !== "COMPONENT") continue;
         // "Property1=Value1, Property2=Value2" 形式を解析
-        const parts = child.name.split(",").map((s) => s.trim());
+        const parts = child.name.split(",").map(function (s) { return s.trim(); });
         for (const part of parts) {
-          const [key, val] = part.split("=").map((s) => s.trim());
+          const kv = part.split("=").map(function (s) { return s.trim(); });
+          const key = kv[0];
+          const val = kv[1];
           if (!key || !val) continue;
           if (!variants[key]) variants[key] = [];
           if (!variants[key].includes(val)) variants[key].push(val);
@@ -101,11 +103,13 @@ function scanTokens(): ExtractedToken[] {
   for (const style of paintStyles) {
     const paint = style.paints[0];
     if (paint && paint.type === "SOLID") {
-      const { r, g, b } = paint.color;
+      const r = paint.color.r;
+      const g = paint.color.g;
+      const b = paint.color.b;
       const hex =
         "#" +
         [r, g, b]
-          .map((c) => Math.round(c * 255).toString(16).padStart(2, "0"))
+          .map(function (c) { return Math.round(c * 255).toString(16).padStart(2, "0"); })
           .join("");
       tokens.push({
         name: style.name,
@@ -137,10 +141,9 @@ function scanTokens(): ExtractedToken[] {
     tokens.push({
       name: style.name,
       type: "effect",
-      value: style.effects.map((e) => ({
-        type: e.type,
-        visible: e.visible,
-      })),
+      value: style.effects.map(function (e) {
+        return { type: e.type, visible: e.visible };
+      }),
     });
   }
 
@@ -163,7 +166,7 @@ function scanTokens(): ExtractedToken[] {
         else if (variable.resolvedType === "STRING") type = "typography";
 
         tokens.push({
-          name: `${collection.name}/${variable.name}`,
+          name: collection.name + "/" + variable.name,
           type,
           value: Object.values(variable.valuesByMode)[0],
           modes: Object.keys(modes).length > 1 ? modes : undefined,
@@ -177,78 +180,10 @@ function scanTokens(): ExtractedToken[] {
   return tokens;
 }
 
-// --- GitHub PR 作成 ---
-
-async function createGitHubPR(
-  repo: string,
-  token: string,
-  components: ExtractedComponent[],
-  tokens: ExtractedToken[]
-) {
-  const baseUrl = `https://api.github.com/repos/${repo}`;
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-    Accept: "application/vnd.github.v3+json",
-  };
-
-  // 1. デフォルトブランチを取得
-  const repoRes = await fetch(baseUrl, { headers });
-  const repoData = await repoRes.json();
-  const defaultBranch = repoData.default_branch || "main";
-
-  // 2. 最新の SHA を取得
-  const refRes = await fetch(`${baseUrl}/git/ref/heads/${defaultBranch}`, { headers });
-  const refData = await refRes.json();
-  const baseSha = refData.object.sha;
-
-  // 3. ブランチ作成
-  const branchName = `bookstory/figma-sync-${Date.now()}`;
-  await fetch(`${baseUrl}/git/refs`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ ref: `refs/heads/${branchName}`, sha: baseSha }),
-  });
-
-  // 4. ファイルをコミット
-  const catalog = {
-    generatedAt: new Date().toISOString(),
-    source: "figma",
-    components,
-    tokens,
-  };
-
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(catalog, null, 2))));
-
-  await fetch(`${baseUrl}/contents/.bookstory/figma-catalog.json`, {
-    method: "PUT",
-    headers,
-    body: JSON.stringify({
-      message: `BookStory: Figmaからコンポーネント同期 (${components.length} components, ${tokens.length} tokens)`,
-      content,
-      branch: branchName,
-    }),
-  });
-
-  // 5. PR 作成
-  const prRes = await fetch(`${baseUrl}/pulls`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      title: `[BookStory] Figmaデザイン同期`,
-      body: `## Figma からの自動同期\n\n- コンポーネント: ${components.length}件\n- トークン: ${tokens.length}件\n\n生成元: BookStory Figma Plugin`,
-      head: branchName,
-      base: defaultBranch,
-    }),
-  });
-
-  const prData = await prRes.json();
-  return prData.html_url;
-}
-
 // --- メッセージハンドリング ---
+// BookStory サーバー経由で公開（トークン不要）
 
-figma.ui.onmessage = async (msg: { type: string; repo?: string; token?: string }) => {
+figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) {
   if (msg.type === "scan") {
     figma.ui.postMessage({ type: "status", message: "スキャン中...", level: "info" });
 
@@ -259,26 +194,42 @@ figma.ui.onmessage = async (msg: { type: string; repo?: string; token?: string }
       type: "scan-result",
       count: components.length,
       tokenCount: tokens.length,
-      components,
-      tokens,
+      components: components,
+      tokens: tokens,
     });
   }
 
   if (msg.type === "publish") {
-    if (!msg.repo || !msg.token) return;
+    const serverUrl = msg.serverUrl;
+    if (!serverUrl) return;
 
-    figma.ui.postMessage({ type: "status", message: "GitHub PR を作成中...", level: "info" });
+    figma.ui.postMessage({ type: "status", message: "公開中...", level: "info" });
 
     try {
       const components = scanComponents();
       const tokens = scanTokens();
-      const url = await createGitHubPR(msg.repo, msg.token, components, tokens);
 
-      figma.ui.postMessage({
-        type: "publish-result",
-        success: true,
-        url,
+      const res = await fetch(serverUrl + "/api/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ components: components, tokens: tokens }),
       });
+
+      const data = await res.json();
+
+      if (data.success) {
+        figma.ui.postMessage({
+          type: "publish-result",
+          success: true,
+          url: data.url,
+        });
+      } else {
+        figma.ui.postMessage({
+          type: "publish-result",
+          success: false,
+          error: data.error || "不明なエラー",
+        });
+      }
     } catch (err) {
       figma.ui.postMessage({
         type: "publish-result",
