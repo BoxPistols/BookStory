@@ -28,6 +28,7 @@ export default function Home() {
   const [selectedId, setSelectedId] = useState<string | null>("button");
   const [propValues, setPropValues] = useState<Record<string, Record<string, unknown>>>({});
   const [inspectActive, setInspectActive] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const { catalog } = useCatalog();
 
   // デモ項目 + カタログ固有項目をマージ
@@ -132,12 +133,14 @@ export default function Home() {
         items={sidebarItems}
         selectedId={selectedId}
         onSelect={handleSelect}
+        mobileOpen={mobileOpen}
+        onMobileClose={() => setMobileOpen(false)}
       />
 
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        <Header />
+        <Header onMenuToggle={() => setMobileOpen(true)} />
 
-        <Box sx={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        <Box sx={{ flex: 1, display: "flex", flexDirection: { xs: "column", md: "row" }, overflow: "hidden" }}>
           {isTokenView && (
             <TokenViewer
               viewType={selectedId as "colors" | "typography" | "spacing"}
