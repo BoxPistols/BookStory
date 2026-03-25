@@ -170,7 +170,7 @@ function scanTokens(): ExtractedToken[] {
         });
       }
     }
-  } catch {
+  } catch (_e) {
     // バリアブル API が利用できない場合は無視
   }
 
