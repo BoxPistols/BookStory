@@ -105,8 +105,7 @@ const uiHtml = `<!DOCTYPE html>
       }
       if (msg.type === 'publish-result') {
         if (msg.success) {
-          showStatus('PR作成完了！', 'success');
-          statusEl.innerHTML = 'PR作成完了！ <a href="' + msg.url + '" target="_blank" class="link">PRを確認する</a>';
+          showStatus(msg.message || '反映完了！', 'success');
         } else {
           showStatus('エラー: ' + msg.error, 'error');
         }
