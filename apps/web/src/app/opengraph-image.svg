@@ -1,15 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#1B1B1F"/>
+  <rect width="1200" height="630" fill="#272822"/>
   <!-- ロゴアイコン -->
-  <rect x="80" y="230" width="64" height="64" rx="14" fill="#FF4785"/>
-  <path d="M93 241c0-2.8 2.2-5 5-5h15v45H98c-2.8 0-5-2.2-5-5v-35z" fill="rgba(255,255,255,0.9)"/>
-  <path d="M118 236h15c2.8 0 5 2.2 5 5v35c0 2.8-2.2 5-5 5h-15v-45z" fill="rgba(255,255,255,0.65)"/>
-  <rect x="113" y="236" width="5" height="45" fill="rgba(255,255,255,0.3)"/>
-  <rect x="96" y="244" width="12" height="6" rx="1.5" fill="#FF4785" opacity="0.7"/>
-  <rect x="96" y="254" width="9" height="6" rx="1.5" fill="#FF4785" opacity="0.5"/>
-  <rect x="96" y="264" width="12" height="6" rx="1.5" fill="#FF4785" opacity="0.35"/>
+  <rect x="80" y="240" width="56" height="56" rx="12" fill="#FF4785"/>
+  <path d="M93 249c0-2.2 1.8-4 4-4h10v32H97c-2.2 0-4-1.8-4-4v-24z" fill="rgba(255,255,255,0.55)"/>
+  <path d="M109 245h10c2.2 0 4 1.8 4 4v24c0 2.2-1.8 4-4 4h-10v-32z" fill="rgba(255,255,255,0.9)"/>
   <!-- テキスト -->
-  <text x="164" y="272" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="48" fill="#FAFAFA">BookStory</text>
-  <text x="80" y="340" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#A1A1AA">Designer-friendly component catalog</text>
-  <text x="80" y="380" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#A1A1AA">Figma to Code, without terminal</text>
+  <text x="152" y="278" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="44" fill="#F8F8F2">BookStory</text>
+  <text x="80" y="340" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#A6A69C">Designer-friendly component catalog</text>
+  <text x="80" y="375" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="22" fill="#A6A69C">Figma to Code, without terminal</text>
 </svg>
