@@ -1,0 +1,16 @@
+{
+  "name": "BookStory",
+  "short_name": "BookStory",
+  "description": "デザイナーフレンドリーなコンポーネントカタログ。Figma から直接コードへ。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8fc",
+  "theme_color": "#2642be",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
