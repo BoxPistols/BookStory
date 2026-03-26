@@ -11,7 +11,7 @@ import { Sidebar, SidebarItem } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Preview, VariantItem } from "@/components/Preview";
 import { PropsPanel, PropDefinition } from "@/components/PropsPanel";
-import { ComponentRenderer } from "@/components/ComponentRenderer";
+import { ComponentRenderer, REGISTERED_COMPONENTS } from "@/components/ComponentRenderer";
 import { TokenViewer } from "@/components/TokenViewer";
 import { useCatalog } from "@/lib/use-catalog";
 import {
@@ -23,15 +23,12 @@ import {
 
 const tokenViews = ["colors", "typography", "spacing"] as const;
 
-// Figmaコンポーネント名→MUIコンポーネントIDのマッピング
-const FIGMA_TO_RENDERER: Record<string, string> = {
-  Button: "button",
-  Chip: "chip",
-  Alert: "alert",
-  Badge: "badge",
-  Switch: "switch",
-  Divider: "divider",
-};
+// Figmaコンポーネント名→レンダラーID自動マッチ（レジストリに登録済みなら自動対応）
+const REGISTERED_SET = new Set(REGISTERED_COMPONENTS);
+function figmaToRenderer(name: string): string | undefined {
+  const id = name.toLowerCase().replace(/\s+/g, "");
+  return REGISTERED_SET.has(id) ? id : undefined;
+}
 
 // Figmaには含まれないがレンダリングに必要なテキスト/コンテンツProps
 const REQUIRED_TEXT_PROPS: Record<string, PropDefinition[]> = {
@@ -145,8 +142,8 @@ export default function Home() {
   const isComponentView = selectedId && !isTokenView && !isScannedView && !isFigmaView;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
 
-  // FigmaコンポーネントのレンダラーID
-  const figmaRendererId = activeFigma ? FIGMA_TO_RENDERER[activeFigma.name] : undefined;
+  // FigmaコンポーネントのレンダラーID（レジストリ自動マッチ）
+  const figmaRendererId = activeFigma ? figmaToRenderer(activeFigma.name) : undefined;
 
   // バリアント一覧を自動生成（demo + figma対応）
   const variants = useMemo<VariantItem[]>(() => {
