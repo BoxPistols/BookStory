@@ -46,7 +46,7 @@ export default function Home() {
 
   // Figmaカタログからトップレベルコンポーネントを抽出してサイドバーに追加
   const { sidebarItems, figmaComponents } = useMemo(() => {
-    const figmaComps: { id: string; name: string; props: PropDefinition[]; variantCount: number }[] = [];
+    const figmaComps: { id: string; name: string; description: string; props: PropDefinition[]; variantCount: number }[] = [];
 
     if (catalog) {
       const topLevel = catalog.components.filter((c) => !c.name.includes("="));
@@ -75,6 +75,7 @@ export default function Home() {
         figmaComps.push({
           id: `figma-${comp.name.toLowerCase()}`,
           name: comp.name,
+          description: comp.description || "",
           props,
           variantCount,
         });
@@ -215,7 +216,16 @@ export default function Home() {
                 title={activeFigma.name}
                 code={figmaRendererId ? generateCode(figmaRendererId, mergedValues) : "// Figma コンポーネント"}
                 figmaStatus="synced"
-                description={activeFigma.name in componentDescriptions ? componentDescriptions[activeFigma.name.toLowerCase()] : undefined}
+                description={
+                  activeFigma.description
+                    ? {
+                        summary: activeFigma.description.split("\n")[0],
+                        usage: activeFigma.description.includes("\n")
+                          ? activeFigma.description.split("\n").slice(1).join("\n").trim()
+                          : undefined,
+                      }
+                    : componentDescriptions[activeFigma.name.toLowerCase()]
+                }
                 variants={figmaRendererId ? variants : []}
                 onInspectChange={setInspectActive}
               >
