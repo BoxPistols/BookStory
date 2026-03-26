@@ -30,6 +30,13 @@ const FIGMA_TO_RENDERER: Record<string, string> = {
   Alert: "alert",
 };
 
+// Figmaには含まれないがレンダリングに必要なテキスト/コンテンツProps
+const REQUIRED_TEXT_PROPS: Record<string, PropDefinition[]> = {
+  Button: [{ name: "label", type: "string", defaultValue: "ボタン" }],
+  Chip: [{ name: "label", type: "string", defaultValue: "チップ" }],
+  Alert: [{ name: "message", type: "string", defaultValue: "これはアラートメッセージです。" }],
+};
+
 export default function Home() {
   const [selectedId, setSelectedId] = useState<string | null>("button");
   const [propValues, setPropValues] = useState<Record<string, Record<string, unknown>>>({});
@@ -58,6 +65,13 @@ export default function Home() {
             options: lcOpts,
           };
         });
+        // テキストPropsを補完
+        const textProps = REQUIRED_TEXT_PROPS[comp.name] || [];
+        const existingNames = new Set(props.map((p) => p.name));
+        for (const tp of textProps) {
+          if (!existingNames.has(tp.name)) props.push(tp);
+        }
+
         figmaComps.push({
           id: `figma-${comp.name.toLowerCase()}`,
           name: comp.name,
