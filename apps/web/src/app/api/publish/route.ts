@@ -3,22 +3,31 @@ import { NextRequest, NextResponse } from "next/server";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPO;
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+function jsonRes(data: unknown, status = 200) {
+  return NextResponse.json(data, { status, headers: CORS_HEADERS });
+}
+
+// CORSプリフライト
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
+}
+
 export async function POST(req: NextRequest) {
   if (!GITHUB_TOKEN || !GITHUB_REPO) {
-    return NextResponse.json(
-      { error: "サーバーにGITHUB_TOKEN / GITHUB_REPOが未設定です" },
-      { status: 500 }
-    );
+    return jsonRes({ error: "サーバーにGITHUB_TOKEN / GITHUB_REPOが未設定です" }, 500);
   }
 
   const body = await req.json();
   const { components, tokens } = body;
 
   if (!components || !tokens) {
-    return NextResponse.json(
-      { error: "components と tokens が必要です" },
-      { status: 400 }
-    );
+    return jsonRes({ error: "components と tokens が必要です" }, 400);
   }
 
   const baseUrl = `https://api.github.com/repos/${GITHUB_REPO}`;
@@ -32,10 +41,7 @@ export async function POST(req: NextRequest) {
     // 1. デフォルトブランチ取得
     const repoRes = await fetch(baseUrl, { headers });
     if (!repoRes.ok) {
-      return NextResponse.json(
-        { error: `リポジトリ取得失敗: ${repoRes.status}` },
-        { status: 502 }
-      );
+      return jsonRes({ error: `リポジトリ取得失敗: ${repoRes.status}` }, 502);
     }
     const repoData = await repoRes.json();
     const defaultBranch = repoData.default_branch || "main";
@@ -60,10 +66,7 @@ export async function POST(req: NextRequest) {
     });
     if (!branchRes.ok) {
       const err = await branchRes.json();
-      return NextResponse.json(
-        { error: `ブランチ作成失敗: ${err.message || branchRes.status}` },
-        { status: 502 }
-      );
+      return jsonRes({ error: `ブランチ作成失敗: ${err.message || branchRes.status}` }, 502);
     }
 
     // 4. カタログファイルをコミット
@@ -78,7 +81,6 @@ export async function POST(req: NextRequest) {
       "utf-8"
     ).toString("base64");
 
-    // 既存ファイルのSHA取得（ブランチ上）
     let fileSha: string | undefined;
     const existRes = await fetch(
       `${baseUrl}/contents/.bookstory/figma-catalog.json?ref=${defaultBranch}`,
@@ -102,13 +104,10 @@ export async function POST(req: NextRequest) {
     );
     if (!commitRes.ok) {
       const err = await commitRes.json();
-      return NextResponse.json(
-        { error: `コミット失敗: ${err.message || commitRes.status}` },
-        { status: 502 }
-      );
+      return jsonRes({ error: `コミット失敗: ${err.message || commitRes.status}` }, 502);
     }
 
-    // 5. 自動マージ（デザイナーの操作不要）
+    // 5. 自動マージ
     const mergeRes = await fetch(`${baseUrl}/merges`, {
       method: "POST",
       headers,
@@ -119,7 +118,7 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    // 6. ブランチ削除（クリーンアップ）
+    // 6. ブランチ削除
     await fetch(`${baseUrl}/git/refs/heads/${branchName}`, {
       method: "DELETE",
       headers,
@@ -127,20 +126,17 @@ export async function POST(req: NextRequest) {
 
     if (!mergeRes.ok) {
       const err = await mergeRes.json();
-      return NextResponse.json(
-        { error: `マージ失敗: ${err.message || mergeRes.status}` },
-        { status: 502 }
-      );
+      return jsonRes({ error: `マージ失敗: ${err.message || mergeRes.status}` }, 502);
     }
 
-    return NextResponse.json({
+    return jsonRes({
       success: true,
       message: `${components.length} コンポーネント / ${tokens.length} トークンを反映しました`,
     });
   } catch (err) {
-    return NextResponse.json(
+    return jsonRes(
       { error: err instanceof Error ? err.message : String(err) },
-      { status: 500 }
+      500
     );
   }
 }
