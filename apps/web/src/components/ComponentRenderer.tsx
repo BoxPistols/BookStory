@@ -10,6 +10,11 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
+import Badge from "@mui/material/Badge";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Divider from "@mui/material/Divider";
+import MailIcon from "@mui/icons-material/Mail";
 import Box from "@mui/material/Box";
 
 interface ComponentRendererProps {
@@ -113,6 +118,39 @@ export function ComponentRenderer({ componentId, values }: ComponentRendererProp
         >
           {values.message as string}
         </Alert>
+      );
+
+    case "badge":
+      return (
+        <Badge
+          badgeContent={values.count as number || 4}
+          color={values.color as "primary" | "error" | "success" || "primary"}
+        >
+          <MailIcon color="action" />
+        </Badge>
+      );
+
+    case "switch":
+      return (
+        <FormControlLabel
+          control={
+            <Switch
+              checked={values.state === "on"}
+              size={values.size as "small" | "medium" || "medium"}
+              color="primary"
+            />
+          }
+          label={(values.label as string) || "Toggle"}
+        />
+      );
+
+    case "divider":
+      return (
+        <Box sx={{ width: 300 }}>
+          <Typography variant="body2" sx={{ mb: 1 }}>上のコンテンツ</Typography>
+          <Divider />
+          <Typography variant="body2" sx={{ mt: 1 }}>下のコンテンツ</Typography>
+        </Box>
       );
 
     default:
