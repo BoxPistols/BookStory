@@ -2,8 +2,8 @@ import { SidebarItem } from "@/components/Sidebar";
 import { PropDefinition } from "@/components/PropsPanel";
 
 export const sidebarItems: SidebarItem[] = [
-  // カタログ（Figmaスキャン結果）を最上位に
-  { id: "scanned", label: "Scanned Components", category: "Catalog" },
+  // 同期ログ
+  { id: "sync-log", label: "Sync Log", category: "Catalog" },
   // Exampleは参考として下部にまとめる
   { id: "colors", label: "Color", category: "Example" },
   { id: "typography", label: "Typography", category: "Example" },
