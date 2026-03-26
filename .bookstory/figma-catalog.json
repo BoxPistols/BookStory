@@ -1,14 +1,757 @@
 {
-  "generatedAt": "2026-03-26T13:46:44.522Z",
+  "generatedAt": "2026-03-26T13:56:57.173Z",
   "source": "figma",
   "components": [
     {
-      "id": "test",
-      "name": "TestBtn",
+      "id": "29:56",
+      "name": "Button",
+      "description": "ユーザーのアクションを誘導するためのインタラクション要素",
+      "variants": {
+        "Variant": [
+          "Contained",
+          "Outlined",
+          "Text"
+        ],
+        "Color": [
+          "Primary",
+          "Secondary",
+          "Error"
+        ],
+        "Size": [
+          "Small",
+          "Medium",
+          "Large"
+        ]
+      },
+      "props": [
+        {
+          "name": "variant",
+          "type": "select",
+          "options": [
+            "Contained",
+            "Outlined",
+            "Text"
+          ],
+          "defaultValue": "Contained"
+        },
+        {
+          "name": "color",
+          "type": "select",
+          "options": [
+            "Primary",
+            "Secondary",
+            "Error"
+          ],
+          "defaultValue": "Primary"
+        },
+        {
+          "name": "size",
+          "type": "select",
+          "options": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "defaultValue": "Small"
+        }
+      ]
+    },
+    {
+      "id": "29:2",
+      "name": "Variant=Contained, Color=Primary, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:4",
+      "name": "Variant=Contained, Color=Primary, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:6",
+      "name": "Variant=Contained, Color=Primary, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:8",
+      "name": "Variant=Contained, Color=Secondary, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:10",
+      "name": "Variant=Contained, Color=Secondary, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:12",
+      "name": "Variant=Contained, Color=Secondary, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:14",
+      "name": "Variant=Contained, Color=Error, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:16",
+      "name": "Variant=Contained, Color=Error, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:18",
+      "name": "Variant=Contained, Color=Error, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:20",
+      "name": "Variant=Outlined, Color=Primary, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:22",
+      "name": "Variant=Outlined, Color=Primary, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:24",
+      "name": "Variant=Outlined, Color=Primary, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:26",
+      "name": "Variant=Outlined, Color=Secondary, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:28",
+      "name": "Variant=Outlined, Color=Secondary, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:30",
+      "name": "Variant=Outlined, Color=Secondary, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:32",
+      "name": "Variant=Outlined, Color=Error, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:34",
+      "name": "Variant=Outlined, Color=Error, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:36",
+      "name": "Variant=Outlined, Color=Error, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:38",
+      "name": "Variant=Text, Color=Primary, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:40",
+      "name": "Variant=Text, Color=Primary, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:42",
+      "name": "Variant=Text, Color=Primary, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:44",
+      "name": "Variant=Text, Color=Secondary, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:46",
+      "name": "Variant=Text, Color=Secondary, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:48",
+      "name": "Variant=Text, Color=Secondary, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:50",
+      "name": "Variant=Text, Color=Error, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:52",
+      "name": "Variant=Text, Color=Error, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "29:54",
+      "name": "Variant=Text, Color=Error, Size=Large",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:18",
+      "name": "Chip",
+      "description": "タグ、ステータス、フィルター条件などコンパクトな情報の表示",
+      "variants": {
+        "Variant": [
+          "Filled",
+          "Outlined"
+        ],
+        "Color": [
+          "Primary",
+          "Secondary",
+          "Success",
+          "Error"
+        ]
+      },
+      "props": [
+        {
+          "name": "variant",
+          "type": "select",
+          "options": [
+            "Filled",
+            "Outlined"
+          ],
+          "defaultValue": "Filled"
+        },
+        {
+          "name": "color",
+          "type": "select",
+          "options": [
+            "Primary",
+            "Secondary",
+            "Success",
+            "Error"
+          ],
+          "defaultValue": "Primary"
+        }
+      ]
+    },
+    {
+      "id": "31:2",
+      "name": "Variant=Filled, Color=Primary",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:4",
+      "name": "Variant=Outlined, Color=Primary",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:6",
+      "name": "Variant=Filled, Color=Secondary",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:8",
+      "name": "Variant=Outlined, Color=Secondary",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:10",
+      "name": "Variant=Filled, Color=Success",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:12",
+      "name": "Variant=Outlined, Color=Success",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:14",
+      "name": "Variant=Filled, Color=Error",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:16",
+      "name": "Variant=Outlined, Color=Error",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:31",
+      "name": "Alert",
+      "description": "操作結果の通知、警告、エラー表示のフィードバックメッセージ",
+      "variants": {
+        "Severity": [
+          "Success",
+          "Warning",
+          "Error",
+          "Info"
+        ]
+      },
+      "props": [
+        {
+          "name": "severity",
+          "type": "select",
+          "options": [
+            "Success",
+            "Warning",
+            "Error",
+            "Info"
+          ],
+          "defaultValue": "Success"
+        }
+      ]
+    },
+    {
+      "id": "31:19",
+      "name": "Severity=Success",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:22",
+      "name": "Severity=Warning",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:25",
+      "name": "Severity=Error",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "31:28",
+      "name": "Severity=Info",
       "description": "",
       "variants": {},
       "props": []
     }
   ],
-  "tokens": []
+  "tokens": [
+    {
+      "name": "Heading/Display Large",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 32,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/Display Medium",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 28,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/Display Small",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 24,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/H1",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 22,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/H2",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 20,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/H3",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 18,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/H4",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 16,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/H5",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 14,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Heading/H6",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 12,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Body/Body 1",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 14,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 160.0000023841858
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Body/Body 2",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 12,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 160.0000023841858
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Body/Caption",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 12,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Body/Overline",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 12,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Body/Button",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Semi Bold",
+        "fontSize": 14,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 160.0000023841858
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Scale/XXL",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 22,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Scale/XL",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 20,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Scale/LG",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Bold",
+        "fontSize": 18,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Scale/ML",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 16,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Scale/MD",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 14,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Scale/SM",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 12,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    },
+    {
+      "name": "Scale/XS",
+      "type": "typography",
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": "Regular",
+        "fontSize": 10,
+        "lineHeight": {
+          "unit": "PERCENT",
+          "value": 139.9999976158142
+        },
+        "letterSpacing": {
+          "unit": "PERCENT",
+          "value": 0
+        }
+      }
+    }
+  ]
 }
