@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-26T14:02:50.775Z",
+  "generatedAt": "2026-03-26T15:20:25.831Z",
   "source": "figma",
   "components": [
     {
@@ -391,6 +391,155 @@
       "id": "31:28",
       "name": "Severity=Info",
       "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:20",
+      "name": "Badge",
+      "description": "アイテムの通知数やステータスを示すインジケーター。\n\n**用途:**\n- `primary`: 未読数、新着通知\n- `error`: エラー件数、要対応\n- `success`: 完了ステータス\n\n**ガイドライン:**\n- 99を超える場合は「99+」と表示\n- 0件の場合はバッジ非表示",
+      "variants": {
+        "Color": [
+          "Primary",
+          "Error",
+          "Success"
+        ],
+        "Size": [
+          "Small",
+          "Medium"
+        ]
+      },
+      "props": [
+        {
+          "name": "color",
+          "type": "select",
+          "options": [
+            "Primary",
+            "Error",
+            "Success"
+          ],
+          "defaultValue": "Primary"
+        },
+        {
+          "name": "size",
+          "type": "select",
+          "options": [
+            "Small",
+            "Medium"
+          ],
+          "defaultValue": "Small"
+        }
+      ]
+    },
+    {
+      "id": "53:2",
+      "name": "Color=Primary, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:5",
+      "name": "Color=Primary, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:8",
+      "name": "Color=Error, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:11",
+      "name": "Color=Error, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:14",
+      "name": "Color=Success, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:17",
+      "name": "Color=Success, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:33",
+      "name": "Switch",
+      "description": "2値の切替トグル。設定のON/OFF、機能の有効化/無効化に使用。\n\n**バリアント:**\n- `On`: アクティブ状態（primary色）\n- `Off`: 非アクティブ状態（グレー）\n\n**ガイドライン:**\n- ラベルは左側に配置\n- 即時反映される設定にのみ使用（保存ボタン不要）",
+      "variants": {
+        "State": [
+          "On",
+          "Off"
+        ],
+        "Size": [
+          "Small",
+          "Medium"
+        ]
+      },
+      "props": [
+        {
+          "name": "state",
+          "type": "select",
+          "options": [
+            "On",
+            "Off"
+          ],
+          "defaultValue": "On"
+        },
+        {
+          "name": "size",
+          "type": "select",
+          "options": [
+            "Small",
+            "Medium"
+          ],
+          "defaultValue": "Small"
+        }
+      ]
+    },
+    {
+      "id": "53:21",
+      "name": "State=On, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:24",
+      "name": "State=On, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:27",
+      "name": "State=Off, Size=Small",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:30",
+      "name": "State=Off, Size=Medium",
+      "description": "",
+      "variants": {},
+      "props": []
+    },
+    {
+      "id": "53:34",
+      "name": "Divider",
+      "description": "コンテンツの区切り線。セクション間の視覚的な分離に使用。\n\n**ガイドライン:**\n- リスト内ではインセット（左マージン16px）\n- セクション区切りはフル幅",
       "variants": {},
       "props": []
     }
