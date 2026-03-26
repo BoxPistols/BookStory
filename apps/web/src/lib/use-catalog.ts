@@ -7,7 +7,8 @@ export interface CatalogComponent {
   name: string;
   filePath: string;
   category: string;
-  props: { name: string; type: string; required: boolean; defaultValue?: string }[];
+  description?: string;
+  props: { name: string; type: string; required: boolean; defaultValue?: string; options?: string[] }[];
   exportName: string;
 }
 
