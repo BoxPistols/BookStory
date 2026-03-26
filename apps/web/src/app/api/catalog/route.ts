@@ -30,6 +30,7 @@ export async function GET() {
 
   // CLIスキャン + Figmaプラグインの両ソースをマージ
   const components: CatalogComponent[] = [];
+  const tokens: unknown[] = [];
   const seen = new Set<string>();
   let generatedAt: string | null = null;
   let componentDir = "";
@@ -54,8 +55,11 @@ export async function GET() {
         const comp = { ...c, category: c.category || "Figma" };
         if (!seen.has(comp.id)) { seen.add(comp.id); components.push(comp); }
       }
+      // トークンもマージ
+      const figmaTokens = (figma as { tokens?: unknown[] }).tokens;
+      if (figmaTokens) tokens.push(...figmaTokens);
     }
   }
 
-  return NextResponse.json({ generatedAt, componentDir, components });
+  return NextResponse.json({ generatedAt, componentDir, components, tokens });
 }
