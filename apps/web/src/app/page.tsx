@@ -47,13 +47,17 @@ export default function Home() {
         const variantCount = catalog.components.filter(
           (v) => v.name.includes("=") && v.id.startsWith(comp.id.split(":")[0])
         ).length;
-        // Figma propsをPropDefinition形式に変換
-        const props: PropDefinition[] = (comp.props || []).map((p) => ({
-          name: p.name,
-          type: (p.type === "select" ? "select" : "string") as PropDefinition["type"],
-          defaultValue: p.defaultValue || "",
-          options: "options" in p ? (p as { options?: string[] }).options : undefined,
-        }));
+        // Figma propsをPropDefinition形式に変換（MUIは小文字のためlowercase）
+        const props: PropDefinition[] = (comp.props || []).map((p) => {
+          const opts = "options" in p ? (p as { options?: string[] }).options : undefined;
+          const lcOpts = opts?.map((o) => o.toLowerCase());
+          return {
+            name: p.name,
+            type: (p.type === "select" ? "select" : "string") as PropDefinition["type"],
+            defaultValue: p.defaultValue ? p.defaultValue.toLowerCase() : "",
+            options: lcOpts,
+          };
+        });
         figmaComps.push({
           id: `figma-${comp.name.toLowerCase()}`,
           name: comp.name,
@@ -117,7 +121,7 @@ export default function Home() {
 
   const isTokenView =
     selectedId && tokenViews.includes(selectedId as (typeof tokenViews)[number]);
-  const isScannedView = selectedId === "scanned";
+  const isScannedView = selectedId === "sync-log";
   const isComponentView = selectedId && !isTokenView && !isScannedView && !isFigmaView;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
 
@@ -248,23 +252,27 @@ export default function Home() {
             const figmaCount = items.filter((i) => i.source === "Figma").length;
             const cliCount = items.filter((i) => i.source === "CLI").length;
 
+            const syncTime = catalog.generatedAt
+              ? new Date(catalog.generatedAt).toLocaleString("ja-JP")
+              : "—";
+
             return (
               <Box sx={{ flex: 1, p: { xs: 2, md: 5 }, overflow: "auto" }}>
                 <Typography variant="h5" sx={{ mb: 0.5 }}>
-                  Scanned Components
+                  Sync Log
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  {items.length} コンポーネント
-                  {figmaCount > 0 && ` (Figma: ${figmaCount})`}
-                  {cliCount > 0 && ` (CLI: ${cliCount})`}
-                  {catalog.generatedAt && ` — ${new Date(catalog.generatedAt).toLocaleString("ja-JP")}`}
+                  最終同期: {syncTime}
+                  {" — "}
+                  {figmaCount > 0 && `Figma: ${figmaCount}`}
+                  {cliCount > 0 && ` / CLI: ${cliCount}`}
                 </Typography>
 
                 <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
                   <Box
                     sx={{
                       display: "grid",
-                      gridTemplateColumns: "1fr 100px 80px 80px",
+                      gridTemplateColumns: "1fr 100px 80px 80px 140px",
                       px: 2,
                       py: 1,
                       bgcolor: "action.hover",
@@ -275,13 +283,14 @@ export default function Home() {
                     <Typography variant="caption" fontWeight={700}>ソース</Typography>
                     <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>バリアント</Typography>
                     <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>Props</Typography>
+                    <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>更新日時</Typography>
                   </Box>
                   {items.map((item) => (
                     <Box
                       key={item.name}
                       sx={{
                         display: "grid",
-                        gridTemplateColumns: "1fr 100px 80px 80px",
+                        gridTemplateColumns: "1fr 100px 80px 80px 140px",
                         px: 2,
                         py: 0.75,
                         gap: 1,
@@ -303,6 +312,13 @@ export default function Home() {
                       </Typography>
                       <Typography variant="body2" color="text.secondary" sx={{ textAlign: "right" }}>
                         {item.props}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ textAlign: "right", fontSize: "0.6875rem" }}
+                      >
+                        {syncTime}
                       </Typography>
                     </Box>
                   ))}
