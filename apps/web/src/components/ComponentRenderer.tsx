@@ -30,6 +30,35 @@ import Skeleton from "@mui/material/Skeleton";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Pagination from "@mui/material/Pagination";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Snackbar from "@mui/material/Snackbar";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InboxIcon from "@mui/icons-material/Inbox";
+import StarIcon from "@mui/icons-material/Star";
 import MailIcon from "@mui/icons-material/Mail";
 import AddIcon from "@mui/icons-material/Add";
 import PersonIcon from "@mui/icons-material/Person";
@@ -79,6 +108,75 @@ const REGISTRY: Record<string, Renderer> = {
   divider: () => <Box sx={{ width: 300 }}><Typography variant="body2" sx={{ mb: 1 }}>上のコンテンツ</Typography><Divider /><Typography variant="body2" sx={{ mt: 1 }}>下のコンテンツ</Typography></Box>,
   linearprogress: (v) => <Box sx={{ width: 300 }}><LinearProgress variant="determinate" value={n(v.value,60)} color={s(v.color,"primary") as any} /></Box>,
   circularprogress: (v) => <CircularProgress variant="determinate" value={n(v.value,60)} color={s(v.color,"primary") as any} size={v.size === "large" ? 56 : v.size === "small" ? 24 : 40} />,
+
+  // 複合コンポーネント（常に開いた状態でプレビュー）
+  dialog: (v) => (
+    <Paper elevation={24} sx={{ width: 360, borderRadius: 2 }}>
+      <DialogTitle>{s(v.title,"確認")}</DialogTitle>
+      <DialogContent><Typography variant="body2">{s(v.message,"この操作を実行しますか？")}</Typography></DialogContent>
+      <DialogActions><Button color="inherit">キャンセル</Button><Button variant="contained">{s(v.action,"確認")}</Button></DialogActions>
+    </Paper>
+  ),
+
+  drawer: () => (
+    <Paper elevation={8} sx={{ width: 240, height: 300, overflow: "hidden" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}><Typography variant="h6" fontSize={16}>メニュー</Typography></Box>
+      <List disablePadding>
+        <ListItemButton selected><ListItemIcon><InboxIcon /></ListItemIcon><ListItemText primary="受信トレイ" /></ListItemButton>
+        <ListItemButton><ListItemIcon><StarIcon /></ListItemIcon><ListItemText primary="スター付き" /></ListItemButton>
+        <ListItemButton><ListItemIcon><MailIcon /></ListItemIcon><ListItemText primary="送信済み" /></ListItemButton>
+      </List>
+    </Paper>
+  ),
+
+  snackbar: (v) => (
+    <Paper elevation={6} sx={{ display: "flex", alignItems: "center", gap: 1, px: 2, py: 1.5, borderRadius: 1, minWidth: 280 }}>
+      <Typography variant="body2" sx={{ flex: 1 }}>{s(v.message,"操作が完了しました")}</Typography>
+      <Button size="small" color="primary">閉じる</Button>
+    </Paper>
+  ),
+
+  tabs: (v) => (
+    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Tabs value={0} textColor="primary" indicatorColor="primary">
+        <Tab label="タブ 1" /><Tab label="タブ 2" /><Tab label="タブ 3" />
+      </Tabs>
+    </Box>
+  ),
+
+  stepper: (v) => (
+    <Stepper activeStep={n(v.step,1)} sx={{ width: 400 }}>
+      <Step><StepLabel>入力</StepLabel></Step>
+      <Step><StepLabel>確認</StepLabel></Step>
+      <Step><StepLabel>完了</StepLabel></Step>
+    </Stepper>
+  ),
+
+  accordion: (v) => (
+    <Box sx={{ width: 360 }}>
+      <Accordion defaultExpanded><AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography>{s(v.title,"セクション 1")}</Typography></AccordionSummary><AccordionDetails><Typography variant="body2" color="text.secondary">アコーディオンの内容がここに表示されます。</Typography></AccordionDetails></Accordion>
+      <Accordion><AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography>セクション 2</Typography></AccordionSummary><AccordionDetails><Typography variant="body2" color="text.secondary">追加のコンテンツ。</Typography></AccordionDetails></Accordion>
+    </Box>
+  ),
+
+  appbar: () => (
+    <AppBar position="static" sx={{ width: 400, borderRadius: 1 }}>
+      <Toolbar variant="dense"><Typography variant="h6" sx={{ flexGrow: 1, fontSize: 16 }}>アプリタイトル</Typography><IconButton color="inherit"><MailIcon /></IconButton></Toolbar>
+    </AppBar>
+  ),
+
+  table: () => (
+    <Paper variant="outlined" sx={{ width: 360, borderRadius: 2, overflow: "hidden" }}>
+      <Table size="small">
+        <TableHead><TableRow><TableCell>名前</TableCell><TableCell>役割</TableCell><TableCell align="right">スコア</TableCell></TableRow></TableHead>
+        <TableBody>
+          <TableRow><TableCell>田中</TableCell><TableCell>デザイナー</TableCell><TableCell align="right">92</TableCell></TableRow>
+          <TableRow><TableCell>鈴木</TableCell><TableCell>エンジニア</TableCell><TableCell align="right">88</TableCell></TableRow>
+          <TableRow><TableCell>佐藤</TableCell><TableCell>PM</TableCell><TableCell align="right">95</TableCell></TableRow>
+        </TableBody>
+      </Table>
+    </Paper>
+  ),
 };
 
 // --- エクスポート ---

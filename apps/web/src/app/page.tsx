@@ -37,6 +37,14 @@ const REQUIRED_TEXT_PROPS: Record<string, PropDefinition[]> = {
   Alert: [{ name: "message", type: "string", defaultValue: "これはアラートメッセージです。" }],
   Badge: [{ name: "count", type: "number", defaultValue: 4, min: 0, max: 99 }],
   Switch: [{ name: "label", type: "string", defaultValue: "通知" }],
+  Dialog: [
+    { name: "title", type: "string", defaultValue: "確認" },
+    { name: "message", type: "string", defaultValue: "この操作を実行しますか？" },
+    { name: "action", type: "string", defaultValue: "確認" },
+  ],
+  Snackbar: [{ name: "message", type: "string", defaultValue: "操作が完了しました" }],
+  Accordion: [{ name: "title", type: "string", defaultValue: "セクション 1" }],
+  Stepper: [{ name: "step", type: "number", defaultValue: 1, min: 0, max: 2 }],
 };
 
 export default function Home() {
