@@ -28,6 +28,8 @@ const uiHtml = `<!DOCTYPE html>
     .btn-publish { background: #2642be; color: #fff; }
     .btn-publish:hover { background: #1a2f8a; }
     .btn-publish:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-import { background: #fff; color: #2642be; border: 2px solid #2642be; }
+    .btn-import:hover { background: #e8eaf6; }
     .status { padding: 12px; border-radius: 8px; margin-top: 12px; font-size: 12px; display: none; word-break: break-all; }
     .status.show { display: block; }
     .status.success { background: #E8F5E9; color: #2E7D32; }
@@ -53,6 +55,7 @@ const uiHtml = `<!DOCTYPE html>
 
   <button class="btn btn-primary" id="scan">コンポーネントをスキャン</button>
   <button class="btn btn-publish" id="publish" disabled>コードに反映する</button>
+  <button class="btn btn-import" id="importWeb">Webを取り込む</button>
 
   <div class="status" id="status"></div>
 
@@ -64,6 +67,7 @@ const uiHtml = `<!DOCTYPE html>
   <script>
     var scanBtn = document.getElementById('scan');
     var publishBtn = document.getElementById('publish');
+    var importBtn = document.getElementById('importWeb');
     var statusEl = document.getElementById('status');
     var countEl = document.getElementById('count');
     var metaEl = document.getElementById('meta');
@@ -81,6 +85,12 @@ const uiHtml = `<!DOCTYPE html>
 
     scanBtn.onclick = function() {
       parent.postMessage({ pluginMessage: { type: 'scan' } }, '*');
+    };
+
+    importBtn.onclick = function() {
+      var serverUrl = serverInput.value.replace(/\\/$/, '');
+      if (!serverUrl) { showStatus('接続先サーバーを入力してください', 'error'); return; }
+      parent.postMessage({ pluginMessage: { type: 'import-web', serverUrl: serverUrl } }, '*');
     };
 
     publishBtn.onclick = function() {
@@ -102,6 +112,10 @@ const uiHtml = `<!DOCTYPE html>
         hasScanned = true;
         publishBtn.disabled = msg.count === 0 && msg.tokenCount === 0;
         showStatus('スキャン完了', 'success');
+      }
+      if (msg.type === 'import-result') {
+        if (msg.success) { showStatus(msg.message || '取り込み完了！', 'success'); }
+        else { showStatus('エラー: ' + msg.error, 'error'); }
       }
       if (msg.type === 'publish-result') {
         if (msg.success) {

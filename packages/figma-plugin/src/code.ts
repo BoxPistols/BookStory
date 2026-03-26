@@ -211,6 +211,108 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
     }
   }
 
+  if (msg.type === "import-web") {
+    const serverUrl = msg.serverUrl;
+    if (!serverUrl) return;
+
+    figma.ui.postMessage({ type: "status", message: "Webトークンを取得中...", level: "info" });
+
+    try {
+      const res = await fetch(serverUrl + "/api/export");
+      const data = await res.json();
+
+      // Color Variables を作成/更新
+      if (data.colors) {
+        figma.ui.postMessage({ type: "status", message: "Color Variables を更新中...", level: "info" });
+
+        // 既存のColorコレクションを探す
+        const collections = await figma.variables.getLocalVariableCollectionsAsync();
+        let colorCol = collections.find(function(c) { return c.name === "Color"; });
+
+        if (!colorCol) {
+          colorCol = figma.variables.createVariableCollection("Color");
+          colorCol.renameMode(colorCol.modes[0].modeId, "Light");
+          colorCol.addMode("Dark");
+        }
+
+        const lightModeId = colorCol.modes[0].modeId;
+        const darkModeId = colorCol.modes.length > 1 ? colorCol.modes[1].modeId : lightModeId;
+
+        // 既存変数をマップ
+        const existingVars: Record<string, Variable> = {};
+        for (const varId of colorCol.variableIds) {
+          const v = await figma.variables.getVariableByIdAsync(varId);
+          if (v) existingVars[v.name] = v;
+        }
+
+        function hexToRgb(hex: string) {
+          return {
+            r: parseInt(hex.substring(1, 3), 16) / 255,
+            g: parseInt(hex.substring(3, 5), 16) / 255,
+            b: parseInt(hex.substring(5, 7), 16) / 255,
+          };
+        }
+
+        const lightColors = data.colors.light as Record<string, string>;
+        const darkColors = data.colors.dark as Record<string, string>;
+
+        for (const [name, lightHex] of Object.entries(lightColors)) {
+          const darkHex = darkColors[name] || lightHex;
+          let variable = existingVars[name];
+          if (!variable) {
+            variable = figma.variables.createVariable(name, colorCol, "COLOR");
+          }
+          variable.setValueForMode(lightModeId, hexToRgb(lightHex));
+          variable.setValueForMode(darkModeId, hexToRgb(darkHex));
+        }
+      }
+
+      // Spacing Variables を作成/更新
+      if (data.spacing) {
+        figma.ui.postMessage({ type: "status", message: "Spacing Variables を更新中...", level: "info" });
+
+        const collections = await figma.variables.getLocalVariableCollectionsAsync();
+        let spacingCol = collections.find(function(c) { return c.name === "Spacing"; });
+
+        if (!spacingCol) {
+          spacingCol = figma.variables.createVariableCollection("Spacing");
+        }
+        const modeId = spacingCol.modes[0].modeId;
+
+        const existingVars: Record<string, Variable> = {};
+        for (const varId of spacingCol.variableIds) {
+          const v = await figma.variables.getVariableByIdAsync(varId);
+          if (v) existingVars[v.name] = v;
+        }
+
+        const values = data.spacing.values as number[];
+        for (const val of values) {
+          const name = "spacing/" + (val / (data.spacing.base as number));
+          let variable = existingVars[name];
+          if (!variable) {
+            variable = figma.variables.createVariable(name, spacingCol, "FLOAT");
+          }
+          variable.setValueForMode(modeId, val);
+        }
+      }
+
+      figma.ui.postMessage({
+        type: "import-result",
+        success: true,
+        message: "Webトークンを取り込みました",
+      });
+    } catch (err) {
+      const message = (err && typeof err === "object" && "message" in err)
+        ? (err as { message: string }).message
+        : JSON.stringify(err);
+      figma.ui.postMessage({
+        type: "import-result",
+        success: false,
+        error: message,
+      });
+    }
+  }
+
   if (msg.type === "publish") {
     const serverUrl = msg.serverUrl;
     if (!serverUrl) return;
