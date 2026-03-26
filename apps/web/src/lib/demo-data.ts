@@ -1,20 +1,18 @@
 import { SidebarItem } from "@/components/Sidebar";
 import { PropDefinition } from "@/components/PropsPanel";
 
-// Exampleグループとしてまとめたサイドバー構造
 export const sidebarItems: SidebarItem[] = [
-  // デザイントークン
-  { id: "colors", label: "Color", category: "Example / Tokens" },
-  { id: "typography", label: "Typography", category: "Example / Tokens" },
-  { id: "spacing", label: "Spacing", category: "Example / Tokens" },
-  // コンポーネント
-  { id: "button", label: "Button", category: "Example / UI" },
-  { id: "card", label: "Card", category: "Example / UI" },
-  { id: "chip", label: "Chip", category: "Example / UI" },
-  { id: "alert", label: "Alert", category: "Example / UI" },
-  { id: "textfield", label: "TextField", category: "Example / Form" },
-  // スキャン結果（テーブル表示）
+  // カタログ（Figmaスキャン結果）を最上位に
   { id: "scanned", label: "Scanned Components", category: "Catalog" },
+  // Exampleは参考として下部にまとめる
+  { id: "colors", label: "Color", category: "Example" },
+  { id: "typography", label: "Typography", category: "Example" },
+  { id: "spacing", label: "Spacing", category: "Example" },
+  { id: "button", label: "Button", category: "Example" },
+  { id: "card", label: "Card", category: "Example" },
+  { id: "chip", label: "Chip", category: "Example" },
+  { id: "alert", label: "Alert", category: "Example" },
+  { id: "textfield", label: "TextField", category: "Example" },
 ];
 
 // Figma の Description フィールドから取得される説明

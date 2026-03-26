@@ -137,69 +137,92 @@ export default function Home() {
             />
           )}
 
-          {isScannedView && catalog && (
-            <Box sx={{ flex: 1, p: { xs: 2, md: 5 }, overflow: "auto" }}>
-              <Typography variant="h5" sx={{ mb: 0.5 }}>
-                Scanned Components
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                {catalog.components.length} コンポーネント検出
-                {catalog.generatedAt && ` — ${new Date(catalog.generatedAt).toLocaleString("ja-JP")}`}
-              </Typography>
+          {isScannedView && catalog && (() => {
+            // バリアントを親コンポーネントにグルーピング
+            const grouped = new Map<string, { name: string; variants: number; props: number; source: string }>();
+            for (const c of catalog.components) {
+              // "Variant=Contained, Color=Primary, Size=Small" → 親はButton等
+              const isVariant = c.name.includes("=");
+              // Figma由来はfilePathが空、CLI由来はfilePath有
+              const source = c.filePath ? "CLI" : "Figma";
+              if (isVariant) continue; // バリアントはスキップ（親でカウント）
+              const variantCount = catalog.components.filter(
+                (v) => v.name.startsWith("Variant=") && v.id.startsWith(c.id.split(":")[0])
+              ).length;
+              grouped.set(c.id, {
+                name: c.name,
+                variants: variantCount,
+                props: c.props.length,
+                source,
+              });
+            }
+            // バリアント名のものは親不明なので独立コンポーネントとしてカウントしない
+            const items = Array.from(grouped.values());
+            const figmaCount = items.filter((i) => i.source === "Figma").length;
+            const cliCount = items.filter((i) => i.source === "CLI").length;
 
-              <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
-                {/* ヘッダー */}
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 2fr 80px",
-                    px: 2,
-                    py: 1,
-                    bgcolor: "action.hover",
-                    gap: 1,
-                  }}
-                >
-                  <Typography variant="caption" fontWeight={700}>コンポーネント</Typography>
-                  <Typography variant="caption" fontWeight={700}>ファイル</Typography>
-                  <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>Props</Typography>
-                </Box>
-                {/* 行 */}
-                {catalog.components.map((c) => (
+            return (
+              <Box sx={{ flex: 1, p: { xs: 2, md: 5 }, overflow: "auto" }}>
+                <Typography variant="h5" sx={{ mb: 0.5 }}>
+                  Scanned Components
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                  {items.length} コンポーネント
+                  {figmaCount > 0 && ` (Figma: ${figmaCount})`}
+                  {cliCount > 0 && ` (CLI: ${cliCount})`}
+                  {catalog.generatedAt && ` — ${new Date(catalog.generatedAt).toLocaleString("ja-JP")}`}
+                </Typography>
+
+                <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
                   <Box
-                    key={c.id}
                     sx={{
                       display: "grid",
-                      gridTemplateColumns: "1fr 2fr 80px",
+                      gridTemplateColumns: "1fr 100px 80px 80px",
                       px: 2,
-                      py: 0.75,
+                      py: 1,
+                      bgcolor: "action.hover",
                       gap: 1,
-                      borderTop: 1,
-                      borderColor: "divider",
-                      "&:hover": { bgcolor: "action.hover" },
                     }}
                   >
-                    <Typography variant="body2" fontWeight={600}>{c.name}</Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
+                    <Typography variant="caption" fontWeight={700}>コンポーネント</Typography>
+                    <Typography variant="caption" fontWeight={700}>ソース</Typography>
+                    <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>バリアント</Typography>
+                    <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>Props</Typography>
+                  </Box>
+                  {items.map((item) => (
+                    <Box
+                      key={item.name}
                       sx={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.75rem",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
+                        display: "grid",
+                        gridTemplateColumns: "1fr 100px 80px 80px",
+                        px: 2,
+                        py: 0.75,
+                        gap: 1,
+                        borderTop: 1,
+                        borderColor: "divider",
+                        "&:hover": { bgcolor: "action.hover" },
                       }}
                     >
-                      {c.filePath}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: "right" }}>
-                      {c.props.length}
-                    </Typography>
-                  </Box>
-                ))}
-              </Paper>
-            </Box>
-          )}
+                      <Typography variant="body2" fontWeight={600}>{item.name}</Typography>
+                      <Chip
+                        label={item.source}
+                        size="small"
+                        variant="outlined"
+                        color={item.source === "Figma" ? "primary" : "default"}
+                        sx={{ width: "fit-content", fontSize: "0.6875rem" }}
+                      />
+                      <Typography variant="body2" color="text.secondary" sx={{ textAlign: "right" }}>
+                        {item.variants || "—"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ textAlign: "right" }}>
+                        {item.props}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Paper>
+              </Box>
+            );
+          })()}
 
           {isComponentView && (
             <>
