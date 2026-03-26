@@ -7,10 +7,10 @@ import Chip from "@mui/material/Chip";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { Sidebar } from "@/components/Sidebar";
+import { Sidebar, SidebarItem } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Preview, VariantItem } from "@/components/Preview";
-import { PropsPanel } from "@/components/PropsPanel";
+import { PropsPanel, PropDefinition } from "@/components/PropsPanel";
 import { ComponentRenderer } from "@/components/ComponentRenderer";
 import { TokenViewer } from "@/components/TokenViewer";
 import { useCatalog } from "@/lib/use-catalog";
@@ -23,6 +23,13 @@ import {
 
 const tokenViews = ["colors", "typography", "spacing"] as const;
 
+// Figmaコンポーネント名→MUIコンポーネントIDのマッピング
+const FIGMA_TO_RENDERER: Record<string, string> = {
+  Button: "button",
+  Chip: "chip",
+  Alert: "alert",
+};
+
 export default function Home() {
   const [selectedId, setSelectedId] = useState<string | null>("button");
   const [propValues, setPropValues] = useState<Record<string, Record<string, unknown>>>({});
@@ -30,8 +37,43 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { catalog } = useCatalog();
 
-  // デモ項目をそのまま使用（Scannedはテーブル表示に統合済み）
-  const sidebarItems = demoSidebarItems;
+  // Figmaカタログからトップレベルコンポーネントを抽出してサイドバーに追加
+  const { sidebarItems, figmaComponents } = useMemo(() => {
+    const figmaComps: { id: string; name: string; props: PropDefinition[]; variantCount: number }[] = [];
+
+    if (catalog) {
+      const topLevel = catalog.components.filter((c) => !c.name.includes("="));
+      for (const comp of topLevel) {
+        const variantCount = catalog.components.filter(
+          (v) => v.name.includes("=") && v.id.startsWith(comp.id.split(":")[0])
+        ).length;
+        // Figma propsをPropDefinition形式に変換
+        const props: PropDefinition[] = (comp.props || []).map((p) => ({
+          name: p.name,
+          type: (p.type === "select" ? "select" : "string") as PropDefinition["type"],
+          defaultValue: p.defaultValue || "",
+          options: "options" in p ? (p as { options?: string[] }).options : undefined,
+        }));
+        figmaComps.push({
+          id: `figma-${comp.name.toLowerCase()}`,
+          name: comp.name,
+          props,
+          variantCount,
+        });
+      }
+    }
+
+    const catalogItems: SidebarItem[] = figmaComps.map((c) => ({
+      id: c.id,
+      label: c.name,
+      category: "Catalog",
+    }));
+
+    return {
+      sidebarItems: [...catalogItems, ...demoSidebarItems],
+      figmaComponents: figmaComps,
+    };
+  }, [catalog]);
 
   const handlePropChange = useCallback(
     (name: string, value: unknown) => {
@@ -58,7 +100,14 @@ export default function Home() {
     });
   }, [selectedId]);
 
-  const currentProps = selectedId ? componentProps[selectedId] || [] : [];
+  // Figmaコンポーネントかどうか判定
+  const activeFigma = figmaComponents.find((c) => c.id === selectedId);
+  const isFigmaView = !!activeFigma;
+
+  // Figmaコンポーネントの場合はFigma props、そうでなければdemo props
+  const currentProps = isFigmaView
+    ? activeFigma.props
+    : selectedId ? componentProps[selectedId] || [] : [];
   const currentValues = selectedId ? propValues[selectedId] || {} : {};
 
   const mergedValues: Record<string, unknown> = {};
@@ -69,12 +118,17 @@ export default function Home() {
   const isTokenView =
     selectedId && tokenViews.includes(selectedId as (typeof tokenViews)[number]);
   const isScannedView = selectedId === "scanned";
-  const isComponentView = selectedId && !isTokenView && !isScannedView;
+  const isComponentView = selectedId && !isTokenView && !isScannedView && !isFigmaView;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
 
-  // バリアント一覧を自動生成
+  // FigmaコンポーネントのレンダラーID
+  const figmaRendererId = activeFigma ? FIGMA_TO_RENDERER[activeFigma.name] : undefined;
+
+  // バリアント一覧を自動生成（demo + figma対応）
   const variants = useMemo<VariantItem[]>(() => {
-    if (!selectedId || !componentProps[selectedId]) return [];
+    // FigmaコンポーネントのレンダラーIDで既存バリアントマップを参照
+    const lookupId = figmaRendererId || selectedId;
+    if (!lookupId || !componentProps[lookupId]) return [];
 
     const variantMap: Record<string, VariantItem[]> = {
       button: [
@@ -107,8 +161,8 @@ export default function Home() {
       ],
     };
 
-    return variantMap[selectedId] || [];
-  }, [selectedId]);
+    return variantMap[lookupId] || [];
+  }, [selectedId, figmaRendererId]);
 
   return (
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
@@ -135,6 +189,39 @@ export default function Home() {
                 },
               ]}
             />
+          )}
+
+          {isFigmaView && activeFigma && (
+            <>
+              <Preview
+                title={activeFigma.name}
+                code={figmaRendererId ? generateCode(figmaRendererId, mergedValues) : "// Figma コンポーネント"}
+                figmaStatus="synced"
+                description={activeFigma.name in componentDescriptions ? componentDescriptions[activeFigma.name.toLowerCase()] : undefined}
+                variants={figmaRendererId ? variants : []}
+                onInspectChange={setInspectActive}
+              >
+                {figmaRendererId ? (
+                  <ComponentRenderer
+                    componentId={figmaRendererId}
+                    values={mergedValues}
+                  />
+                ) : (
+                  <Typography color="text.secondary">
+                    プレビュー未対応のコンポーネント
+                  </Typography>
+                )}
+              </Preview>
+
+              {!inspectActive && (
+                <PropsPanel
+                  props={currentProps}
+                  values={mergedValues}
+                  onChange={handlePropChange}
+                  onReset={handleReset}
+                />
+              )}
+            </>
           )}
 
           {isScannedView && catalog && (() => {
