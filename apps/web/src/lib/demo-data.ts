@@ -1,18 +1,10 @@
 import { SidebarItem } from "@/components/Sidebar";
 import { PropDefinition } from "@/components/PropsPanel";
 
+// Figmaデータのみで構成（Exampleは削除済み）
+// サイドバーはpage.tsxでfigma-catalog.jsonから動的生成
 export const sidebarItems: SidebarItem[] = [
-  // 同期ログ
   { id: "sync-log", label: "Sync Log", category: "Catalog" },
-  // Exampleは参考として下部にまとめる
-  { id: "colors", label: "Color", category: "Example" },
-  { id: "typography", label: "Typography", category: "Example" },
-  { id: "spacing", label: "Spacing", category: "Example" },
-  { id: "button", label: "Button", category: "Example" },
-  { id: "card", label: "Card", category: "Example" },
-  { id: "chip", label: "Chip", category: "Example" },
-  { id: "alert", label: "Alert", category: "Example" },
-  { id: "textfield", label: "TextField", category: "Example" },
 ];
 
 // Figma の Description フィールドから取得される説明
