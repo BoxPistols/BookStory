@@ -28,6 +28,9 @@ const FIGMA_TO_RENDERER: Record<string, string> = {
   Button: "button",
   Chip: "chip",
   Alert: "alert",
+  Badge: "badge",
+  Switch: "switch",
+  Divider: "divider",
 };
 
 // Figmaには含まれないがレンダリングに必要なテキスト/コンテンツProps
@@ -35,6 +38,8 @@ const REQUIRED_TEXT_PROPS: Record<string, PropDefinition[]> = {
   Button: [{ name: "label", type: "string", defaultValue: "ボタン" }],
   Chip: [{ name: "label", type: "string", defaultValue: "チップ" }],
   Alert: [{ name: "message", type: "string", defaultValue: "これはアラートメッセージです。" }],
+  Badge: [{ name: "count", type: "number", defaultValue: 4, min: 0, max: 99 }],
+  Switch: [{ name: "label", type: "string", defaultValue: "通知" }],
 };
 
 export default function Home() {
