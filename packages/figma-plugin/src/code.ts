@@ -150,12 +150,12 @@ async function scanTokens(): Promise<ExtractedToken[]> {
     });
   }
 
-  // バリアブルコレクション
+  // バリアブルコレクション（async API必須）
   try {
-    const collections = figma.variables.getLocalVariableCollections();
+    const collections = await figma.variables.getLocalVariableCollectionsAsync();
     for (const collection of collections) {
       for (const varId of collection.variableIds) {
-        const variable = figma.variables.getVariableById(varId);
+        const variable = await figma.variables.getVariableByIdAsync(varId);
         if (!variable) continue;
 
         const modes: Record<string, unknown> = {};

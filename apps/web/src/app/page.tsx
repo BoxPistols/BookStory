@@ -92,14 +92,24 @@ export default function Home() {
       }
     }
 
-    const catalogItems: SidebarItem[] = figmaComps.map((c) => ({
+    // コンポーネント項目
+    const componentItems: SidebarItem[] = figmaComps.map((c) => ({
       id: c.id,
       label: c.name,
-      category: "Catalog",
+      category: "Components",
     }));
 
+    // トークンカテゴリをFigmaデータから生成
+    const tokenItems: SidebarItem[] = [];
+    if (catalog) {
+      const tokenTypes = new Set((catalog as { tokens?: { type: string }[] }).tokens?.map((t) => t.type) || []);
+      if (tokenTypes.has("color")) tokenItems.push({ id: "figma-token-color", label: "Color", category: "Tokens" });
+      if (tokenTypes.has("typography")) tokenItems.push({ id: "figma-token-typography", label: "Typography", category: "Tokens" });
+      if (tokenTypes.has("spacing")) tokenItems.push({ id: "figma-token-spacing", label: "Spacing", category: "Tokens" });
+    }
+
     return {
-      sidebarItems: [...catalogItems, ...demoSidebarItems],
+      sidebarItems: [...tokenItems, ...componentItems, ...demoSidebarItems],
       figmaComponents: figmaComps,
     };
   }, [catalog]);
@@ -144,9 +154,12 @@ export default function Home() {
     mergedValues[prop.name] = currentValues[prop.name] ?? prop.defaultValue;
   }
 
-  const isTokenView =
-    selectedId && tokenViews.includes(selectedId as (typeof tokenViews)[number]);
+  // Figmaトークンビュー
+  const isFigmaTokenView = selectedId?.startsWith("figma-token-") ?? false;
+  const figmaTokenType = isFigmaTokenView ? selectedId!.replace("figma-token-", "") : null;
   const isScannedView = selectedId === "sync-log";
+  // 旧Exampleのトークンビュー（削除済みだが安全のため残す）
+  const isTokenView = false;
   const isComponentView = selectedId && !isTokenView && !isScannedView && !isFigmaView;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
 
@@ -207,18 +220,79 @@ export default function Home() {
         <Header onMenuToggle={() => setMobileOpen(true)} />
 
         <Box sx={{ flex: 1, display: "flex", flexDirection: { xs: "column", md: "row" }, overflow: "hidden" }}>
-          {isTokenView && (
-            <TokenViewer
-              viewType={selectedId as "colors" | "typography" | "spacing"}
-              alerts={[
-                {
-                  type: "warning",
-                  message:
-                    "Figmaバリアブルコレクション: ダークモードのトークンが一部未定義です。",
-                },
-              ]}
-            />
-          )}
+          {isFigmaTokenView && catalog && (() => {
+            const allTokens = (catalog as { tokens?: { name: string; type: string; value: unknown; modes?: Record<string, unknown> }[] }).tokens || [];
+            const filtered = allTokens.filter((t) => t.type === figmaTokenType);
+            return (
+              <Box sx={{ flex: 1, p: { xs: 2, md: 5 }, overflow: "auto" }}>
+                <Typography variant="h5" sx={{ mb: 0.5 }}>
+                  {figmaTokenType === "color" ? "Color Tokens" : figmaTokenType === "typography" ? "Typography Tokens" : "Spacing Tokens"}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                  {filtered.length} トークン — Figma Variables から取得
+                </Typography>
+
+                {figmaTokenType === "color" && (
+                  <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 2 }}>
+                    {filtered.map((t) => {
+                      const val = t.value as { r?: number; g?: number; b?: number } | string;
+                      const hex = typeof val === "string" ? val
+                        : val && typeof val.r === "number"
+                          ? `#${Math.round(val.r * 255).toString(16).padStart(2, "0")}${Math.round(val.g! * 255).toString(16).padStart(2, "0")}${Math.round(val.b! * 255).toString(16).padStart(2, "0")}`
+                          : "#000";
+                      return (
+                        <Paper key={t.name} variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
+                          <Box sx={{ height: 64, bgcolor: hex }} />
+                          <Box sx={{ p: 1.5 }}>
+                            <Typography variant="body2" fontWeight={600} sx={{ fontSize: "0.75rem" }}>{t.name.split("/").pop()}</Typography>
+                            <Typography variant="caption" color="text.secondary" sx={{ fontFamily: "'JetBrains Mono', monospace" }}>{hex}</Typography>
+                          </Box>
+                        </Paper>
+                      );
+                    })}
+                  </Box>
+                )}
+
+                {figmaTokenType === "typography" && (
+                  <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
+                    {filtered.map((t) => {
+                      const val = t.value as { fontSize?: number; fontWeight?: string; fontFamily?: string; lineHeight?: { value?: number } };
+                      return (
+                        <Box key={t.name} sx={{ px: 2, py: 1.5, borderTop: 1, borderColor: "divider", display: "flex", alignItems: "baseline", gap: 2, "&:first-of-type": { borderTop: 0 } }}>
+                          <Typography variant="caption" color="text.secondary" sx={{ minWidth: 160, fontSize: "0.6875rem" }}>
+                            {t.name} / {val.fontSize}px
+                          </Typography>
+                          <Typography sx={{ fontWeight: val.fontWeight === "Bold" ? 700 : val.fontWeight === "Semi Bold" ? 600 : 400, fontSize: val.fontSize, fontFamily: val.fontFamily || "Inter", lineHeight: 1.4 }}>
+                            The quick brown fox
+                          </Typography>
+                        </Box>
+                      );
+                    })}
+                  </Paper>
+                )}
+
+                {figmaTokenType === "spacing" && (
+                  <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
+                    <Box sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr", px: 2, py: 1, bgcolor: "action.hover", gap: 1 }}>
+                      <Typography variant="caption" fontWeight={700}>トークン</Typography>
+                      <Typography variant="caption" fontWeight={700}>値</Typography>
+                      <Typography variant="caption" fontWeight={700}>プレビュー</Typography>
+                    </Box>
+                    {filtered.map((t) => {
+                      const val = typeof t.value === "number" ? t.value : 0;
+                      return (
+                        <Box key={t.name} sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr", px: 2, py: 1, borderTop: 1, borderColor: "divider", gap: 1, alignItems: "center" }}>
+                          <Typography variant="body2" fontWeight={600} sx={{ fontSize: "0.75rem" }}>{t.name.split("/").pop()}</Typography>
+                          <Typography variant="body2" color="text.secondary" sx={{ fontFamily: "'JetBrains Mono', monospace" }}>{val}px</Typography>
+                          <Box sx={{ height: 8, width: val, bgcolor: "primary.main", borderRadius: 0.5 }} />
+                        </Box>
+                      );
+                    })}
+                  </Paper>
+                )}
+              </Box>
+            );
+          })()}
 
           {isFigmaView && activeFigma && (
             <>
