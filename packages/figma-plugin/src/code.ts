@@ -82,8 +82,8 @@ function extractNodeTree(node: SceneNode, depth: number): FigmaNodeData | null {
     }
   }
 
-  // --- 塗り (fills) ---
-  if ("fills" in node) {
+  // --- 塗り (fills) — テキストノードは color で処理するのでスキップ ---
+  if ("fills" in node && node.type !== "TEXT") {
     const fills = node.fills;
     if (Array.isArray(fills) && fills.length > 0) {
       const fill = fills[0];
@@ -176,6 +176,9 @@ function extractNodeTree(node: SceneNode, depth: number): FigmaNodeData | null {
   // --- テキスト ---
   if (node.type === "TEXT") {
     data.text = node.characters;
+    // テキストは固定幅にしない（親の flexbox で制御）
+    delete css["width"];
+    delete css["height"];
     const textNode = node as TextNode;
 
     // フォント
