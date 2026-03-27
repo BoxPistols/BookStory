@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-27T12:51:17.344Z",
+  "generatedAt": "2026-03-27T13:12:40.630Z",
   "source": "figma",
   "components": [
     {
       "id": "29:56",
       "name": "Button",
-      "description": "ユーザーのアクションを誘導するためのインタラクション要素",
+      "description": "基本ボタン。Contained/Outlined/Text バリアント",
       "variants": {
         "Variant": [
           "Contained",
@@ -1772,7 +1772,7 @@
     {
       "id": "31:18",
       "name": "Chip",
-      "description": "タグ、ステータス、フィルター条件などコンパクトな情報の表示",
+      "description": "チップ。タグやフィルターに使用",
       "variants": {
         "Variant": [
           "Filled",
@@ -2328,7 +2328,7 @@
     {
       "id": "31:31",
       "name": "Alert",
-      "description": "操作結果の通知、警告、エラー表示のフィードバックメッセージ",
+      "description": "アラート。Success/Warning/Error/Info のフィードバック",
       "variants": {
         "Severity": [
           "Success",
@@ -2717,7 +2717,7 @@
     {
       "id": "53:34",
       "name": "Divider",
-      "description": "コンテンツの区切り線。セクション間の視覚的な分離に使用。\n\n**ガイドライン:**\n- リスト内ではインセット（左マージン16px）\n- セクション区切りはフル幅",
+      "description": "区切り線。コンテンツ間のセパレーター",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3029,7 +3029,7 @@
     {
       "id": "73:9",
       "name": "LinearProgress",
-      "description": "MUI LinearProgress — 線形プログレスバー",
+      "description": "線形プログレスバー。処理の進捗を表示",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3059,7 +3059,7 @@
     {
       "id": "73:2",
       "name": "Card",
-      "description": "MUI Card — タイトル、説明、アクション付き",
+      "description": "カード。画像・テキスト・アクションをグループ化",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3153,7 +3153,7 @@
     {
       "id": "58:67",
       "name": "Drawer",
-      "description": "サイドナビゲーション。\n\n**バリアント:** permanent/temporary/persistent",
+      "description": "ドロワー。サイドメニューやナビゲーションパネル",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3299,7 +3299,7 @@
     {
       "id": "58:54",
       "name": "Table",
-      "description": "データ一覧テーブル。\n\n**ガイドライン:**\n- ヘッダー固定\n- 行ホバーハイライト",
+      "description": "テーブル。データの表形式表示",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3466,7 +3466,7 @@
     {
       "id": "58:52",
       "name": "AppBar",
-      "description": "アプリヘッダーバー。\n\n**ガイドライン:**\n- 固定位置\n- モバイルはハンバーガー",
+      "description": "アプリバー。ページ上部のナビゲーションバー",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3501,7 +3501,7 @@
     {
       "id": "58:49",
       "name": "Accordion",
-      "description": "折りたたみパネル。FAQ、設定に使用。\n\n**ガイドライン:**\n- デフォルトで1つ開く",
+      "description": "アコーディオン。折りたたみ可能なコンテンツセクション",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3547,7 +3547,7 @@
     {
       "id": "58:35",
       "name": "Tabs",
-      "description": "コンテンツ切り替えタブ。\n\n**ガイドライン:**\n- 2〜6個\n- ラベルは短く",
+      "description": "タブ。コンテンツの切り替えナビゲーション",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3603,7 +3603,7 @@
     {
       "id": "58:33",
       "name": "Snackbar",
-      "description": "一時的な通知メッセージ。\n\n**ガイドライン:**\n- 4〜8秒で自動消去",
+      "description": "スナックバー。一時的な通知メッセージ",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3638,7 +3638,7 @@
     {
       "id": "58:30",
       "name": "Dialog",
-      "description": "モーダルダイアログ。\n\n**ガイドライン:**\n- ESC/オーバーレイで閉じる\n- 破壊的操作は赤色",
+      "description": "ダイアログ。確認やフォーム入力のモーダル",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3683,7 +3683,7 @@
     {
       "id": "58:15",
       "name": "Pagination",
-      "description": "ページネーション。\n\n**ガイドライン:**\n- 10件以上のリストで使用",
+      "description": "ページネーション。ページ送りナビゲーション",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3895,7 +3895,7 @@
     {
       "id": "58:9",
       "name": "Breadcrumbs",
-      "description": "パンくずリスト。\n\n**ガイドライン:**\n- 3階層以上で使用",
+      "description": "パンくずリスト。ナビゲーション階層を表示",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3973,7 +3973,7 @@
     {
       "id": "58:8",
       "name": "CircularProgress",
-      "description": "円形進捗インジケーター。",
+      "description": "円形プログレス。読み込み状態を表示",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -3992,7 +3992,7 @@
     {
       "id": "58:6",
       "name": "Skeleton",
-      "description": "読み込み中プレースホルダー。\n\n**バリアント:** text/rectangular/circular",
+      "description": "スケルトン。コンテンツ読み込み中のプレースホルダー",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4011,7 +4011,7 @@
     {
       "id": "58:4",
       "name": "Tooltip",
-      "description": "ホバー時の補足テキスト。\n\n**ガイドライン:**\n- 1〜2行以内\n- アイコンボタンに必須",
+      "description": "ツールチップ。ホバー時に補足情報を表示",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4045,7 +4045,7 @@
     {
       "id": "58:2",
       "name": "Avatar",
-      "description": "ユーザーのプロフィール表示。\n\n**バリアント:** 画像/イニシャル/アイコン\n\n**ガイドライン:**\n- 画像なしはイニシャルにフォールバック",
+      "description": "アバター。ユーザー画像やイニシャルを表示",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4079,7 +4079,7 @@
     {
       "id": "55:23",
       "name": "TextField",
-      "description": "テキスト入力フィールド。フォーム全般に使用。\n\n**バリアント:**\n- `outlined`: デフォルト\n- `filled`: 背景色ありの領域\n- `standard`: インラインの軽い入力\n\n**ガイドライン:**\n- ラベルは上部に常に表示\n- 必須項目には赤い「*」\n- エラー時はhelperTextに修正方法を表示",
+      "description": "テキスト入力フィールド。フォームの基本入力要素",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4114,7 +4114,7 @@
     {
       "id": "55:17",
       "name": "Rating",
-      "description": "5段階評価の入力・表示。レビュー、フィードバックに使用。\n\n**ガイドライン:**\n- 読み取り専用と入力可能を明確に区別\n- 0.5刻みの半星評価も対応可能",
+      "description": "星レーティング。5段階評価",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4192,7 +4192,7 @@
     {
       "id": "55:14",
       "name": "Slider",
-      "description": "範囲値の入力。音量、明るさ、フィルター値に使用。\n\n**ガイドライン:**\n- 最小値と最大値を明示\n- ステップ値を適切に設定\n- リアルタイムフィードバックを表示",
+      "description": "スライダー。範囲内の値を連続的に調整",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4233,7 +4233,7 @@
     {
       "id": "55:11",
       "name": "Radio",
-      "description": "排他選択のためのラジオボタン。\n\n**ガイドライン:**\n- 2〜5個の選択肢に使用\n- 6個以上はSelectを検討\n- デフォルト選択を設定",
+      "description": "ラジオボタン。排他選択のフォーム入力",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4277,7 +4277,7 @@
     {
       "id": "55:8",
       "name": "Checkbox",
-      "description": "複数選択のためのチェックボックス。\n\n**ガイドライン:**\n- 単一のON/OFFにはSwitchを使用\n- 複数選択肢にはCheckboxを使用\n- ラベルは右側に配置",
+      "description": "チェックボックス。複数選択のフォーム入力",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4322,7 +4322,7 @@
     {
       "id": "55:6",
       "name": "Fab",
-      "description": "画面上の主要アクション。フローティングアクションボタン。\n\n**バリアント:**\n- `default`: 通常サイズ\n- `small`: コンパクト\n- `extended`: テキスト付き\n\n**ガイドライン:**\n- 1画面に1つだけ\n- 右下に配置するのが標準",
+      "description": "フローティングアクションボタン。主要アクションを強調",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4356,7 +4356,7 @@
     {
       "id": "55:4",
       "name": "IconButton",
-      "description": "アイコンのみのボタン。ツールバー、閉じるボタンに使用。\n\n**ガイドライン:**\n- アクセシビリティのためaria-labelを必ず付与\n- サイズはsmall/medium/largeから選択",
+      "description": "アイコンのみのボタン。ツールバーやコンパクトUIに使用",
       "variants": {},
       "props": [],
       "nodeTree": {
@@ -4781,8 +4781,8 @@
         "fontWeight": "Bold",
         "fontSize": 32,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 38.400001525878906
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4798,8 +4798,8 @@
         "fontWeight": "Bold",
         "fontSize": 28,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 33.599998474121094
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4815,8 +4815,8 @@
         "fontWeight": "Bold",
         "fontSize": 24,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 28.799999237060547
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4832,8 +4832,8 @@
         "fontWeight": "Bold",
         "fontSize": 22,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 28.600000381469727
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4849,8 +4849,8 @@
         "fontWeight": "Bold",
         "fontSize": 20,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 26
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4863,11 +4863,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Bold",
+        "fontWeight": "Semi Bold",
         "fontSize": 18,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 24.299999237060547
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4880,11 +4880,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Bold",
+        "fontWeight": "Semi Bold",
         "fontSize": 16,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 22.399999618530273
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4900,8 +4900,8 @@
         "fontWeight": "Bold",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 19.600000381469727
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4917,8 +4917,8 @@
         "fontWeight": "Bold",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 16.799999237060547
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4934,8 +4934,8 @@
         "fontWeight": "Regular",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 160.0000023841858
+          "unit": "PIXELS",
+          "value": 23.100000381469727
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4951,8 +4951,8 @@
         "fontWeight": "Regular",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 160.0000023841858
+          "unit": "PIXELS",
+          "value": 19.200000762939453
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4968,8 +4968,8 @@
         "fontWeight": "Regular",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 16.799999237060547
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -4982,15 +4982,15 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Regular",
+        "fontWeight": "Semi Bold",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 16.799999237060547
         },
         "letterSpacing": {
-          "unit": "PERCENT",
-          "value": 0
+          "unit": "PIXELS",
+          "value": 1
         }
       }
     },
@@ -5002,8 +5002,8 @@
         "fontWeight": "Semi Bold",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 160.0000023841858
+          "unit": "PIXELS",
+          "value": 19.600000381469727
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -5019,8 +5019,8 @@
         "fontWeight": "Bold",
         "fontSize": 22,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 28.600000381469727
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -5036,8 +5036,8 @@
         "fontWeight": "Bold",
         "fontSize": 20,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 26
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -5050,11 +5050,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Bold",
+        "fontWeight": "Semi Bold",
         "fontSize": 18,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 24.299999237060547
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -5067,11 +5067,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Regular",
+        "fontWeight": "Semi Bold",
         "fontSize": 16,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 22.399999618530273
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -5087,8 +5087,8 @@
         "fontWeight": "Regular",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 21
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -5104,8 +5104,8 @@
         "fontWeight": "Regular",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 18
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -5121,8 +5121,8 @@
         "fontWeight": "Regular",
         "fontSize": 10,
         "lineHeight": {
-          "unit": "PERCENT",
-          "value": 139.9999976158142
+          "unit": "PIXELS",
+          "value": 14
         },
         "letterSpacing": {
           "unit": "PERCENT",
