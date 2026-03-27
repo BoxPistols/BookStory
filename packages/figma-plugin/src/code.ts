@@ -268,6 +268,8 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       }
 
       // Spacing Variables を作成/更新
+      let spacingCreated = 0;
+      let spacingUpdated = 0;
       if (data.spacing) {
         figma.ui.postMessage({ type: "status", message: "Spacing Variables を更新中...", level: "info" });
 
@@ -291,12 +293,17 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
           let variable = existingVars[name];
           if (!variable) {
             variable = figma.variables.createVariable(name, spacingCol, "FLOAT");
+            spacingCreated++;
+          } else {
+            spacingUpdated++;
           }
           variable.setValueForMode(modeId, val);
         }
       }
 
       // Typography Text Styles を作成/更新
+      let typoCreated = 0;
+      let typoUpdated = 0;
       if (data.typography) {
         figma.ui.postMessage({ type: "status", message: "Typography Styles を更新中...", level: "info" });
 
@@ -328,6 +335,9 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
           if (!style) {
             style = figma.createTextStyle();
             style.name = name;
+            typoCreated++;
+          } else {
+            typoUpdated++;
           }
 
           const fontName: FontName = {
@@ -356,6 +366,7 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       }
 
       // コンポーネント Description を同期
+      let compSynced = 0;
       if (data.components && Array.isArray(data.components)) {
         figma.ui.postMessage({ type: "status", message: "コンポーネント情報を同期中...", level: "info" });
 
@@ -371,26 +382,31 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
           compMap[key].push(node);
         }
 
-        let synced = 0;
         for (const meta of data.components as Array<{ name: string; description: string; category: string; variants?: string[] }>) {
           const key = meta.name.toLowerCase().replace(/\s+/g, "");
           const nodes = compMap[key];
           if (!nodes) continue;
 
           for (const node of nodes) {
-            // Web側の description で上書き
             node.description = meta.description;
-            synced++;
+            compSynced++;
           }
         }
 
-        figma.ui.postMessage({ type: "status", message: synced + " コンポーネントの情報を同期", level: "info" });
+        figma.ui.postMessage({ type: "status", message: compSynced + " コンポーネントの情報を同期", level: "info" });
       }
+
+      // 詳細な同期結果を表示
+      const details: string[] = [];
+      details.push("Color: " + (colorCreated + colorUpdated) + " (" + colorCreated + " 新規)");
+      details.push("Spacing: " + (spacingCreated + spacingUpdated) + " (" + spacingCreated + " 新規)");
+      details.push("Typography: " + (typoCreated + typoUpdated) + " (" + typoCreated + " 新規)");
+      details.push("Components: " + compSynced + " 件同期");
 
       figma.ui.postMessage({
         type: "import-result",
         success: true,
-        message: "Webトークン + コンポーネント情報を取り込みました",
+        message: details.join(" / "),
       });
     } catch (err) {
       const message = (err && typeof err === "object" && "message" in err)
