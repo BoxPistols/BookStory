@@ -16,6 +16,7 @@ import { FigmaRenderer, FigmaVariantGrid } from "@/components/FigmaRenderer";
 import type { FigmaNodeData } from "@/components/FigmaRenderer";
 import { TokenViewer } from "@/components/TokenViewer";
 import { useCatalog } from "@/lib/use-catalog";
+import { useKeyboardNav, getShortcutHints } from "@/lib/use-keyboard-nav";
 import {
   sidebarItems as demoSidebarItems,
   componentProps,
@@ -136,12 +137,14 @@ export default function Home() {
     [selectedId]
   );
 
-  const handleSelect = (id: string) => {
+  const handleSelect = useCallback((id: string) => {
     setSelectedId(id);
     setInspectActive(false);
-    // URL ハッシュに保存（リロードで復元可能）
     window.history.replaceState(null, "", "#" + id);
-  };
+  }, []);
+
+  // キーボードショートカット（Alt/Option + ← →）
+  useKeyboardNav({ items: sidebarItems, selectedId, onSelect: handleSelect });
 
   const handleReset = useCallback(() => {
     if (!selectedId) return;

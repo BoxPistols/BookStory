@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -13,6 +13,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { getShortcutHints } from "@/lib/use-keyboard-nav";
 import { alpha, useTheme } from "@mui/material/styles";
 
 export interface SidebarItem {
@@ -43,6 +44,19 @@ const sidebarColors = {
 };
 
 const SIDEBAR_WIDTH = 220;
+
+function ShortcutHint() {
+  const hints = useMemo(() => getShortcutHints(), []);
+  return (
+    <Box sx={{ px: 2.5, py: 1.5, borderTop: 1, borderColor: "divider", opacity: 0.5 }}>
+      <Typography variant="caption" sx={{ fontSize: "0.625rem", display: "flex", gap: 2 }}>
+        <span>{hints.prev} 前へ</span>
+        <span>{hints.next} 次へ</span>
+        <span>/ 検索</span>
+      </Typography>
+    </Box>
+  );
+}
 
 export function Sidebar({ items, selectedId, onSelect, mobileOpen, onMobileClose }: SidebarProps) {
   const [search, setSearch] = useState("");
@@ -213,6 +227,9 @@ export function Sidebar({ items, selectedId, onSelect, mobileOpen, onMobileClose
           })}
         </List>
       </Box>
+
+      {/* ショートカットヒント */}
+      <ShortcutHint />
     </Box>
   );
 
