@@ -296,6 +296,65 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
         }
       }
 
+      // Typography Text Styles を作成/更新
+      if (data.typography) {
+        figma.ui.postMessage({ type: "status", message: "Typography Styles を更新中...", level: "info" });
+
+        const existingTextStyles = await figma.getLocalTextStylesAsync();
+        const styleMap: Record<string, TextStyle> = {};
+        for (const s of existingTextStyles) {
+          styleMap[s.name] = s;
+        }
+
+        // weight 文字列を Figma の fontStyle にマッピング
+        function mapWeight(weight: string): string {
+          const w = String(weight);
+          if (w === "SemiBold") return "Semi Bold";
+          if (w === "Bold") return "Bold";
+          return "Regular";
+        }
+
+        // data.typography は { "Heading/H5": { fontFamily, fontWeight, fontSize, lineHeight, letterSpacing? }, ... } 形式
+        const typoObj = data.typography as Record<string, {
+          fontFamily: string;
+          fontWeight: string;
+          fontSize: number;
+          lineHeight: number;
+          letterSpacing?: number;
+        }>;
+
+        for (const [name, entry] of Object.entries(typoObj)) {
+          let style = styleMap[name];
+          if (!style) {
+            style = figma.createTextStyle();
+            style.name = name;
+          }
+
+          const fontName: FontName = {
+            family: entry.fontFamily,
+            style: mapWeight(entry.fontWeight),
+          };
+          try {
+            await figma.loadFontAsync(fontName);
+            style.fontName = fontName;
+          } catch (_e) {
+            // フォントが利用不可の場合はスキップ
+          }
+          style.fontSize = entry.fontSize;
+          style.lineHeight = {
+            value: entry.fontSize * entry.lineHeight,
+            unit: "PIXELS",
+          };
+
+          if (entry.letterSpacing !== undefined) {
+            style.letterSpacing = {
+              value: entry.letterSpacing,
+              unit: "PIXELS",
+            };
+          }
+        }
+      }
+
       figma.ui.postMessage({
         type: "import-result",
         success: true,
