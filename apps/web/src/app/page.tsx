@@ -12,6 +12,8 @@ import { Header } from "@/components/Header";
 import { Preview, VariantItem } from "@/components/Preview";
 import { PropsPanel, PropDefinition } from "@/components/PropsPanel";
 import { ComponentRenderer, REGISTERED_COMPONENTS } from "@/components/ComponentRenderer";
+import { FigmaRenderer, FigmaVariantGrid } from "@/components/FigmaRenderer";
+import type { FigmaNodeData } from "@/components/FigmaRenderer";
 import { TokenViewer } from "@/components/TokenViewer";
 import { useCatalog } from "@/lib/use-catalog";
 import {
@@ -313,7 +315,10 @@ export default function Home() {
                 variants={figmaRendererId ? variants : []}
                 onInspectChange={setInspectActive}
               >
-                {figmaRendererId ? (
+                {/* Figma ノードツリーがあれば完全再現、なければ MUI フォールバック */}
+                {(activeFigma as Record<string, unknown>).nodeTree ? (
+                  <FigmaRenderer nodeTree={(activeFigma as Record<string, unknown>).nodeTree as FigmaNodeData} />
+                ) : figmaRendererId ? (
                   <ComponentRenderer
                     componentId={figmaRendererId}
                     values={mergedValues}

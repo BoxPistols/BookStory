@@ -14,6 +14,7 @@ interface ExtractedComponent {
   description: string;
   variants: Record<string, string[]>;
   props: ExtractedProp[];
+  nodeTree?: FigmaNodeData;
 }
 
 interface ExtractedProp {
@@ -28,6 +29,200 @@ interface ExtractedToken {
   type: "color" | "typography" | "spacing" | "effect";
   value: unknown;
   modes?: Record<string, unknown>;
+}
+
+// --- ノードツリー型定義（Figma → HTML/CSS 完全再現用） ---
+
+interface FigmaNodeData {
+  type: string;
+  name: string;
+  css: Record<string, string>;
+  text?: string;
+  children?: FigmaNodeData[];
+}
+
+// --- ノードツリー抽出 ---
+
+function rgbToHex(r: number, g: number, b: number): string {
+  return "#" + [r, g, b].map(function(c) {
+    return Math.round(c * 255).toString(16).padStart(2, "0");
+  }).join("");
+}
+
+function rgbaToStr(r: number, g: number, b: number, a: number): string {
+  if (a >= 1) return rgbToHex(r, g, b);
+  return "rgba(" + Math.round(r * 255) + "," + Math.round(g * 255) + "," + Math.round(b * 255) + "," + a.toFixed(2) + ")";
+}
+
+function extractNodeTree(node: SceneNode, depth: number): FigmaNodeData | null {
+  if (depth > 10) return null;
+  if (!node.visible) return null;
+
+  const css: Record<string, string> = {};
+  const data: FigmaNodeData = {
+    type: node.type,
+    name: node.name,
+    css: css,
+  };
+
+  // --- サイズ ---
+  css["width"] = Math.round(node.width) + "px";
+  css["height"] = Math.round(node.height) + "px";
+
+  // --- 不透明度 ---
+  if ("opacity" in node && typeof node.opacity === "number" && node.opacity < 1) {
+    css["opacity"] = node.opacity.toFixed(2);
+  }
+
+  // --- 角丸 ---
+  if ("cornerRadius" in node) {
+    const cr = node.cornerRadius;
+    if (typeof cr === "number" && cr > 0) {
+      css["border-radius"] = cr + "px";
+    }
+  }
+
+  // --- 塗り (fills) ---
+  if ("fills" in node) {
+    const fills = node.fills;
+    if (Array.isArray(fills) && fills.length > 0) {
+      const fill = fills[0];
+      if (fill.visible !== false) {
+        if (fill.type === "SOLID") {
+          const a = typeof fill.opacity === "number" ? fill.opacity : 1;
+          css["background-color"] = rgbaToStr(fill.color.r, fill.color.g, fill.color.b, a);
+        } else if (fill.type === "GRADIENT_LINEAR" && fill.gradientStops) {
+          const stops = fill.gradientStops.map(function(s: { color: RGBA; position: number }) {
+            return rgbaToStr(s.color.r, s.color.g, s.color.b, s.color.a) + " " + Math.round(s.position * 100) + "%";
+          }).join(", ");
+          css["background"] = "linear-gradient(" + stops + ")";
+        }
+      }
+    }
+  }
+
+  // --- 線 (strokes) ---
+  if ("strokes" in node) {
+    const strokes = node.strokes;
+    if (Array.isArray(strokes) && strokes.length > 0) {
+      const stroke = strokes[0];
+      if (stroke.visible !== false && stroke.type === "SOLID") {
+        const sw = ("strokeWeight" in node && typeof node.strokeWeight === "number") ? node.strokeWeight : 1;
+        css["border"] = sw + "px solid " + rgbToHex(stroke.color.r, stroke.color.g, stroke.color.b);
+      }
+    }
+  }
+
+  // --- シャドウ (effects) ---
+  if ("effects" in node) {
+    const effects = node.effects;
+    if (Array.isArray(effects)) {
+      const shadows: string[] = [];
+      for (const e of effects) {
+        if (!e.visible) continue;
+        if (e.type === "DROP_SHADOW" || e.type === "INNER_SHADOW") {
+          const prefix = e.type === "INNER_SHADOW" ? "inset " : "";
+          shadows.push(
+            prefix +
+            Math.round(e.offset.x) + "px " +
+            Math.round(e.offset.y) + "px " +
+            Math.round(e.radius) + "px " +
+            (e.spread ? Math.round(e.spread) + "px " : "") +
+            rgbaToStr(e.color.r, e.color.g, e.color.b, e.color.a)
+          );
+        }
+      }
+      if (shadows.length > 0) {
+        css["box-shadow"] = shadows.join(", ");
+      }
+    }
+  }
+
+  // --- Auto Layout (→ flexbox) ---
+  if ("layoutMode" in node && node.layoutMode !== "NONE") {
+    css["display"] = "flex";
+    css["flex-direction"] = node.layoutMode === "HORIZONTAL" ? "row" : "column";
+
+    if ("itemSpacing" in node && typeof node.itemSpacing === "number" && node.itemSpacing > 0) {
+      css["gap"] = node.itemSpacing + "px";
+    }
+    if ("paddingTop" in node) {
+      const pt = node.paddingTop || 0;
+      const pr = node.paddingRight || 0;
+      const pb = node.paddingBottom || 0;
+      const pl = node.paddingLeft || 0;
+      if (pt || pr || pb || pl) {
+        css["padding"] = pt + "px " + pr + "px " + pb + "px " + pl + "px";
+      }
+    }
+    if ("primaryAxisAlignItems" in node) {
+      const pa = node.primaryAxisAlignItems;
+      if (pa === "CENTER") css["justify-content"] = "center";
+      else if (pa === "MAX") css["justify-content"] = "flex-end";
+      else if (pa === "SPACE_BETWEEN") css["justify-content"] = "space-between";
+    }
+    if ("counterAxisAlignItems" in node) {
+      const ca = node.counterAxisAlignItems;
+      if (ca === "CENTER") css["align-items"] = "center";
+      else if (ca === "MAX") css["align-items"] = "flex-end";
+    }
+  }
+
+  // --- クリップ ---
+  if ("clipsContent" in node && node.clipsContent) {
+    css["overflow"] = "hidden";
+  }
+
+  // --- テキスト ---
+  if (node.type === "TEXT") {
+    data.text = node.characters;
+    const textNode = node as TextNode;
+
+    // フォント
+    if (typeof textNode.fontSize === "number") {
+      css["font-size"] = textNode.fontSize + "px";
+    }
+    if (textNode.fontName && typeof textNode.fontName === "object" && "family" in textNode.fontName) {
+      css["font-family"] = "'" + textNode.fontName.family + "', sans-serif";
+      const style = textNode.fontName.style;
+      if (style.indexOf("Bold") >= 0) css["font-weight"] = "700";
+      else if (style.indexOf("Semi") >= 0) css["font-weight"] = "600";
+      else if (style.indexOf("Medium") >= 0) css["font-weight"] = "500";
+      else css["font-weight"] = "400";
+      if (style.indexOf("Italic") >= 0) css["font-style"] = "italic";
+    }
+    if (textNode.lineHeight && typeof textNode.lineHeight === "object" && "value" in textNode.lineHeight) {
+      css["line-height"] = textNode.lineHeight.value + (textNode.lineHeight.unit === "PERCENT" ? "%" : "px");
+    }
+    if (textNode.letterSpacing && typeof textNode.letterSpacing === "object" && "value" in textNode.letterSpacing) {
+      if (textNode.letterSpacing.value !== 0) {
+        css["letter-spacing"] = textNode.letterSpacing.value + "px";
+      }
+    }
+    // テキスト色
+    if (Array.isArray(textNode.fills) && textNode.fills.length > 0) {
+      const f = textNode.fills[0];
+      if (f.type === "SOLID" && f.visible !== false) {
+        css["color"] = rgbToHex(f.color.r, f.color.g, f.color.b);
+      }
+    }
+    // テキスト揃え
+    if (textNode.textAlignHorizontal === "CENTER") css["text-align"] = "center";
+    else if (textNode.textAlignHorizontal === "RIGHT") css["text-align"] = "right";
+  }
+
+  // --- 子ノード ---
+  if ("children" in node) {
+    const frameNode = node as FrameNode;
+    const kids: FigmaNodeData[] = [];
+    for (const child of frameNode.children) {
+      const childData = extractNodeTree(child, depth + 1);
+      if (childData) kids.push(childData);
+    }
+    if (kids.length > 0) data.children = kids;
+  }
+
+  return data;
 }
 
 // --- コンポーネントスキャン ---
@@ -74,21 +269,38 @@ function scanComponents(): ExtractedComponent[] {
         });
       }
 
+      // バリアントごとのノードツリーを抽出
+      const variantTrees: Record<string, FigmaNodeData> = {};
+      for (const child of node.children) {
+        if (child.type !== "COMPONENT") continue;
+        const tree = extractNodeTree(child, 0);
+        if (tree) variantTrees[child.name] = tree;
+      }
+
+      // デフォルトバリアント（最初の子）のツリーをメインに使用
+      const defaultChild = node.children[0];
+      const nodeTree = defaultChild ? extractNodeTree(defaultChild, 0) : undefined;
+
       components.push({
         id: node.id,
         name: node.name,
         description: node.description || "",
         variants,
         props,
-      });
+        nodeTree: nodeTree || undefined,
+        variantTrees: variantTrees,
+      } as ExtractedComponent & { variantTrees: Record<string, FigmaNodeData> });
     } else if (node.type === "COMPONENT") {
-      // 単体コンポーネント
+      // 単体コンポーネント — ノードツリー抽出
+      const nodeTree = extractNodeTree(node, 0);
+
       components.push({
         id: node.id,
         name: node.name,
         description: node.description || "",
         variants: {},
         props: [],
+        nodeTree: nodeTree || undefined,
       });
     }
   }
