@@ -58,7 +58,7 @@ export default function Home() {
 
   // Figmaカタログからトップレベルコンポーネントを抽出してサイドバーに追加
   const { sidebarItems, figmaComponents } = useMemo(() => {
-    const figmaComps: { id: string; name: string; description: string; props: PropDefinition[]; variantCount: number }[] = [];
+    const figmaComps: { id: string; name: string; description: string; props: PropDefinition[]; variantCount: number; variants?: Record<string, string[]> }[] = [];
 
     if (catalog) {
       const topLevel = catalog.components.filter((c) => !c.name.includes("="));
@@ -90,6 +90,7 @@ export default function Home() {
           description: comp.description || "",
           props,
           variantCount,
+          variants: comp.variants,
         });
       }
     }
@@ -168,45 +169,38 @@ export default function Home() {
   // FigmaコンポーネントのレンダラーID（レジストリ自動マッチ）
   const figmaRendererId = activeFigma ? figmaToRenderer(activeFigma.name) : undefined;
 
-  // バリアント一覧を自動生成（demo + figma対応）
+  // バリアント一覧を Figma スキャンデータから自動生成
   const variants = useMemo<VariantItem[]>(() => {
-    // FigmaコンポーネントのレンダラーIDで既存バリアントマップを参照
-    const lookupId = figmaRendererId || selectedId;
-    if (!lookupId || !componentProps[lookupId]) return [];
+    if (!activeFigma || !figmaRendererId) return [];
 
-    const variantMap: Record<string, VariantItem[]> = {
-      button: [
-        { label: "contained / primary", node: <Button variant="contained" color="primary">Button</Button> },
-        { label: "contained / secondary", node: <Button variant="contained" color="secondary">Button</Button> },
-        { label: "contained / error", node: <Button variant="contained" color="error">Button</Button> },
-        { label: "outlined / primary", node: <Button variant="outlined" color="primary">Button</Button> },
-        { label: "outlined / secondary", node: <Button variant="outlined" color="secondary">Button</Button> },
-        { label: "text / primary", node: <Button variant="text" color="primary">Button</Button> },
-        { label: "small", node: <Button variant="contained" size="small">Small</Button> },
-        { label: "large", node: <Button variant="contained" size="large">Large</Button> },
-        { label: "disabled", node: <Button variant="contained" disabled>Disabled</Button> },
-      ],
-      chip: [
-        { label: "filled / primary", node: <Chip label="Chip" color="primary" /> },
-        { label: "filled / secondary", node: <Chip label="Chip" color="secondary" /> },
-        { label: "filled / success", node: <Chip label="Chip" color="success" /> },
-        { label: "filled / error", node: <Chip label="Chip" color="error" /> },
-        { label: "outlined / primary", node: <Chip label="Chip" variant="outlined" color="primary" /> },
-        { label: "outlined / secondary", node: <Chip label="Chip" variant="outlined" color="secondary" /> },
-        { label: "small", node: <Chip label="Chip" size="small" /> },
-      ],
-      alert: [
-        { label: "success", node: <Alert severity="success" sx={{ minWidth: 160 }}>Success</Alert> },
-        { label: "info", node: <Alert severity="info" sx={{ minWidth: 160 }}>Info</Alert> },
-        { label: "warning", node: <Alert severity="warning" sx={{ minWidth: 160 }}>Warning</Alert> },
-        { label: "error", node: <Alert severity="error" sx={{ minWidth: 160 }}>Error</Alert> },
-        { label: "filled / success", node: <Alert severity="success" variant="filled" sx={{ minWidth: 160 }}>Filled</Alert> },
-        { label: "outlined / error", node: <Alert severity="error" variant="outlined" sx={{ minWidth: 160 }}>Outlined</Alert> },
-      ],
-    };
+    // Figma コンポーネントのバリアント情報から全組み合わせを生成
+    const figmaVariants = activeFigma.variants || {};
+    const variantKeys = Object.keys(figmaVariants);
+    if (variantKeys.length === 0) return [];
 
-    return variantMap[lookupId] || [];
-  }, [selectedId, figmaRendererId]);
+    // 全バリアント組み合わせを列挙
+    const combinations: Record<string, string>[] = [{}];
+    for (const key of variantKeys) {
+      const values = figmaVariants[key];
+      const expanded: Record<string, string>[] = [];
+      for (const combo of combinations) {
+        for (const val of values) {
+          expanded.push({ ...combo, [key.charAt(0).toLowerCase() + key.slice(1)]: val });
+        }
+      }
+      combinations.length = 0;
+      combinations.push(...expanded);
+    }
+
+    // 各組み合わせを MUI コンポーネントとしてレンダリング
+    return combinations.slice(0, 24).map((combo) => {
+      const label = Object.values(combo).join(" / ");
+      return {
+        label,
+        node: <ComponentRenderer componentId={figmaRendererId} values={{ ...combo, label: activeFigma.name }} />,
+      };
+    });
+  }, [activeFigma, figmaRendererId]);
 
   return (
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
