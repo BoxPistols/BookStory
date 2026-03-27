@@ -1,184 +1,211 @@
-# BookStory 仕様書
+# BookStory 仕様書 v2
 
 ## 1. コンセプト
 
-BookStory は **Figma = Single Source of Truth** のコンポーネントカタログツール。
-デザイナーが Figma でコンポーネントを作成・編集するだけで、Web カタログに自動反映される。
-ターミナルや GitHub の操作は不要。
+デザイナーが Figma で MUI コンポーネントをカスタマイズし、
+それがブラウザ上でどのように見えるかを **完全再現** するツール。
+Storybook の代替。デザイナーは React を一切知る必要がない。
 
-## 2. 全体構成
+### ゴール
 
-```
-┌─────────────┐     プラグイン      ┌──────────────┐     自動デプロイ     ┌──────────────┐
-│   Figma     │ ──「コードに反映」──→ │  GitHub      │ ───Vercel Git───→ │  Web カタログ │
-│  (デザイン)  │ ←─「Webを取り込む」── │  (figma-     │                   │  (閲覧専用)  │
-│             │      トークン同期     │   catalog)   │                   │              │
-└─────────────┘                     └──────────────┘                   └──────────────┘
-```
+**オープンソースとして配布可能なレベルの品質・透明性**
 
-### 各システムの役割
+### 原則
 
-| システム | 役割 | URL |
-|---------|------|-----|
-| **Figma** | コンポーネント設計・トークン定義 | [Plugin-Test](https://www.figma.com/design/45LRiJPmDqWsz3CUbHIo5Y/Plugin-Test) |
-| **Web カタログ** | コンポーネント一覧の閲覧 | https://bookstory-wine.vercel.app |
-| **GitHub** | データ保管・自動デプロイトリガー | BoxPistols/BookStory |
+- **Figma = Single Source of Truth**: デザイナーは Figma だけを見る
+- **MUI が制約**: コンポーネントは MUI 上に存在するものが対象
+- **デザイントークンは MUI の法則性に準拠**: palette, typography, spacing
+- **Props パターンは MUI と一致**: variant, color, size, severity 等
+- **拡張は明示的に**: MUI 標準にない Props やパターンは「拡張」と明記
+- **静的コードによる透明性**: 複雑な抽象化を避け、読める・追えるコードで構成
+- **日本の SaaS 開発標準**: ベースフォント 14px、ダークモード対応
 
-## 3. Figma ファイル構成
+## 2. 関係者の役割
 
-### ページ一覧
+| 役割 | 何をするか | 何を見るか |
+|------|-----------|-----------|
+| **デザイナー** | Figma で MUI コンポーネントをカスタマイズ | Figma + Web プレビュー |
+| **エンジニア** | Web プレビューを見て MUI で実装 | Web プレビュー + Props 仕様 |
+| **BookStory** | Figma → Web を自動同期 | — |
 
-| ページ | 目的 | 内容 |
-|--------|------|------|
-| **tokens** (node-id=20-2) | バリアント付きコンポーネント + トークン参照 | Button(27), Chip(8), Alert(4), Badge(6), Switch(4), Divider + Typography/Color表示 |
-| **Starter Kit** (node-id=55-2) | 単体コンポーネント | IconButton, Fab, Checkbox, Radio, Slider, Rating, TextField, Avatar, Tooltip, Skeleton, CircularProgress, Breadcrumbs, Pagination, Dialog, Drawer, Snackbar, Tabs, Stepper, Accordion, AppBar, Table, Card, LinearProgress |
-| **test** | テスト用（運用対象外） | - |
+### デザイナーに見えるもの
 
-### どちらがメインか？
+- ブラウザ上の見た目（Figma デザインの完全再現）
+- トークン一覧（Color / Typography / Spacing）
+- バリアント比較（MUI Props パターン）
 
-**両方がメイン。** プラグインは全ページを横断スキャンする。
+### デザイナーに見えなくてよいもの
 
-- **tokens ページ**: バリアント（色×サイズ等の組み合わせ）を持つコンポーネントの定義場所
-- **Starter Kit ページ**: バリアントなしの単体コンポーネントの定義場所
+- React コード / import 文
+- Props パネル（エンジニア向け）
+- ComponentRenderer の実装
 
-→ Web カタログには**両ページのコンポーネントが統合表示**される。
+## 3. MUI Props パターンの運用
 
-### Variables（バリアブル）
-
-| コレクション | 内容 | モード |
-|-------------|------|--------|
-| **Color** | 23色（Brand 4, Semantic 4, Surface 5, Grey 10） | Light / Dark |
-| **Spacing** | 9値（4, 8, 12, 16, 24, 32, 48, 64, 96） | 単一 |
-
-### Text Styles
-
-21スタイル（Heading 9, Body 5, Scale 7）
-
-## 4. Web カタログの表示内容
-
-サイドバーの構成（bookstory-wine.vercel.app）:
+### Figma バリアント名 = MUI Props
 
 ```
-TOKENS
-├── Color      ← Figma の Color Variables から取得
-├── Typography ← Figma の Text Styles から取得
-└── Spacing    ← Figma の Spacing Variables から取得
-
-COMPONENTS
-├── Button     ← tokens ページのコンポーネントセット
-├── Chip
-├── Alert
-├── Badge
-├── Switch
-├── Divider
-├── IconButton ← Starter Kit ページのコンポーネント
-├── Fab
-├── Checkbox
-├── ...（以下28コンポーネント）
+Figma コンポーネント名: Button
+Figma バリアント:
+  Variant=Contained, Color=Primary, Size=Medium
+  Variant=Outlined, Color=Error, Size=Small
+  ...
+       ↓ 自動マッピング ↓
+MUI Props:
+  <Button variant="contained" color="primary" size="medium" />
 ```
 
-**Web カタログ = Figma の内容のミラー。** Figma で変更 → 反映ボタン → Web に表示。
+### MUI 標準 Props の範囲
 
-## 5. デザイナーの運用フロー
+| コンポーネント | MUI 標準 Props | 例 |
+|--------------|---------------|-----|
+| Button | variant, color, size, disabled | contained/outlined/text × primary/secondary/error × small/medium/large |
+| Alert | severity, variant | success/warning/error/info × standard/filled/outlined |
+| Chip | variant, color, size | filled/outlined × primary/secondary/success/error |
+| Switch | checked, size, disabled | on/off × small/medium |
+| Badge | color, variant | primary/error/success × standard/dot |
 
-### 日常作業: コンポーネントの追加・変更
+### 拡張パターン
+
+MUI 標準にないパターンを追加する場合:
 
 ```
-1. Figma でコンポーネントを作成/編集
-   - tokens ページ: バリアント付き（Button等）
-   - Starter Kit ページ: 単体コンポーネント
+Figma バリアント名に [拡張] プレフィックスを付ける:
+  [拡張] HasTitle=true     ← MUI Alert のタイトル付きパターン
+  [拡張] HasClose=true     ← 閉じるボタン付きパターン
+```
 
-2. BookStory プラグインを開く
-   - 「コンポーネントをスキャン」→ 検出数を確認
+これにより Web 側で「MUI 標準」か「独自拡張」かが明確になる。
 
-3. 「コードに反映する」をクリック
-   - → GitHub に自動コミット → Vercel が自動ビルド
-   - → 数分で Web カタログに反映
+## 4. 全体構成
+
+```
+┌─────────────────┐
+│     Figma       │
+│  (デザイナー)    │
+│                 │
+│  Components     │  ← MUI コンポーネントをカスタマイズ
+│  Variables      │  ← デザイントークン定義
+│  Text Styles    │  ← タイポグラフィ定義
+└────────┬────────┘
+         │ BookStory プラグイン
+         │  「コードに反映する」
+         ▼
+┌─────────────────┐
+│   GitHub        │  ← figma-catalog.json（自動コミット）
+└────────┬────────┘
+         │ Vercel 自動デプロイ
+         ▼
+┌─────────────────┐
+│  Web カタログ    │
+│  (ブラウザ)      │
+│                 │
+│  完全再現       │  ← Figma と同じ見た目
+│  プレビュー      │
+│  トークン一覧   │
+│  バリアント比較  │
+└─────────────────┘
+```
+
+## 5. デザイナーの作業フロー
+
+```
+1. Figma で MUI コンポーネントをデザイン
+   - Variables でカラートークンを定義
+   - Text Styles でタイポグラフィを定義
+   - コンポーネントにバリアントを追加（MUI Props 命名規則に従う）
+
+2. Description に仕様を記述
+   - 用途、ガイドライン、禁止事項
+
+3. プラグインで「コードに反映する」
 
 4. Web カタログで確認
-   - https://bookstory-wine.vercel.app
+   - ブラウザ上の見え方を確認
+   - トークンが正しく反映されているか確認
+   - バリアントが揃っているか確認
+
+5. 問題があれば Figma で修正 → 再度反映
 ```
 
-### トークン変更の同期
+### 作業ルール
+
+1. **コンポーネント名 = MUI コンポーネント名**（Button, Alert, Chip 等）
+2. **バリアント名 = MUI Props 名**（Variant=Contained, Color=Primary 等）
+3. **拡張は [拡張] プレフィックスで明示**
+4. **Variables の命名は MUI トークン体系に準拠**（Brand/Primary, Semantic/Success 等）
+
+## 6. 完全再現の実装方針
+
+### 目標
+
+Figma で作ったコンポーネントが Web で **ピクセル単位で一致** すること。
+
+### 方法
+
+Figma Plugin API でコンポーネントの全ノードツリーを走査し、
+各ノードの視覚プロパティを抽出して HTML/CSS に変換する。
 
 ```
-■ Figma → Web（自動）
-  Figma の Variables/Styles を変更 → 「コードに反映する」→ Web に反映
+Figma Node Tree
+├── Frame (Auto Layout: horizontal, gap: 8, padding: 12 16)
+│   ├── Icon (fill: #2642be, size: 20x20)
+│   └── Text ("ボタン", Inter Semi Bold 14px, fill: #ffffff)
+│
+    ↓ 変換 ↓
 
-■ Web → Figma
-  エンジニアがコード側でカラーを変更した場合:
-  「Webを取り込む」→ Figma Variables/Text Styles が更新される
+<div style="display:flex; gap:8px; padding:12px 16px;">
+  <svg width="20" height="20" fill="#2642be">...</svg>
+  <span style="font:600 14px Inter; color:#fff;">ボタン</span>
+</div>
 ```
 
-### 新しいコンポーネントを追加するには
+### Figma → CSS 変換ルール
 
-1. **Figma**: tokens ページまたは Starter Kit ページにコンポーネントを作成
-2. **名前**: MUI のコンポーネント名と一致させる（例: `Select`, `Menu`）
-3. **Description**: コンポーネントの説明を入力（Web カタログに表示される）
-4. **「コードに反映する」** をクリック
+| Figma | CSS |
+|-------|-----|
+| Auto Layout (horizontal) | `display: flex; flex-direction: row;` |
+| Auto Layout (vertical) | `display: flex; flex-direction: column;` |
+| itemSpacing | `gap` |
+| padding | `padding` |
+| Fill (SOLID) | `background-color` |
+| Fill (GRADIENT) | `linear-gradient(...)` |
+| Stroke | `border` |
+| Corner Radius | `border-radius` |
+| Drop Shadow | `box-shadow` |
+| Text | `font-family`, `font-size`, `font-weight`, `color` |
+| Hug contents | `width: auto` |
+| Fill container | `flex: 1` |
+| Fixed size | `width: Npx` |
+| Opacity | `opacity` |
+| Clip content | `overflow: hidden` |
 
-### やらなくていいこと
+## 7. 現在の課題
 
-- GitHub を見る
-- ターミナルを使う
-- コードを書く
-- Vercel の設定をする
+| 課題 | 優先度 | 説明 |
+|------|--------|------|
+| Figma→CSS 完全再現レンダラー | 高 | 現在の ComponentRenderer を置き換える |
+| Figma コンポーネント品質 | 高 | 現状は「たたき台」。MUI 準拠のデザインが必要 |
+| バリアント画像書き出し | 中 | 各バリアントの Figma 見た目を Web に表示 |
+| [拡張] マーキング機能 | 中 | MUI 標準外の Props を検知・表示 |
+| レスポンシブプレビュー | 低 | 異なる画面幅での表示確認 |
 
-## 6. データフロー詳細
-
-### 「コードに反映する」（Figma → Web）
-
-```
-Figma プラグイン
-  ↓ scanComponents() — 全ページからコンポーネント名・バリアント・Description を取得
-  ↓ scanTokens()     — Variables + Text Styles + Effect Styles を取得
-  ↓ POST /api/publish — JSON送信
-  ↓
-GitHub API
-  ↓ ブランチ作成 → figma-catalog.json コミット → main にマージ → ブランチ削除
-  ↓
-Vercel
-  ↓ main push 検知 → 自動ビルド → デプロイ
-  ↓
-Web カタログ更新
-```
-
-### 「Webを取り込む」（Web → Figma）
-
-```
-Figma プラグイン
-  ↓ GET /api/export — Web 側のトークン + コンポーネントメタデータ取得
-  ↓
-Figma に書き込み:
-  ├── Color Variables（23色 × Light/Dark）
-  ├── Spacing Variables（9値）
-  ├── Typography Text Styles（21スタイル）
-  └── Component Descriptions（29件）
-```
-
-## 7. 現在の課題と制限
-
-| 課題 | 状態 | 説明 |
-|------|------|------|
-| Starter Kit レイアウト | 未整理 | コンポーネントの配置がばらけている。整列が必要 |
-| Web→Figma の視覚的フィードバック | 改善中 | 「取り込みました」と表示するが、既に同じ値の場合変化が見えない |
-| コンポーネントの視覚品質 | 改善余地あり | Figma 上のコンポーネントは MUI のたたき台レベル。デザイナーが調整する前提 |
-| Web→Figma コンポーネント同期 | トークンのみ | コンポーネント自体の逆方向作成は未対応（Description のみ同期） |
-
-## 8. ファイル構成（開発者向け）
+## 8. ファイル構成
 
 ```
 BookStory/
-├── apps/web/                      # Web カタログ (Next.js)
-│   ├── src/lib/design-tokens.ts   # トークン Single Source of Truth
-│   ├── src/lib/theme.ts           # MUI テーマ（design-tokens から生成）
-│   ├── src/app/api/publish/       # Figma → GitHub 中継
-│   ├── src/app/api/export/        # Web → Figma トークン提供
-│   └── src/app/api/catalog/       # カタログ JSON 提供
-├── packages/figma-plugin/         # Figma プラグイン
-│   ├── src/code.ts                # プラグインロジック
-│   ├── build.mjs                  # ビルド + UI HTML
-│   └── manifest.json              # プラグイン設定
+├── apps/web/                        # Web カタログ
+│   ├── src/lib/design-tokens.ts     # トークン Single Source of Truth
+│   ├── src/lib/theme.ts             # MUI テーマ（design-tokens から生成）
+│   ├── src/app/api/publish/         # Figma → GitHub 中継
+│   ├── src/app/api/export/          # Web → Figma トークン提供
+│   └── src/app/api/catalog/         # カタログ JSON 提供
+├── packages/figma-plugin/           # Figma プラグイン
+│   ├── src/code.ts                  # スキャン + ノードツリー抽出
+│   ├── build.mjs                    # ビルド + UI HTML
+│   └── manifest.json
+├── docs/
+│   └── SPEC.md                      # この仕様書
 └── .bookstory/
-    └── figma-catalog.json         # Figma スキャン結果（自動生成）
+    └── figma-catalog.json           # Figma スキャン結果（自動生成）
 ```
