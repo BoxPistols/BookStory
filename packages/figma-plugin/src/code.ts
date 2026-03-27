@@ -436,6 +436,15 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       const res = await fetch(serverUrl + "/api/export");
       const data = await res.json();
 
+      // カウンター（最終サマリー用）
+      let colorCreated = 0;
+      let colorUpdated = 0;
+      let spacingCreated = 0;
+      let spacingUpdated = 0;
+      let typoCreated = 0;
+      let typoUpdated = 0;
+      let compSynced = 0;
+
       // Color Variables を作成/更新
       if (data.colors) {
         figma.ui.postMessage({ type: "status", message: "Color Variables を更新中...", level: "info" });
@@ -483,8 +492,6 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       }
 
       // Spacing Variables を作成/更新
-      let spacingCreated = 0;
-      let spacingUpdated = 0;
       if (data.spacing) {
         figma.ui.postMessage({ type: "status", message: "Spacing Variables を更新中...", level: "info" });
 
@@ -517,8 +524,6 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       }
 
       // Typography Text Styles を作成/更新
-      let typoCreated = 0;
-      let typoUpdated = 0;
       if (data.typography) {
         figma.ui.postMessage({ type: "status", message: "Typography Styles を更新中...", level: "info" });
 
@@ -581,7 +586,6 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       }
 
       // コンポーネント Description を同期
-      let compSynced = 0;
       if (data.components && Array.isArray(data.components)) {
         figma.ui.postMessage({ type: "status", message: "コンポーネント情報を同期中...", level: "info" });
 
