@@ -49,8 +49,15 @@ const REQUIRED_TEXT_PROPS: Record<string, PropDefinition[]> = {
   Stepper: [{ name: "step", type: "number", defaultValue: 1, min: 0, max: 2 }],
 };
 
+// URL ハッシュから初期選択を復元
+function getInitialId(): string | null {
+  if (typeof window === "undefined") return null;
+  const hash = window.location.hash.slice(1);
+  return hash || null;
+}
+
 export default function Home() {
-  const [selectedId, setSelectedId] = useState<string | null>("button");
+  const [selectedId, setSelectedId] = useState<string | null>(getInitialId);
   const [propValues, setPropValues] = useState<Record<string, Record<string, unknown>>>({});
   const [inspectActive, setInspectActive] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -131,6 +138,8 @@ export default function Home() {
   const handleSelect = (id: string) => {
     setSelectedId(id);
     setInspectActive(false);
+    // URL ハッシュに保存（リロードで復元可能）
+    window.history.replaceState(null, "", "#" + id);
   };
 
   const handleReset = useCallback(() => {
@@ -185,7 +194,7 @@ export default function Home() {
       const expanded: Record<string, string>[] = [];
       for (const combo of combinations) {
         for (const val of values) {
-          expanded.push({ ...combo, [key.charAt(0).toLowerCase() + key.slice(1)]: val });
+          expanded.push({ ...combo, [key.charAt(0).toLowerCase() + key.slice(1)]: val.toLowerCase() });
         }
       }
       combinations.length = 0;
