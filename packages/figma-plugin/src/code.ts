@@ -677,4 +677,84 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
       });
     }
   }
+
+  if (msg.type === "organize-layout") {
+    try {
+      figma.ui.postMessage({ type: "status", message: "レイアウトを整理中...", level: "info" });
+
+      const currentPage = figma.currentPage;
+
+      // カテゴリ定義
+      const categories: { title: string; names: string[] }[] = [
+        { title: "Variant Components", names: ["Button", "Chip", "Alert", "Badge", "Switch"] },
+        { title: "Input", names: ["Checkbox", "Radio", "Slider", "Rating", "TextField"] },
+        { title: "Display", names: ["Avatar", "Tooltip", "Skeleton", "Card", "IconButton", "Fab"] },
+        { title: "Navigation", names: ["Breadcrumbs", "Pagination", "Tabs", "Stepper", "AppBar"] },
+        { title: "Feedback", names: ["CircularProgress", "LinearProgress", "Snackbar", "Dialog"] },
+        { title: "Surface", names: ["Accordion", "Drawer", "Table"] },
+        { title: "Layout", names: ["Divider"] },
+      ];
+
+      // 名前→ノードマップ
+      const nodeMap: Record<string, SceneNode> = {};
+      for (const child of currentPage.children) {
+        nodeMap[child.name] = child;
+      }
+
+      let currentY = 0;
+      const COL_GAP = 40;
+      const ROW_GAP = 32;
+      const SECTION_GAP = 80;
+      const MAX_X = 1200;
+      const placed: Record<string, boolean> = {};
+
+      for (const cat of categories) {
+        let rowX = 0;
+        let rowMaxH = 0;
+        // セクション開始
+        currentY += 28 + 16;
+
+        for (const name of cat.names) {
+          const node = nodeMap[name];
+          if (!node) continue;
+
+          if (rowX > 0 && rowX + node.width > MAX_X) {
+            rowX = 0;
+            currentY += rowMaxH + ROW_GAP;
+            rowMaxH = 0;
+          }
+
+          node.x = rowX;
+          node.y = currentY;
+          placed[node.name] = true;
+
+          rowX += node.width + COL_GAP;
+          if (node.height > rowMaxH) rowMaxH = node.height;
+        }
+
+        currentY += rowMaxH + SECTION_GAP;
+      }
+
+      // 未配置ノードを末尾に
+      for (const key of Object.keys(nodeMap)) {
+        if (!placed[key]) {
+          nodeMap[key].x = 0;
+          nodeMap[key].y = currentY;
+          currentY += nodeMap[key].height + ROW_GAP;
+        }
+      }
+
+      figma.ui.postMessage({
+        type: "status",
+        message: Object.keys(placed).length + " コンポーネントを整理しました",
+        level: "success",
+      });
+    } catch (err) {
+      figma.ui.postMessage({
+        type: "status",
+        message: "レイアウトエラー: " + String(err),
+        level: "error",
+      });
+    }
+  }
 };

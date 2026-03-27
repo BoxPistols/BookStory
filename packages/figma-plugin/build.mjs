@@ -30,6 +30,8 @@ const uiHtml = `<!DOCTYPE html>
     .btn-publish:disabled { background: #ccc; cursor: not-allowed; }
     .btn-import { background: #fff; color: #2642be; border: 2px solid #2642be; }
     .btn-import:hover { background: #e8eaf6; }
+    .btn-layout { background: #fff; color: #666; border: 1px solid #ddd; font-size: 12px; }
+    .btn-layout:hover { background: #f5f5f5; }
     .status { padding: 12px; border-radius: 8px; margin-top: 12px; font-size: 12px; display: none; word-break: break-all; }
     .status.show { display: block; }
     .status.success { background: #E8F5E9; color: #2E7D32; }
@@ -56,6 +58,7 @@ const uiHtml = `<!DOCTYPE html>
   <button class="btn btn-primary" id="scan">コンポーネントをスキャン</button>
   <button class="btn btn-publish" id="publish" disabled>コードに反映する</button>
   <button class="btn btn-import" id="importWeb">Webを取り込む</button>
+  <button class="btn btn-layout" id="layoutBtn">レイアウト整理</button>
 
   <div class="status" id="status"></div>
 
@@ -68,6 +71,7 @@ const uiHtml = `<!DOCTYPE html>
     var scanBtn = document.getElementById('scan');
     var publishBtn = document.getElementById('publish');
     var importBtn = document.getElementById('importWeb');
+    var layoutBtn = document.getElementById('layoutBtn');
     var statusEl = document.getElementById('status');
     var countEl = document.getElementById('count');
     var metaEl = document.getElementById('meta');
@@ -85,6 +89,10 @@ const uiHtml = `<!DOCTYPE html>
 
     scanBtn.onclick = function() {
       parent.postMessage({ pluginMessage: { type: 'scan' } }, '*');
+    };
+
+    layoutBtn.onclick = function() {
+      parent.postMessage({ pluginMessage: { type: 'organize-layout' } }, '*');
     };
 
     importBtn.onclick = function() {
