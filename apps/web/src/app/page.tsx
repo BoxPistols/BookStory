@@ -16,7 +16,8 @@ import { FigmaRenderer, FigmaVariantGrid } from "@/components/FigmaRenderer";
 import type { FigmaNodeData } from "@/components/FigmaRenderer";
 import { TokenViewer } from "@/components/TokenViewer";
 import { useCatalog } from "@/lib/use-catalog";
-import { useKeyboardNav, getShortcutHints } from "@/lib/use-keyboard-nav";
+import { useKeyboardNav } from "@/lib/use-keyboard-nav";
+import { TopPage } from "@/components/TopPage";
 import {
   sidebarItems as demoSidebarItems,
   componentProps,
@@ -170,7 +171,8 @@ export default function Home() {
     mergedValues[prop.name] = currentValues[prop.name] ?? prop.defaultValue;
   }
 
-  // Figmaトークンビュー
+  // ページ判定
+  const isTopPage = !selectedId;
   const isFigmaTokenView = selectedId?.startsWith("figma-token-") ?? false;
   const figmaTokenType = isFigmaTokenView ? selectedId!.replace("figma-token-", "") : null;
   const isScannedView = selectedId === "sync-log";
@@ -229,6 +231,18 @@ export default function Home() {
         <Header onMenuToggle={() => setMobileOpen(true)} />
 
         <Box sx={{ flex: 1, display: "flex", flexDirection: { xs: "column", md: "row" }, overflow: "hidden" }}>
+          {isTopPage && (
+            <TopPage
+              tokenCounts={{
+                color: catalog ? (catalog as { tokens?: { type: string }[] }).tokens?.filter((t) => t.type === "color").length || 0 : 0,
+                typography: catalog ? (catalog as { tokens?: { type: string }[] }).tokens?.filter((t) => t.type === "typography").length || 0 : 0,
+                spacing: catalog ? (catalog as { tokens?: { type: string }[] }).tokens?.filter((t) => t.type === "spacing").length || 0 : 0,
+              }}
+              components={figmaComponents.map((c) => ({ name: c.name, id: c.id, description: c.description }))}
+              onSelect={handleSelect}
+            />
+          )}
+
           {isFigmaTokenView && catalog && (() => {
             const allTokens = (catalog as { tokens?: { name: string; type: string; value: unknown; modes?: Record<string, unknown> }[] }).tokens || [];
             const filtered = allTokens.filter((t) => t.type === figmaTokenType);
