@@ -10,6 +10,9 @@ export interface CatalogComponent {
   description?: string;
   props: { name: string; type: string; required: boolean; defaultValue?: string; options?: string[] }[];
   exportName: string;
+  variants?: Record<string, string[]>;
+  nodeTree?: unknown;
+  variantTrees?: Record<string, unknown>;
 }
 
 export interface Catalog {

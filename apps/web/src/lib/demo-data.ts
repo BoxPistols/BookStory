@@ -104,40 +104,62 @@ export const componentProps: Record<string, PropDefinition[]> = {
   ],
 };
 
+// Props を安全に文字列化（undefined / デフォルト値は除外）
+function prop(name: string, value: unknown, defaultVal?: string): string | null {
+  if (value === undefined || value === null || value === "" || value === defaultVal) return null;
+  if (typeof value === "boolean") return value ? name : null;
+  return `${name}="${value}"`;
+}
+
 export function generateCode(componentId: string, values: Record<string, unknown>): string {
   switch (componentId) {
     case "button": {
-      const p = [];
-      if (values.variant !== "contained") p.push(`variant="${values.variant}"`);
-      if (values.color !== "primary") p.push(`color="${values.color}"`);
-      if (values.size !== "medium") p.push(`size="${values.size}"`);
-      if (values.disabled) p.push("disabled");
+      const p = [
+        prop("variant", values.variant, "contained"),
+        prop("color", values.color, "primary"),
+        prop("size", values.size, "medium"),
+        prop("disabled", values.disabled),
+      ].filter(Boolean);
       return `import Button from "@mui/material/Button";\n\n<Button ${p.join(" ")}>\n  ${values.label || "ボタン"}\n</Button>`;
     }
     case "textfield": {
-      const p = [];
-      if (values.label) p.push(`label="${values.label}"`);
-      if (values.placeholder) p.push(`placeholder="${values.placeholder}"`);
-      if (values.variant !== "outlined") p.push(`variant="${values.variant}"`);
-      if (values.size !== "medium") p.push(`size="${values.size}"`);
-      if (values.required) p.push("required");
-      if (values.disabled) p.push("disabled");
-      if (values.error) p.push("error");
-      if (values.helperText) p.push(`helperText="${values.helperText}"`);
-      return `import { CustomTextField } from "@myapp/ui";\n\n<CustomTextField\n  ${p.join("\n  ")}\n/>`;
+      const p = [
+        prop("label", values.label),
+        prop("placeholder", values.placeholder),
+        prop("variant", values.variant, "outlined"),
+        prop("size", values.size, "medium"),
+        prop("required", values.required),
+        prop("disabled", values.disabled),
+        prop("error", values.error),
+        prop("helperText", values.helperText),
+      ].filter(Boolean);
+      return `import TextField from "@mui/material/TextField";\n\n<TextField\n  ${p.join("\n  ")}\n/>`;
     }
     case "card":
-      return `import Card from "@mui/material/Card";\nimport CardContent from "@mui/material/CardContent";\nimport Typography from "@mui/material/Typography";\n\n<Card elevation={${values.elevation}}>\n  <CardContent>\n    <Typography variant="h6">${values.title}</Typography>\n    <Typography variant="body2">${values.content}</Typography>\n  </CardContent>\n</Card>`;
+      return `import Card from "@mui/material/Card";\nimport CardContent from "@mui/material/CardContent";\nimport Typography from "@mui/material/Typography";\n\n<Card elevation={${values.elevation || 1}}>\n  <CardContent>\n    <Typography variant="h6">${values.title || "タイトル"}</Typography>\n    <Typography variant="body2">${values.content || "コンテンツ"}</Typography>\n  </CardContent>\n</Card>`;
     case "chip": {
-      const p = [`label="${values.label}"`];
-      if (values.variant !== "filled") p.push(`variant="${values.variant}"`);
-      if (values.color !== "primary") p.push(`color="${values.color}"`);
-      if (values.size !== "medium") p.push(`size="${values.size}"`);
+      const p = [
+        prop("label", values.label || "チップ"),
+        prop("variant", values.variant, "filled"),
+        prop("color", values.color, "primary"),
+        prop("size", values.size, "medium"),
+      ].filter(Boolean);
       return `import Chip from "@mui/material/Chip";\n\n<Chip ${p.join(" ")} />`;
     }
-    case "alert":
-      return `import Alert from "@mui/material/Alert";\n\n<Alert severity="${values.severity}" variant="${values.variant}">\n  ${values.message}\n</Alert>`;
-    default:
-      return "// コンポーネントを選択してください";
+    case "alert": {
+      const p = [
+        prop("severity", values.severity, "info"),
+        prop("variant", values.variant, "standard"),
+      ].filter(Boolean);
+      return `import Alert from "@mui/material/Alert";\n\n<Alert ${p.join(" ")}>\n  ${values.message || "メッセージ"}\n</Alert>`;
+    }
+    default: {
+      // 汎用コード生成（Figmaスキャンから自動）
+      const name = componentId.charAt(0).toUpperCase() + componentId.slice(1);
+      const p = Object.entries(values)
+        .filter(function([, v]) { return v !== undefined && v !== null && v !== ""; })
+        .map(function([k, v]) { return `${k}="${v}"`; });
+      return `import ${name} from "@mui/material/${name}";\n\n<${name} ${p.join(" ")} />`;
+    }
   }
 }
