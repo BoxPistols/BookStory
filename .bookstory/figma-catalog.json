@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-27T05:24:08.163Z",
+  "generatedAt": "2026-03-27T12:51:17.344Z",
   "source": "figma",
   "components": [
     {
       "id": "29:56",
       "name": "Button",
-      "description": "基本ボタン。Contained/Outlined/Text バリアント",
+      "description": "ユーザーのアクションを誘導するためのインタラクション要素",
       "variants": {
         "Variant": [
           "Contained",
@@ -54,201 +54,1725 @@
           ],
           "defaultValue": "Small"
         }
-      ]
+      ],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Primary, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      },
+      "variantTrees": {
+        "Variant=Contained, Color=Primary, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Primary, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "background-color": "#2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Primary, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Primary, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "background-color": "#2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Primary, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Primary, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "background-color": "#2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Secondary, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Secondary, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "background-color": "#696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Secondary, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Secondary, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "background-color": "#696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Secondary, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Secondary, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "background-color": "#696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Error, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Error, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "background-color": "#da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Error, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Error, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "background-color": "#da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Contained, Color=Error, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Contained, Color=Error, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "background-color": "#da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#ffffff"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Primary, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Primary, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "border": "1px solid #2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#2642be"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Primary, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Primary, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "border": "1px solid #2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#2642be"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Primary, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Primary, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "border": "1px solid #2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#2642be"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Secondary, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Secondary, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "border": "1px solid #696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#696881"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Secondary, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Secondary, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "border": "1px solid #696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#696881"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Secondary, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Secondary, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "border": "1px solid #696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#696881"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Error, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Error, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "border": "1px solid #da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#da3737"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Error, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Error, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "border": "1px solid #da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#da3737"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Error, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Error, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "border": "1px solid #da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#da3737"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Primary, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Primary, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#2642be"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Primary, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Primary, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#2642be"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Primary, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Primary, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#2642be"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Secondary, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Secondary, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#696881"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Secondary, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Secondary, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#696881"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Secondary, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Secondary, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#696881"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Error, Size=Small": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Error, Size=Small",
+          "css": {
+            "width": "63px",
+            "height": "27px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "6px 12px 6px 12px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#da3737"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Error, Size=Medium": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Error, Size=Medium",
+          "css": {
+            "width": "78px",
+            "height": "33px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "8px 16px 8px 16px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "14px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#da3737"
+              },
+              "text": "Button"
+            }
+          ]
+        },
+        "Variant=Text, Color=Error, Size=Large": {
+          "type": "COMPONENT",
+          "name": "Variant=Text, Color=Error, Size=Large",
+          "css": {
+            "width": "96px",
+            "height": "39px",
+            "border-radius": "8px",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "10px 22px 10px 22px",
+            "justify-content": "center",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Button",
+              "css": {
+                "font-size": "16px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "700",
+                "color": "#da3737"
+              },
+              "text": "Button"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "29:2",
       "name": "Variant=Contained, Color=Primary, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Primary, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:4",
       "name": "Variant=Contained, Color=Primary, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Primary, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:6",
       "name": "Variant=Contained, Color=Primary, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Primary, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:8",
       "name": "Variant=Contained, Color=Secondary, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Secondary, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "background-color": "#696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:10",
       "name": "Variant=Contained, Color=Secondary, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Secondary, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "background-color": "#696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:12",
       "name": "Variant=Contained, Color=Secondary, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Secondary, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "background-color": "#696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:14",
       "name": "Variant=Contained, Color=Error, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Error, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "background-color": "#da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:16",
       "name": "Variant=Contained, Color=Error, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Error, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "background-color": "#da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:18",
       "name": "Variant=Contained, Color=Error, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Contained, Color=Error, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "background-color": "#da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:20",
       "name": "Variant=Outlined, Color=Primary, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Primary, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "border": "1px solid #2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#2642be"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:22",
       "name": "Variant=Outlined, Color=Primary, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Primary, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "border": "1px solid #2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#2642be"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:24",
       "name": "Variant=Outlined, Color=Primary, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Primary, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "border": "1px solid #2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#2642be"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:26",
       "name": "Variant=Outlined, Color=Secondary, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Secondary, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "border": "1px solid #696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#696881"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:28",
       "name": "Variant=Outlined, Color=Secondary, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Secondary, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "border": "1px solid #696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#696881"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:30",
       "name": "Variant=Outlined, Color=Secondary, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Secondary, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "border": "1px solid #696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#696881"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:32",
       "name": "Variant=Outlined, Color=Error, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Error, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "border": "1px solid #da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#da3737"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:34",
       "name": "Variant=Outlined, Color=Error, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Error, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "border": "1px solid #da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#da3737"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:36",
       "name": "Variant=Outlined, Color=Error, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Error, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "border": "1px solid #da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#da3737"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:38",
       "name": "Variant=Text, Color=Primary, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Primary, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#2642be"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:40",
       "name": "Variant=Text, Color=Primary, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Primary, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#2642be"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:42",
       "name": "Variant=Text, Color=Primary, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Primary, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#2642be"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:44",
       "name": "Variant=Text, Color=Secondary, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Secondary, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#696881"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:46",
       "name": "Variant=Text, Color=Secondary, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Secondary, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#696881"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:48",
       "name": "Variant=Text, Color=Secondary, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Secondary, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#696881"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:50",
       "name": "Variant=Text, Color=Error, Size=Small",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Error, Size=Small",
+        "css": {
+          "width": "63px",
+          "height": "27px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "6px 12px 6px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#da3737"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:52",
       "name": "Variant=Text, Color=Error, Size=Medium",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Error, Size=Medium",
+        "css": {
+          "width": "78px",
+          "height": "33px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "8px 16px 8px 16px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#da3737"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "29:54",
       "name": "Variant=Text, Color=Error, Size=Large",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Text, Color=Error, Size=Large",
+        "css": {
+          "width": "96px",
+          "height": "39px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "10px 22px 10px 22px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Button",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#da3737"
+            },
+            "text": "Button"
+          }
+        ]
+      }
     },
     {
       "id": "31:18",
       "name": "Chip",
-      "description": "チップ。タグやフィルターに使用",
+      "description": "タグ、ステータス、フィルター条件などコンパクトな情報の表示",
       "variants": {
         "Variant": [
           "Filled",
@@ -282,68 +1806,529 @@
           ],
           "defaultValue": "Primary"
         }
-      ]
+      ],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Filled, Color=Primary",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "Chip"
+          }
+        ]
+      },
+      "variantTrees": {
+        "Variant=Filled, Color=Primary": {
+          "type": "COMPONENT",
+          "name": "Variant=Filled, Color=Primary",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "background-color": "#2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#ffffff"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Primary": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Primary",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "border": "1px solid #2642be",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#2642be"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Filled, Color=Secondary": {
+          "type": "COMPONENT",
+          "name": "Variant=Filled, Color=Secondary",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "background-color": "#696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#ffffff"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Secondary": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Secondary",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "border": "1px solid #696881",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#696881"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Filled, Color=Success": {
+          "type": "COMPONENT",
+          "name": "Variant=Filled, Color=Success",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "background-color": "#46ab4a",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#ffffff"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Success": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Success",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "border": "1px solid #46ab4a",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#46ab4a"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Filled, Color=Error": {
+          "type": "COMPONENT",
+          "name": "Variant=Filled, Color=Error",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "background-color": "#da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#ffffff"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Error": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Error",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "border": "1px solid #da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#da3737"
+              },
+              "text": "Chip"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "31:2",
       "name": "Variant=Filled, Color=Primary",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Filled, Color=Primary",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:4",
       "name": "Variant=Outlined, Color=Primary",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Primary",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "border": "1px solid #2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2642be"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:6",
       "name": "Variant=Filled, Color=Secondary",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Filled, Color=Secondary",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "background-color": "#696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:8",
       "name": "Variant=Outlined, Color=Secondary",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Secondary",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "border": "1px solid #696881",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#696881"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:10",
       "name": "Variant=Filled, Color=Success",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Filled, Color=Success",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "background-color": "#46ab4a",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:12",
       "name": "Variant=Outlined, Color=Success",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Success",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "border": "1px solid #46ab4a",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#46ab4a"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:14",
       "name": "Variant=Filled, Color=Error",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Filled, Color=Error",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "background-color": "#da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:16",
       "name": "Variant=Outlined, Color=Error",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Error",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "border": "1px solid #da3737",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#da3737"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
     },
     {
       "id": "31:31",
       "name": "Alert",
-      "description": "アラート。Success/Warning/Error/Info のフィードバック",
+      "description": "操作結果の通知、警告、エラー表示のフィードバックメッセージ",
       "variants": {
         "Severity": [
           "Success",
@@ -364,308 +2349,2427 @@
           ],
           "defaultValue": "Success"
         }
-      ]
+      ],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Severity=Success",
+        "css": {
+          "width": "263px",
+          "height": "44px",
+          "border-radius": "8px",
+          "background-color": "#e8f5e9",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "12px",
+          "padding": "12px 16px 12px 16px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "ELLIPSE",
+            "name": "Ellipse",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#46ab4a"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "This is a success alert message.",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2d1f4e"
+            },
+            "text": "This is a success alert message."
+          }
+        ]
+      },
+      "variantTrees": {
+        "Severity=Success": {
+          "type": "COMPONENT",
+          "name": "Severity=Success",
+          "css": {
+            "width": "263px",
+            "height": "44px",
+            "border-radius": "8px",
+            "background-color": "#e8f5e9",
+            "display": "flex",
+            "flex-direction": "row",
+            "gap": "12px",
+            "padding": "12px 16px 12px 16px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "ELLIPSE",
+              "name": "Ellipse",
+              "css": {
+                "width": "20px",
+                "height": "20px",
+                "background-color": "#46ab4a"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "This is a success alert message.",
+              "css": {
+                "font-size": "13px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#2d1f4e"
+              },
+              "text": "This is a success alert message."
+            }
+          ]
+        },
+        "Severity=Warning": {
+          "type": "COMPONENT",
+          "name": "Severity=Warning",
+          "css": {
+            "width": "262px",
+            "height": "44px",
+            "border-radius": "8px",
+            "background-color": "#fff3e0",
+            "display": "flex",
+            "flex-direction": "row",
+            "gap": "12px",
+            "padding": "12px 16px 12px 16px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "ELLIPSE",
+              "name": "Ellipse",
+              "css": {
+                "width": "20px",
+                "height": "20px",
+                "background-color": "#eb8117"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "This is a warning alert message.",
+              "css": {
+                "font-size": "13px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#2d1f4e"
+              },
+              "text": "This is a warning alert message."
+            }
+          ]
+        },
+        "Severity=Error": {
+          "type": "COMPONENT",
+          "name": "Severity=Error",
+          "css": {
+            "width": "242px",
+            "height": "44px",
+            "border-radius": "8px",
+            "background-color": "#ffebee",
+            "display": "flex",
+            "flex-direction": "row",
+            "gap": "12px",
+            "padding": "12px 16px 12px 16px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "ELLIPSE",
+              "name": "Ellipse",
+              "css": {
+                "width": "20px",
+                "height": "20px",
+                "background-color": "#da3737"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "This is a error alert message.",
+              "css": {
+                "font-size": "13px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#2d1f4e"
+              },
+              "text": "This is a error alert message."
+            }
+          ]
+        },
+        "Severity=Info": {
+          "type": "COMPONENT",
+          "name": "Severity=Info",
+          "css": {
+            "width": "236px",
+            "height": "44px",
+            "border-radius": "8px",
+            "background-color": "#e0f7fa",
+            "display": "flex",
+            "flex-direction": "row",
+            "gap": "12px",
+            "padding": "12px 16px 12px 16px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "ELLIPSE",
+              "name": "Ellipse",
+              "css": {
+                "width": "20px",
+                "height": "20px",
+                "background-color": "#1dafc2"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "This is a info alert message.",
+              "css": {
+                "font-size": "13px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#2d1f4e"
+              },
+              "text": "This is a info alert message."
+            }
+          ]
+        }
+      }
     },
     {
       "id": "31:19",
       "name": "Severity=Success",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Severity=Success",
+        "css": {
+          "width": "263px",
+          "height": "44px",
+          "border-radius": "8px",
+          "background-color": "#e8f5e9",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "12px",
+          "padding": "12px 16px 12px 16px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "ELLIPSE",
+            "name": "Ellipse",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#46ab4a"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "This is a success alert message.",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2d1f4e"
+            },
+            "text": "This is a success alert message."
+          }
+        ]
+      }
     },
     {
       "id": "31:22",
       "name": "Severity=Warning",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Severity=Warning",
+        "css": {
+          "width": "262px",
+          "height": "44px",
+          "border-radius": "8px",
+          "background-color": "#fff3e0",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "12px",
+          "padding": "12px 16px 12px 16px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "ELLIPSE",
+            "name": "Ellipse",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#eb8117"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "This is a warning alert message.",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2d1f4e"
+            },
+            "text": "This is a warning alert message."
+          }
+        ]
+      }
     },
     {
       "id": "31:25",
       "name": "Severity=Error",
       "description": "",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Severity=Error",
+        "css": {
+          "width": "242px",
+          "height": "44px",
+          "border-radius": "8px",
+          "background-color": "#ffebee",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "12px",
+          "padding": "12px 16px 12px 16px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "ELLIPSE",
+            "name": "Ellipse",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#da3737"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "This is a error alert message.",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2d1f4e"
+            },
+            "text": "This is a error alert message."
+          }
+        ]
+      }
     },
     {
       "id": "31:28",
       "name": "Severity=Info",
       "description": "",
       "variants": {},
-      "props": []
-    },
-    {
-      "id": "53:33",
-      "name": "Switch",
-      "description": "トグルスイッチ。On/Off の状態切り替え",
-      "variants": {
-        "State": [
-          "On",
-          "Off"
-        ],
-        "Size": [
-          "Small",
-          "Medium"
-        ]
-      },
-      "props": [
-        {
-          "name": "state",
-          "type": "select",
-          "options": [
-            "On",
-            "Off"
-          ],
-          "defaultValue": "On"
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Severity=Info",
+        "css": {
+          "width": "236px",
+          "height": "44px",
+          "border-radius": "8px",
+          "background-color": "#e0f7fa",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "12px",
+          "padding": "12px 16px 12px 16px",
+          "align-items": "center"
         },
-        {
-          "name": "size",
-          "type": "select",
-          "options": [
-            "Small",
-            "Medium"
-          ],
-          "defaultValue": "Small"
-        }
-      ]
-    },
-    {
-      "id": "53:21",
-      "name": "State=On, Size=Small",
-      "description": "",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "53:24",
-      "name": "State=On, Size=Medium",
-      "description": "",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "53:27",
-      "name": "State=Off, Size=Small",
-      "description": "",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "53:30",
-      "name": "State=Off, Size=Medium",
-      "description": "",
-      "variants": {},
-      "props": []
+        "children": [
+          {
+            "type": "ELLIPSE",
+            "name": "Ellipse",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#1dafc2"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "This is a info alert message.",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2d1f4e"
+            },
+            "text": "This is a info alert message."
+          }
+        ]
+      }
     },
     {
       "id": "53:34",
       "name": "Divider",
-      "description": "区切り線。コンテンツ間のセパレーター",
+      "description": "コンテンツの区切り線。セクション間の視覚的な分離に使用。\n\n**ガイドライン:**\n- リスト内ではインセット（左マージン16px）\n- セクション区切りはフル幅",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Divider",
+        "css": {
+          "width": "300px",
+          "height": "1px",
+          "background-color": "#e8e0f0",
+          "display": "flex",
+          "flex-direction": "column"
+        }
+      }
     },
     {
       "id": "71:3",
       "name": "Badge/Primary/Small",
       "description": "バッジ。アイコン右上にカウンターやステータスを表示",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Badge/Primary/Small",
+        "css": {
+          "width": "44px",
+          "height": "44px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "icon",
+            "css": {
+              "width": "28px",
+              "height": "28px",
+              "border-radius": "6px",
+              "background-color": "#bfbfc7"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "badge",
+            "css": {
+              "width": "16px",
+              "height": "16px",
+              "background-color": "#2642be",
+              "border": "2px solid #ffffff"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "count",
+            "css": {
+              "font-size": "9px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff",
+              "text-align": "center"
+            },
+            "text": "3"
+          }
+        ]
+      }
     },
     {
       "id": "71:7",
       "name": "Badge/Primary/Medium",
       "description": "バッジ。アイコン右上にカウンターやステータスを表示",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Badge/Primary/Medium",
+        "css": {
+          "width": "52px",
+          "height": "52px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "icon",
+            "css": {
+              "width": "36px",
+              "height": "36px",
+              "border-radius": "6px",
+              "background-color": "#bfbfc7"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "badge",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#2642be",
+              "border": "2px solid #ffffff"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "count",
+            "css": {
+              "font-size": "11px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff",
+              "text-align": "center"
+            },
+            "text": "12"
+          }
+        ]
+      }
     },
     {
       "id": "71:11",
       "name": "Badge/Error/Small",
       "description": "バッジ。アイコン右上にカウンターやステータスを表示",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Badge/Error/Small",
+        "css": {
+          "width": "44px",
+          "height": "44px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "icon",
+            "css": {
+              "width": "28px",
+              "height": "28px",
+              "border-radius": "6px",
+              "background-color": "#bfbfc7"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "badge",
+            "css": {
+              "width": "16px",
+              "height": "16px",
+              "background-color": "#da3737",
+              "border": "2px solid #ffffff"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "count",
+            "css": {
+              "font-size": "9px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff",
+              "text-align": "center"
+            },
+            "text": "3"
+          }
+        ]
+      }
     },
     {
       "id": "71:15",
       "name": "Badge/Error/Medium",
       "description": "バッジ。アイコン右上にカウンターやステータスを表示",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Badge/Error/Medium",
+        "css": {
+          "width": "52px",
+          "height": "52px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "icon",
+            "css": {
+              "width": "36px",
+              "height": "36px",
+              "border-radius": "6px",
+              "background-color": "#bfbfc7"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "badge",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#da3737",
+              "border": "2px solid #ffffff"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "count",
+            "css": {
+              "font-size": "11px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff",
+              "text-align": "center"
+            },
+            "text": "12"
+          }
+        ]
+      }
     },
     {
       "id": "71:19",
       "name": "Badge/Success/Small",
       "description": "バッジ。アイコン右上にカウンターやステータスを表示",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Badge/Success/Small",
+        "css": {
+          "width": "44px",
+          "height": "44px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "icon",
+            "css": {
+              "width": "28px",
+              "height": "28px",
+              "border-radius": "6px",
+              "background-color": "#bfbfc7"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "badge",
+            "css": {
+              "width": "16px",
+              "height": "16px",
+              "background-color": "#46ab4a",
+              "border": "2px solid #ffffff"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "count",
+            "css": {
+              "font-size": "9px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff",
+              "text-align": "center"
+            },
+            "text": "3"
+          }
+        ]
+      }
     },
     {
       "id": "71:23",
       "name": "Badge/Success/Medium",
       "description": "バッジ。アイコン右上にカウンターやステータスを表示",
       "variants": {},
-      "props": []
-    },
-    {
-      "id": "55:4",
-      "name": "IconButton",
-      "description": "アイコンのみのボタン。ツールバーやコンパクトUIに使用",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "55:6",
-      "name": "Fab",
-      "description": "フローティングアクションボタン。主要アクションを強調",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "55:8",
-      "name": "Checkbox",
-      "description": "チェックボックス。複数選択のフォーム入力",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "55:11",
-      "name": "Radio",
-      "description": "ラジオボタン。排他選択のフォーム入力",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "55:14",
-      "name": "Slider",
-      "description": "スライダー。範囲内の値を連続的に調整",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "55:17",
-      "name": "Rating",
-      "description": "星レーティング。5段階評価",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "55:23",
-      "name": "TextField",
-      "description": "テキスト入力フィールド。フォームの基本入力要素",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:2",
-      "name": "Avatar",
-      "description": "アバター。ユーザー画像やイニシャルを表示",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:4",
-      "name": "Tooltip",
-      "description": "ツールチップ。ホバー時に補足情報を表示",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:6",
-      "name": "Skeleton",
-      "description": "スケルトン。コンテンツ読み込み中のプレースホルダー",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:8",
-      "name": "CircularProgress",
-      "description": "円形プログレス。読み込み状態を表示",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:9",
-      "name": "Breadcrumbs",
-      "description": "パンくずリスト。ナビゲーション階層を表示",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:15",
-      "name": "Pagination",
-      "description": "ページネーション。ページ送りナビゲーション",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:30",
-      "name": "Dialog",
-      "description": "ダイアログ。確認やフォーム入力のモーダル",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:33",
-      "name": "Snackbar",
-      "description": "スナックバー。一時的な通知メッセージ",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:35",
-      "name": "Tabs",
-      "description": "タブ。コンテンツの切り替えナビゲーション",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:39",
-      "name": "Stepper",
-      "description": "ステッパー。マルチステップフローの進行表示",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:49",
-      "name": "Accordion",
-      "description": "アコーディオン。折りたたみ可能なコンテンツセクション",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:52",
-      "name": "AppBar",
-      "description": "アプリバー。ページ上部のナビゲーションバー",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:54",
-      "name": "Table",
-      "description": "テーブル。データの表形式表示",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "58:67",
-      "name": "Drawer",
-      "description": "ドロワー。サイドメニューやナビゲーションパネル",
-      "variants": {},
-      "props": []
-    },
-    {
-      "id": "73:2",
-      "name": "Card",
-      "description": "カード。画像・テキスト・アクションをグループ化",
-      "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Badge/Success/Medium",
+        "css": {
+          "width": "52px",
+          "height": "52px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "icon",
+            "css": {
+              "width": "36px",
+              "height": "36px",
+              "border-radius": "6px",
+              "background-color": "#bfbfc7"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "badge",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "background-color": "#46ab4a",
+              "border": "2px solid #ffffff"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "count",
+            "css": {
+              "font-size": "11px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff",
+              "text-align": "center"
+            },
+            "text": "12"
+          }
+        ]
+      }
     },
     {
       "id": "73:9",
       "name": "LinearProgress",
-      "description": "線形プログレスバー。処理の進捗を表示",
+      "description": "MUI LinearProgress — 線形プログレスバー",
       "variants": {},
-      "props": []
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "LinearProgress",
+        "css": {
+          "width": "240px",
+          "height": "4px",
+          "border-radius": "2px",
+          "background-color": "#e0e0ed",
+          "overflow": "hidden"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "bar",
+            "css": {
+              "width": "144px",
+              "height": "4px",
+              "border-radius": "2px",
+              "background-color": "#2642bd"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "73:2",
+      "name": "Card",
+      "description": "MUI Card — タイトル、説明、アクション付き",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Card",
+        "css": {
+          "width": "280px",
+          "height": "10px",
+          "border-radius": "8px",
+          "background-color": "#ffffff",
+          "box-shadow": "0px 2px 8px rgba(0,0,0,0.08)",
+          "display": "flex",
+          "flex-direction": "column"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "image",
+            "css": {
+              "width": "280px",
+              "height": "140px",
+              "background-color": "#e0e0e5"
+            }
+          },
+          {
+            "type": "FRAME",
+            "name": "content",
+            "css": {
+              "width": "280px",
+              "height": "89px",
+              "display": "flex",
+              "flex-direction": "column",
+              "gap": "8px",
+              "padding": "16px 16px 16px 16px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "title",
+                "css": {
+                  "font-size": "16px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "700",
+                  "color": "#2e1f4f"
+                },
+                "text": "カードタイトル"
+              },
+              {
+                "type": "TEXT",
+                "name": "description",
+                "css": {
+                  "font-size": "12px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#5c4d7a"
+                },
+                "text": "カードの説明テキスト。コンポーネントの詳細を表示します。"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "actions",
+            "css": {
+              "width": "280px",
+              "height": "32px",
+              "display": "flex",
+              "flex-direction": "row",
+              "gap": "8px",
+              "padding": "8px 8px 8px 8px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "label",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "700",
+                  "color": "#2642bd"
+                },
+                "text": "詳細を見る"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:67",
+      "name": "Drawer",
+      "description": "サイドナビゲーション。\n\n**バリアント:** permanent/temporary/persistent",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Drawer",
+        "css": {
+          "width": "200px",
+          "height": "220px",
+          "border-radius": "8px",
+          "background-color": "#ffffff",
+          "display": "flex",
+          "flex-direction": "column"
+        },
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "80px",
+              "height": "43px",
+              "display": "flex",
+              "flex-direction": "row",
+              "padding": "12px 0px 12px 16px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "メニュー",
+                "css": {
+                  "font-size": "16px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "700",
+                  "color": "#000000"
+                },
+                "text": "メニュー"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "86px",
+              "height": "37px",
+              "display": "flex",
+              "flex-direction": "row",
+              "padding": "10px 0px 10px 16px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "受信トレイ",
+                "css": {
+                  "font-size": "14px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "受信トレイ"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "86px",
+              "height": "37px",
+              "display": "flex",
+              "flex-direction": "row",
+              "padding": "10px 0px 10px 16px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "スター付き",
+                "css": {
+                  "font-size": "14px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "スター付き"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "72px",
+              "height": "37px",
+              "display": "flex",
+              "flex-direction": "row",
+              "padding": "10px 0px 10px 16px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "送信済み",
+                "css": {
+                  "font-size": "14px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "送信済み"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "58px",
+              "height": "37px",
+              "display": "flex",
+              "flex-direction": "row",
+              "padding": "10px 0px 10px 16px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "下書き",
+                "css": {
+                  "font-size": "14px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "下書き"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:54",
+      "name": "Table",
+      "description": "データ一覧テーブル。\n\n**ガイドライン:**\n- ヘッダー固定\n- 行ホバーハイライト",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Table",
+        "css": {
+          "width": "360px",
+          "height": "100px",
+          "border-radius": "8px",
+          "background-color": "#ffffff",
+          "border": "1px solid #e0e0e0",
+          "display": "flex",
+          "flex-direction": "column"
+        },
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "183px",
+              "height": "32px",
+              "background-color": "#fafafa",
+              "display": "flex",
+              "flex-direction": "row",
+              "gap": "40px",
+              "padding": "8px 0px 8px 12px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "名前",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "700",
+                  "color": "#000000"
+                },
+                "text": "名前"
+              },
+              {
+                "type": "TEXT",
+                "name": "役割",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "700",
+                  "color": "#000000"
+                },
+                "text": "役割"
+              },
+              {
+                "type": "TEXT",
+                "name": "スコア",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "700",
+                  "color": "#000000"
+                },
+                "text": "スコア"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "199px",
+              "height": "32px",
+              "display": "flex",
+              "flex-direction": "row",
+              "gap": "40px",
+              "padding": "8px 0px 8px 12px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "田中",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "田中"
+              },
+              {
+                "type": "TEXT",
+                "name": "デザイナー",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "デザイナー"
+              },
+              {
+                "type": "TEXT",
+                "name": "92",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "92"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "200px",
+              "height": "32px",
+              "display": "flex",
+              "flex-direction": "row",
+              "gap": "40px",
+              "padding": "8px 0px 8px 12px",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "鈴木",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "鈴木"
+              },
+              {
+                "type": "TEXT",
+                "name": "エンジニア",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "エンジニア"
+              },
+              {
+                "type": "TEXT",
+                "name": "88",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#000000"
+                },
+                "text": "88"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:52",
+      "name": "AppBar",
+      "description": "アプリヘッダーバー。\n\n**ガイドライン:**\n- 固定位置\n- モバイルはハンバーガー",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "AppBar",
+        "css": {
+          "width": "400px",
+          "height": "48px",
+          "border-radius": "8px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "8px",
+          "padding": "0px 0px 0px 16px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "アプリタイトル",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "アプリタイトル"
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:49",
+      "name": "Accordion",
+      "description": "折りたたみパネル。FAQ、設定に使用。\n\n**ガイドライン:**\n- デフォルトで1つ開く",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Accordion",
+        "css": {
+          "width": "360px",
+          "height": "80px",
+          "border-radius": "8px",
+          "background-color": "#ffffff",
+          "border": "1px solid #e0e0e0",
+          "display": "flex",
+          "flex-direction": "column",
+          "gap": "8px",
+          "padding": "12px 0px 0px 16px"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "セクション 1",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#000000"
+            },
+            "text": "セクション 1"
+          },
+          {
+            "type": "TEXT",
+            "name": "コンテンツ表示",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": "コンテンツ表示"
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:35",
+      "name": "Tabs",
+      "description": "コンテンツ切り替えタブ。\n\n**ガイドライン:**\n- 2〜6個\n- ラベルは短く",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Tabs",
+        "css": {
+          "width": "300px",
+          "height": "40px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "24px",
+          "padding": "0px 0px 0px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "タブ1",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#2642be"
+            },
+            "text": "タブ1"
+          },
+          {
+            "type": "TEXT",
+            "name": "タブ2",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": "タブ2"
+          },
+          {
+            "type": "TEXT",
+            "name": "タブ3",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": "タブ3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:33",
+      "name": "Snackbar",
+      "description": "一時的な通知メッセージ。\n\n**ガイドライン:**\n- 4〜8秒で自動消去",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Snackbar",
+        "css": {
+          "width": "300px",
+          "height": "48px",
+          "border-radius": "8px",
+          "background-color": "#333333",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "12px",
+          "padding": "0px 0px 0px 16px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "操作が完了しました",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "操作が完了しました"
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:30",
+      "name": "Dialog",
+      "description": "モーダルダイアログ。\n\n**ガイドライン:**\n- ESC/オーバーレイで閉じる\n- 破壊的操作は赤色",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Dialog",
+        "css": {
+          "width": "320px",
+          "height": "140px",
+          "border-radius": "8px",
+          "background-color": "#ffffff",
+          "display": "flex",
+          "flex-direction": "column",
+          "gap": "12px",
+          "padding": "16px 20px 12px 20px"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "確認",
+            "css": {
+              "font-size": "18px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#000000"
+            },
+            "text": "確認"
+          },
+          {
+            "type": "TEXT",
+            "name": "この操作を実行しますか？",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": "この操作を実行しますか？"
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:15",
+      "name": "Pagination",
+      "description": "ページネーション。\n\n**ガイドライン:**\n- 10件以上のリストで使用",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Pagination",
+        "css": {
+          "width": "280px",
+          "height": "36px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "4px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "9px",
+              "height": "32px",
+              "border-radius": "16px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "<",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#333333"
+                },
+                "text": "<"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "7px",
+              "height": "32px",
+              "border-radius": "16px",
+              "background-color": "#2642be",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "1",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#ffffff"
+                },
+                "text": "1"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "8px",
+              "height": "32px",
+              "border-radius": "16px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "2",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#333333"
+                },
+                "text": "2"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "9px",
+              "height": "32px",
+              "border-radius": "16px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "3",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#333333"
+                },
+                "text": "3"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "11px",
+              "height": "32px",
+              "border-radius": "16px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "...",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#333333"
+                },
+                "text": "..."
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "15px",
+              "height": "32px",
+              "border-radius": "16px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "10",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#333333"
+                },
+                "text": "10"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "Frame",
+            "css": {
+              "width": "9px",
+              "height": "32px",
+              "border-radius": "16px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": ">",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#333333"
+                },
+                "text": ">"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:9",
+      "name": "Breadcrumbs",
+      "description": "パンくずリスト。\n\n**ガイドライン:**\n- 3階層以上で使用",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Breadcrumbs",
+        "css": {
+          "width": "280px",
+          "height": "28px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "6px",
+          "padding": "0px 0px 0px 4px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "ホーム",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2642be"
+            },
+            "text": "ホーム"
+          },
+          {
+            "type": "TEXT",
+            "name": "/",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": " / "
+          },
+          {
+            "type": "TEXT",
+            "name": "カテゴリ",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#2642be"
+            },
+            "text": "カテゴリ"
+          },
+          {
+            "type": "TEXT",
+            "name": "/",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": " / "
+          },
+          {
+            "type": "TEXT",
+            "name": "現在",
+            "css": {
+              "font-size": "13px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": "現在"
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:8",
+      "name": "CircularProgress",
+      "description": "円形進捗インジケーター。",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "CircularProgress",
+        "css": {
+          "width": "40px",
+          "height": "40px",
+          "border-radius": "20px",
+          "border": "3px solid #2642be",
+          "display": "flex",
+          "flex-direction": "column"
+        }
+      }
+    },
+    {
+      "id": "58:6",
+      "name": "Skeleton",
+      "description": "読み込み中プレースホルダー。\n\n**バリアント:** text/rectangular/circular",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Skeleton",
+        "css": {
+          "width": "200px",
+          "height": "40px",
+          "border-radius": "4px",
+          "background-color": "#e0e0e0",
+          "display": "flex",
+          "flex-direction": "column"
+        }
+      }
+    },
+    {
+      "id": "58:4",
+      "name": "Tooltip",
+      "description": "ホバー時の補足テキスト。\n\n**ガイドライン:**\n- 1〜2行以内\n- アイコンボタンに必須",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Tooltip",
+        "css": {
+          "width": "120px",
+          "height": "32px",
+          "border-radius": "4px",
+          "background-color": "#424242",
+          "display": "flex",
+          "flex-direction": "column",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "ツールチップ",
+            "css": {
+              "font-size": "11px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "ツールチップ"
+          }
+        ]
+      }
+    },
+    {
+      "id": "58:2",
+      "name": "Avatar",
+      "description": "ユーザーのプロフィール表示。\n\n**バリアント:** 画像/イニシャル/アイコン\n\n**ガイドライン:**\n- 画像なしはイニシャルにフォールバック",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Avatar",
+        "css": {
+          "width": "40px",
+          "height": "40px",
+          "border-radius": "20px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "column",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "A",
+            "css": {
+              "font-size": "16px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "A"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55:23",
+      "name": "TextField",
+      "description": "テキスト入力フィールド。フォーム全般に使用。\n\n**バリアント:**\n- `outlined`: デフォルト\n- `filled`: 背景色ありの領域\n- `standard`: インラインの軽い入力\n\n**ガイドライン:**\n- ラベルは上部に常に表示\n- 必須項目には赤い「*」\n- エラー時はhelperTextに修正方法を表示",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "TextField",
+        "css": {
+          "width": "280px",
+          "height": "56px",
+          "border-radius": "8px",
+          "border": "1px solid #bdbdbd",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "0px 0px 0px 12px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "テキスト入力",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#757575"
+            },
+            "text": "テキスト入力"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55:17",
+      "name": "Rating",
+      "description": "5段階評価の入力・表示。レビュー、フィードバックに使用。\n\n**ガイドライン:**\n- 読み取り専用と入力可能を明確に区別\n- 0.5刻みの半星評価も対応可能",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Rating",
+        "css": {
+          "width": "140px",
+          "height": "28px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "2px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "★",
+            "css": {
+              "font-size": "20px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#faaf00"
+            },
+            "text": "★"
+          },
+          {
+            "type": "TEXT",
+            "name": "★",
+            "css": {
+              "font-size": "20px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#faaf00"
+            },
+            "text": "★"
+          },
+          {
+            "type": "TEXT",
+            "name": "★",
+            "css": {
+              "font-size": "20px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#faaf00"
+            },
+            "text": "★"
+          },
+          {
+            "type": "TEXT",
+            "name": "☆",
+            "css": {
+              "font-size": "20px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#e0e0e0"
+            },
+            "text": "☆"
+          },
+          {
+            "type": "TEXT",
+            "name": "☆",
+            "css": {
+              "font-size": "20px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#e0e0e0"
+            },
+            "text": "☆"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55:14",
+      "name": "Slider",
+      "description": "範囲値の入力。音量、明るさ、フィルター値に使用。\n\n**ガイドライン:**\n- 最小値と最大値を明示\n- ステップ値を適切に設定\n- リアルタイムフィードバックを表示",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Slider",
+        "css": {
+          "width": "200px",
+          "height": "20px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "Rectangle",
+            "css": {
+              "width": "180px",
+              "height": "4px",
+              "border-radius": "2px",
+              "background-color": "#2642be"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "Ellipse",
+            "css": {
+              "width": "16px",
+              "height": "16px",
+              "background-color": "#2642be"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "55:11",
+      "name": "Radio",
+      "description": "排他選択のためのラジオボタン。\n\n**ガイドライン:**\n- 2〜5個の選択肢に使用\n- 6個以上はSelectを検討\n- デフォルト選択を設定",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Radio",
+        "css": {
+          "width": "160px",
+          "height": "40px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "8px",
+          "padding": "0px 0px 0px 8px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "ELLIPSE",
+            "name": "Ellipse",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "border": "2px solid #2642be"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "選択肢",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#000000"
+            },
+            "text": "選択肢"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55:8",
+      "name": "Checkbox",
+      "description": "複数選択のためのチェックボックス。\n\n**ガイドライン:**\n- 単一のON/OFFにはSwitchを使用\n- 複数選択肢にはCheckboxを使用\n- ラベルは右側に配置",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Checkbox",
+        "css": {
+          "width": "160px",
+          "height": "40px",
+          "border-radius": "8px",
+          "display": "flex",
+          "flex-direction": "row",
+          "gap": "8px",
+          "padding": "0px 0px 0px 8px",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "Rectangle",
+            "css": {
+              "width": "20px",
+              "height": "20px",
+              "border-radius": "4px",
+              "background-color": "#2642be"
+            }
+          },
+          {
+            "type": "TEXT",
+            "name": "チェック",
+            "css": {
+              "font-size": "14px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#000000"
+            },
+            "text": "チェック"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55:6",
+      "name": "Fab",
+      "description": "画面上の主要アクション。フローティングアクションボタン。\n\n**バリアント:**\n- `default`: 通常サイズ\n- `small`: コンパクト\n- `extended`: テキスト付き\n\n**ガイドライン:**\n- 1画面に1つだけ\n- 右下に配置するのが標準",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Fab",
+        "css": {
+          "width": "56px",
+          "height": "56px",
+          "border-radius": "28px",
+          "background-color": "#2642be",
+          "display": "flex",
+          "flex-direction": "row",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "+",
+            "css": {
+              "font-size": "24px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#ffffff"
+            },
+            "text": "+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55:4",
+      "name": "IconButton",
+      "description": "アイコンのみのボタン。ツールバー、閉じるボタンに使用。\n\n**ガイドライン:**\n- アクセシビリティのためaria-labelを必ず付与\n- サイズはsmall/medium/largeから選択",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "IconButton",
+        "css": {
+          "width": "48px",
+          "height": "48px",
+          "border-radius": "8px",
+          "background-color": "#e3f2fd",
+          "display": "flex",
+          "flex-direction": "row",
+          "justify-content": "center",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "✉",
+            "css": {
+              "font-size": "18px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "700",
+              "color": "#000000"
+            },
+            "text": "✉"
+          }
+        ]
+      }
+    },
+    {
+      "id": "102:3",
+      "name": "Switch/On/Small",
+      "description": "トグルスイッチ。On/Off の状態切り替え",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Switch/On/Small",
+        "css": {
+          "width": "38px",
+          "height": "22px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "track",
+            "css": {
+              "width": "34px",
+              "height": "14px",
+              "border-radius": "7px",
+              "background-color": "rgba(92,111,214,0.50)"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "thumb",
+            "css": {
+              "width": "18px",
+              "height": "18px",
+              "background-color": "#2642be",
+              "box-shadow": "0px 1px 3px rgba(0,0,0,0.20)"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "102:6",
+      "name": "Switch/On/Medium",
+      "description": "トグルスイッチ。On/Off の状態切り替え",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Switch/On/Medium",
+        "css": {
+          "width": "48px",
+          "height": "28px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "track",
+            "css": {
+              "width": "44px",
+              "height": "22px",
+              "border-radius": "11px",
+              "background-color": "rgba(92,111,214,0.50)"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "thumb",
+            "css": {
+              "width": "24px",
+              "height": "24px",
+              "background-color": "#2642be",
+              "box-shadow": "0px 1px 3px rgba(0,0,0,0.20)"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "102:9",
+      "name": "Switch/Off/Small",
+      "description": "トグルスイッチ。On/Off の状態切り替え",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Switch/Off/Small",
+        "css": {
+          "width": "38px",
+          "height": "22px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "track",
+            "css": {
+              "width": "34px",
+              "height": "14px",
+              "border-radius": "7px",
+              "background-color": "#d9d9de"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "thumb",
+            "css": {
+              "width": "18px",
+              "height": "18px",
+              "background-color": "#b2b2b8",
+              "box-shadow": "0px 1px 3px rgba(0,0,0,0.20)"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "102:12",
+      "name": "Switch/Off/Medium",
+      "description": "トグルスイッチ。On/Off の状態切り替え",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Switch/Off/Medium",
+        "css": {
+          "width": "48px",
+          "height": "28px"
+        },
+        "children": [
+          {
+            "type": "RECTANGLE",
+            "name": "track",
+            "css": {
+              "width": "44px",
+              "height": "22px",
+              "border-radius": "11px",
+              "background-color": "#d9d9de"
+            }
+          },
+          {
+            "type": "ELLIPSE",
+            "name": "thumb",
+            "css": {
+              "width": "24px",
+              "height": "24px",
+              "background-color": "#b2b2b8",
+              "box-shadow": "0px 1px 3px rgba(0,0,0,0.20)"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "103:2",
+      "name": "Stepper",
+      "description": "ステッパー。マルチステップフローの進行表示",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Stepper",
+        "css": {
+          "width": "192px",
+          "height": "56px",
+          "display": "flex",
+          "flex-direction": "row",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "FRAME",
+            "name": "step-1",
+            "css": {
+              "width": "32px",
+              "height": "56px",
+              "display": "flex",
+              "flex-direction": "column",
+              "gap": "8px",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "circle",
+                "css": {
+                  "width": "32px",
+                  "height": "32px",
+                  "border-radius": "16px",
+                  "background-color": "#2642be",
+                  "display": "flex",
+                  "flex-direction": "row",
+                  "justify-content": "center",
+                  "align-items": "center",
+                  "overflow": "hidden"
+                },
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "num",
+                    "css": {
+                      "font-size": "13px",
+                      "font-family": "'Inter', sans-serif",
+                      "font-weight": "700",
+                      "color": "#ffffff",
+                      "text-align": "center"
+                    },
+                    "text": "✓"
+                  }
+                ]
+              },
+              {
+                "type": "TEXT",
+                "name": "label",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#2d1f4e",
+                  "text-align": "center"
+                },
+                "text": "入力"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "connector",
+            "css": {
+              "width": "48px",
+              "height": "32px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "RECTANGLE",
+                "name": "line",
+                "css": {
+                  "width": "48px",
+                  "height": "2px",
+                  "background-color": "#2642be"
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "step-2",
+            "css": {
+              "width": "32px",
+              "height": "56px",
+              "display": "flex",
+              "flex-direction": "column",
+              "gap": "8px",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "circle",
+                "css": {
+                  "width": "32px",
+                  "height": "32px",
+                  "border-radius": "16px",
+                  "background-color": "#2642be",
+                  "display": "flex",
+                  "flex-direction": "row",
+                  "justify-content": "center",
+                  "align-items": "center",
+                  "overflow": "hidden"
+                },
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "num",
+                    "css": {
+                      "font-size": "13px",
+                      "font-family": "'Inter', sans-serif",
+                      "font-weight": "700",
+                      "color": "#ffffff",
+                      "text-align": "center"
+                    },
+                    "text": "2"
+                  }
+                ]
+              },
+              {
+                "type": "TEXT",
+                "name": "label",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "700",
+                  "color": "#2d1f4e",
+                  "text-align": "center"
+                },
+                "text": "確認"
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "connector",
+            "css": {
+              "width": "48px",
+              "height": "32px",
+              "display": "flex",
+              "flex-direction": "row",
+              "justify-content": "center",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "RECTANGLE",
+                "name": "line",
+                "css": {
+                  "width": "48px",
+                  "height": "2px",
+                  "background-color": "#bdbdc2"
+                }
+              }
+            ]
+          },
+          {
+            "type": "FRAME",
+            "name": "step-3",
+            "css": {
+              "width": "32px",
+              "height": "56px",
+              "display": "flex",
+              "flex-direction": "column",
+              "gap": "8px",
+              "align-items": "center",
+              "overflow": "hidden"
+            },
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "circle",
+                "css": {
+                  "width": "32px",
+                  "height": "32px",
+                  "border-radius": "16px",
+                  "background-color": "#bdbdc2",
+                  "display": "flex",
+                  "flex-direction": "row",
+                  "justify-content": "center",
+                  "align-items": "center",
+                  "overflow": "hidden"
+                },
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "num",
+                    "css": {
+                      "font-size": "13px",
+                      "font-family": "'Inter', sans-serif",
+                      "font-weight": "700",
+                      "color": "#ffffff",
+                      "text-align": "center"
+                    },
+                    "text": "3"
+                  }
+                ]
+              },
+              {
+                "type": "TEXT",
+                "name": "label",
+                "css": {
+                  "font-size": "13px",
+                  "font-family": "'Inter', sans-serif",
+                  "font-weight": "400",
+                  "color": "#8f8f94",
+                  "text-align": "center"
+                },
+                "text": "完了"
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "tokens": [
@@ -677,8 +4781,8 @@
         "fontWeight": "Bold",
         "fontSize": 32,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 38.400001525878906
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -694,8 +4798,8 @@
         "fontWeight": "Bold",
         "fontSize": 28,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 33.599998474121094
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -711,8 +4815,8 @@
         "fontWeight": "Bold",
         "fontSize": 24,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 28.799999237060547
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -728,8 +4832,8 @@
         "fontWeight": "Bold",
         "fontSize": 22,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 28.600000381469727
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -745,8 +4849,8 @@
         "fontWeight": "Bold",
         "fontSize": 20,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 26
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -759,11 +4863,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Semi Bold",
+        "fontWeight": "Bold",
         "fontSize": 18,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 24.299999237060547
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -776,11 +4880,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Semi Bold",
+        "fontWeight": "Bold",
         "fontSize": 16,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 22.399999618530273
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -796,8 +4900,8 @@
         "fontWeight": "Bold",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 19.600000381469727
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -813,8 +4917,8 @@
         "fontWeight": "Bold",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 16.799999237060547
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -830,8 +4934,8 @@
         "fontWeight": "Regular",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 23.100000381469727
+          "unit": "PERCENT",
+          "value": 160.0000023841858
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -847,8 +4951,8 @@
         "fontWeight": "Regular",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 19.200000762939453
+          "unit": "PERCENT",
+          "value": 160.0000023841858
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -864,8 +4968,8 @@
         "fontWeight": "Regular",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 16.799999237060547
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -878,15 +4982,15 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Semi Bold",
+        "fontWeight": "Regular",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 16.799999237060547
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
-          "unit": "PIXELS",
-          "value": 1
+          "unit": "PERCENT",
+          "value": 0
         }
       }
     },
@@ -898,8 +5002,8 @@
         "fontWeight": "Semi Bold",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 19.600000381469727
+          "unit": "PERCENT",
+          "value": 160.0000023841858
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -915,8 +5019,8 @@
         "fontWeight": "Bold",
         "fontSize": 22,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 28.600000381469727
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -932,8 +5036,8 @@
         "fontWeight": "Bold",
         "fontSize": 20,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 26
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -946,11 +5050,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Semi Bold",
+        "fontWeight": "Bold",
         "fontSize": 18,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 24.299999237060547
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -963,11 +5067,11 @@
       "type": "typography",
       "value": {
         "fontFamily": "Inter",
-        "fontWeight": "Semi Bold",
+        "fontWeight": "Regular",
         "fontSize": 16,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 22.399999618530273
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -983,8 +5087,8 @@
         "fontWeight": "Regular",
         "fontSize": 14,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 21
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -1000,8 +5104,8 @@
         "fontWeight": "Regular",
         "fontSize": 12,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 18
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
@@ -1017,8 +5121,8 @@
         "fontWeight": "Regular",
         "fontSize": 10,
         "lineHeight": {
-          "unit": "PIXELS",
-          "value": 14
+          "unit": "PERCENT",
+          "value": 139.9999976158142
         },
         "letterSpacing": {
           "unit": "PERCENT",
