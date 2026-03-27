@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-27T13:13:27.435Z",
+  "generatedAt": "2026-03-27T13:16:24.487Z",
   "source": "figma",
   "components": [
     {
@@ -1782,7 +1782,8 @@
           "Primary",
           "Secondary",
           "Success",
-          "Error"
+          "Error",
+          "Warning"
         ]
       },
       "props": [
@@ -1802,7 +1803,8 @@
             "Primary",
             "Secondary",
             "Success",
-            "Error"
+            "Error",
+            "Warning"
           ],
           "defaultValue": "Primary"
         }
@@ -2027,6 +2029,60 @@
         "Variant=Outlined, Color=Error": {
           "type": "COMPONENT",
           "name": "Variant=Outlined, Color=Error",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "border": "1px solid #da3737",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#da3737"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Filled, Color=Warning": {
+          "type": "COMPONENT",
+          "name": "Variant=Filled, Color=Warning",
+          "css": {
+            "width": "50px",
+            "height": "23px",
+            "border-radius": "16px",
+            "background-color": "#eb8117",
+            "display": "flex",
+            "flex-direction": "row",
+            "padding": "4px 12px 4px 12px",
+            "align-items": "center"
+          },
+          "children": [
+            {
+              "type": "TEXT",
+              "name": "Chip",
+              "css": {
+                "font-size": "12px",
+                "font-family": "'Inter', sans-serif",
+                "font-weight": "400",
+                "color": "#ffffff"
+              },
+              "text": "Chip"
+            }
+          ]
+        },
+        "Variant=Outlined, Color=Warning": {
+          "type": "COMPONENT",
+          "name": "Variant=Outlined, Color=Warning",
           "css": {
             "width": "50px",
             "height": "23px",
@@ -2319,6 +2375,74 @@
               "font-family": "'Inter', sans-serif",
               "font-weight": "400",
               "color": "#da3737"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
+    },
+    {
+      "id": "106:49",
+      "name": "Variant=Filled, Color=Warning",
+      "description": "",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Filled, Color=Warning",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "background-color": "#eb8117",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#ffffff"
+            },
+            "text": "Chip"
+          }
+        ]
+      }
+    },
+    {
+      "id": "106:46",
+      "name": "Variant=Outlined, Color=Warning",
+      "description": "",
+      "variants": {},
+      "props": [],
+      "nodeTree": {
+        "type": "COMPONENT",
+        "name": "Variant=Outlined, Color=Warning",
+        "css": {
+          "width": "50px",
+          "height": "23px",
+          "border-radius": "16px",
+          "border": "1px solid #eb8117",
+          "display": "flex",
+          "flex-direction": "row",
+          "padding": "4px 12px 4px 12px",
+          "align-items": "center"
+        },
+        "children": [
+          {
+            "type": "TEXT",
+            "name": "Chip",
+            "css": {
+              "font-size": "12px",
+              "font-family": "'Inter', sans-serif",
+              "font-weight": "400",
+              "color": "#eb8117"
             },
             "text": "Chip"
           }
