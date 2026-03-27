@@ -68,7 +68,8 @@ export default function Home() {
     const figmaComps: { id: string; name: string; description: string; props: PropDefinition[]; variantCount: number; variants?: Record<string, string[]> }[] = [];
 
     if (catalog) {
-      const topLevel = catalog.components.filter((c) => !c.name.includes("="));
+      // トップレベルコンポーネントのみ（バリアント "=" と子コンポーネント "/" を除外）
+      const topLevel = catalog.components.filter((c) => !c.name.includes("=") && !c.name.includes("/"));
       for (const comp of topLevel) {
         const variantCount = catalog.components.filter(
           (v) => v.name.includes("=") && v.id.startsWith(comp.id.split(":")[0])
@@ -319,7 +320,10 @@ export default function Home() {
                 onInspectChange={setInspectActive}
               >
                 {/* Figma ノードツリーがあれば完全再現、なければ MUI フォールバック */}
-                {(activeFigma as Record<string, unknown>).nodeTree ? (
+                {(() => {
+                  const nt = (activeFigma as Record<string, unknown>).nodeTree;
+                  return nt && typeof nt === "object" && "css" in (nt as Record<string, unknown>);
+                })() ? (
                   <FigmaRenderer nodeTree={(activeFigma as Record<string, unknown>).nodeTree as FigmaNodeData} />
                 ) : figmaRendererId ? (
                   <ComponentRenderer
