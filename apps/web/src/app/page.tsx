@@ -160,7 +160,7 @@ export default function Home() {
   const isScannedView = selectedId === "sync-log";
   // 旧Exampleのトークンビュー（削除済みだが安全のため残す）
   const isTokenView = false;
-  const isComponentView = selectedId && !isTokenView && !isScannedView && !isFigmaView;
+  const isComponentView = selectedId && !isTokenView && !isScannedView && !isFigmaView && !isFigmaTokenView;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
 
   // FigmaコンポーネントのレンダラーID（レジストリ自動マッチ）
