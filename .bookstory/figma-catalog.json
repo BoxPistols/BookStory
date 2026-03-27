@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-27T13:12:40.630Z",
+  "generatedAt": "2026-03-27T13:13:27.435Z",
   "source": "figma",
   "components": [
     {
@@ -2031,7 +2031,7 @@
             "width": "50px",
             "height": "23px",
             "border-radius": "16px",
-            "border": "1px solid #da3737",
+            "border": "1px solid #eb8117",
             "display": "flex",
             "flex-direction": "row",
             "padding": "4px 12px 4px 12px",
@@ -2045,7 +2045,7 @@
                 "font-size": "12px",
                 "font-family": "'Inter', sans-serif",
                 "font-weight": "400",
-                "color": "#da3737"
+                "color": "#eb8117"
               },
               "text": "Chip"
             }
