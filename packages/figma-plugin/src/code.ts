@@ -355,10 +355,42 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
         }
       }
 
+      // コンポーネント Description を同期
+      if (data.components && Array.isArray(data.components)) {
+        figma.ui.postMessage({ type: "status", message: "コンポーネント情報を同期中...", level: "info" });
+
+        const allComps = figma.root.findAllWithCriteria({
+          types: ["COMPONENT", "COMPONENT_SET"],
+        });
+
+        // 名前→ノードのマップ（小文字で照合）
+        const compMap: Record<string, (ComponentNode | ComponentSetNode)[]> = {};
+        for (const node of allComps) {
+          const key = node.name.toLowerCase().replace(/\s+/g, "");
+          if (!compMap[key]) compMap[key] = [];
+          compMap[key].push(node);
+        }
+
+        let synced = 0;
+        for (const meta of data.components as Array<{ name: string; description: string; category: string; variants?: string[] }>) {
+          const key = meta.name.toLowerCase().replace(/\s+/g, "");
+          const nodes = compMap[key];
+          if (!nodes) continue;
+
+          for (const node of nodes) {
+            // Web側の description で上書き
+            node.description = meta.description;
+            synced++;
+          }
+        }
+
+        figma.ui.postMessage({ type: "status", message: synced + " コンポーネントの情報を同期", level: "info" });
+      }
+
       figma.ui.postMessage({
         type: "import-result",
         success: true,
-        message: "Webトークンを取り込みました",
+        message: "Webトークン + コンポーネント情報を取り込みました",
       });
     } catch (err) {
       const message = (err && typeof err === "object" && "message" in err)
