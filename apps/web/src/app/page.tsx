@@ -193,8 +193,8 @@ export default function Home() {
   const figmaStatus = useMemo<"synced" | "outdated" | "missing">(() => {
     if (!catalog?.generatedAt) return "missing";
     const syncedAt = new Date(catalog.generatedAt).getTime();
-    const oneHourAgo = Date.now() - 60 * 60 * 1000;
-    if (syncedAt < oneHourAgo) return "outdated";
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    if (syncedAt < oneDayAgo) return "outdated";
     return "synced";
   }, [catalog]);
 

@@ -52,14 +52,6 @@ class PreviewErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return { hasError: true, error };
   }
 
-  static getDerivedStateFromProps(props: ErrorBoundaryProps, state: ErrorBoundaryState): ErrorBoundaryState | null {
-    // resetKey が変わったらエラー状態をリセット（コンポーネント切り替え時）
-    if (state.hasError && props.resetKey !== undefined) {
-      return null; // React will compare with previous props via key prop instead
-    }
-    return null;
-  }
-
   componentDidUpdate(prevProps: ErrorBoundaryProps) {
     if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
       this.setState({ hasError: false, error: null });

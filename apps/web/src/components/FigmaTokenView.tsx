@@ -3,7 +3,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import type { DesignToken } from "@bookstory/core";
+import type { DesignToken, ColorValue } from "@bookstory/core";
 
 interface FigmaTokenViewProps {
   tokenType: string;
@@ -25,10 +25,10 @@ export function FigmaTokenView({ tokenType, tokens }: FigmaTokenViewProps) {
       {tokenType === "color" && (
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(auto-fill, minmax(120px, 1fr))", md: "repeat(auto-fill, minmax(160px, 1fr))" }, gap: 2 }}>
           {filtered.map((t) => {
-            const val = t.value as { r?: number; g?: number; b?: number } | string;
+            const val = t.value as ColorValue;
             const hex = typeof val === "string" ? val
               : val && typeof val === "object" && typeof val.r === "number"
-                ? `#${Math.round(val.r * 255).toString(16).padStart(2, "0")}${Math.round(val.g! * 255).toString(16).padStart(2, "0")}${Math.round(val.b! * 255).toString(16).padStart(2, "0")}`
+                ? `#${Math.round(val.r * 255).toString(16).padStart(2, "0")}${Math.round((val.g ?? 0) * 255).toString(16).padStart(2, "0")}${Math.round((val.b ?? 0) * 255).toString(16).padStart(2, "0")}`
                 : "#000";
             return (
               <Paper key={t.name} variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>

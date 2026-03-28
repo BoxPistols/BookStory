@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { timingSafeEqual } from "crypto";
 import { corsHeaders } from "@/lib/cors";
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPO;
 const BOOKSTORY_API_KEY = process.env.BOOKSTORY_API_KEY;
+
+/** タイミング攻撃を防ぐ定数時間の文字列比較 */
+function safeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
+}
 
 function jsonRes(data: unknown, status = 200, headers: Record<string, string> = {}) {
   return NextResponse.json(data, { status, headers });
@@ -27,7 +34,7 @@ export async function POST(req: NextRequest) {
   }
   const authHeader = req.headers.get("authorization");
   const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
-  if (token !== BOOKSTORY_API_KEY) {
+  if (!token || !safeEqual(token, BOOKSTORY_API_KEY)) {
     return jsonRes({ error: "認証エラー: 無効なAPIキーです" }, 401, headers);
   }
 
@@ -35,15 +42,20 @@ export async function POST(req: NextRequest) {
     return jsonRes({ error: "サーバーにGITHUB_TOKEN / GITHUB_REPOが未設定です" }, 500, headers);
   }
 
-  // ペイロードサイズチェック
-  const contentLength = req.headers.get("content-length");
-  if (contentLength && parseInt(contentLength, 10) > MAX_PAYLOAD_SIZE) {
+  // ペイロードサイズチェック（実際のボディサイズで検証）
+  let rawBody: string;
+  try {
+    rawBody = await req.text();
+  } catch {
+    return jsonRes({ error: "リクエストボディの読み取りに失敗しました" }, 400, headers);
+  }
+  if (rawBody.length > MAX_PAYLOAD_SIZE) {
     return jsonRes({ error: "ペイロードが大きすぎます（上限: 5MB）" }, 413, headers);
   }
 
   let body: unknown;
   try {
-    body = await req.json();
+    body = JSON.parse(rawBody);
   } catch {
     return jsonRes({ error: "不正なJSONです" }, 400, headers);
   }

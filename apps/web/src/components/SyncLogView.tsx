@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -11,29 +12,33 @@ interface SyncLogViewProps {
 }
 
 export function SyncLogView({ catalog }: SyncLogViewProps) {
-  // バリアントを親コンポーネントにグルーピング
-  const grouped = new Map<string, { name: string; variants: number; props: number; source: string }>();
-  for (const c of catalog.components) {
-    const isVariant = c.name.includes("=");
-    const source = c.filePath ? "CLI" : "Figma";
-    if (isVariant) continue;
-    const variantCount = catalog.components.filter(
-      (v) => v.name.startsWith("Variant=") && v.id.startsWith(c.id.split(":")[0])
-    ).length;
-    grouped.set(c.id, {
-      name: c.name,
-      variants: variantCount,
-      props: c.props.length,
-      source,
-    });
-  }
-  const items = Array.from(grouped.values());
-  const figmaCount = items.filter((i) => i.source === "Figma").length;
-  const cliCount = items.filter((i) => i.source === "CLI").length;
-
-  const syncTime = catalog.generatedAt
-    ? new Date(catalog.generatedAt).toLocaleString("ja-JP")
-    : "—";
+  const { items, figmaCount, cliCount, syncTime } = useMemo(() => {
+    // バリアントを親コンポーネントにグルーピング
+    const grouped = new Map<string, { name: string; variants: number; props: number; source: string }>();
+    for (const c of catalog.components) {
+      const isVariant = c.name.includes("=");
+      const source = c.filePath ? "CLI" : "Figma";
+      if (isVariant) continue;
+      const variantCount = catalog.components.filter(
+        (v) => v.name.startsWith("Variant=") && v.id.startsWith(c.id.split(":")[0])
+      ).length;
+      grouped.set(c.id, {
+        name: c.name,
+        variants: variantCount,
+        props: c.props.length,
+        source,
+      });
+    }
+    const groupedItems = Array.from(grouped.values());
+    return {
+      items: groupedItems,
+      figmaCount: groupedItems.filter((i) => i.source === "Figma").length,
+      cliCount: groupedItems.filter((i) => i.source === "CLI").length,
+      syncTime: catalog.generatedAt
+        ? new Date(catalog.generatedAt).toLocaleString("ja-JP")
+        : "—",
+    };
+  }, [catalog]);
 
   return (
     <Box sx={{ flex: 1, p: { xs: 2, md: 5 }, overflow: "auto" }}>

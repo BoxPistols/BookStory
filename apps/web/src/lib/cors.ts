@@ -1,16 +1,30 @@
 import { NextRequest } from "next/server";
 
-const ALLOWED_ORIGIN = process.env.BOOKSTORY_ALLOWED_ORIGIN || "https://*.vercel.app";
+const ALLOWED_ORIGINS = (process.env.BOOKSTORY_ALLOWED_ORIGIN || "https://*.vercel.app")
+  .split(",")
+  .map((s) => s.trim());
+
+/**
+ * オリジンがパターンに一致するか判定（* はサブドメインワイルドカード）
+ * 正規表現を構築せず、文字列分割で安全にマッチング
+ */
+function isAllowedOrigin(origin: string): boolean {
+  return ALLOWED_ORIGINS.some((pattern) => {
+    if (!pattern.includes("*")) return origin === pattern;
+    // "https://*.vercel.app" → prefix="https://", suffix=".vercel.app"
+    const [prefix, suffix] = pattern.split("*", 2);
+    if (!origin.startsWith(prefix) || !origin.endsWith(suffix)) return false;
+    const middle = origin.slice(prefix.length, origin.length - suffix.length);
+    return middle.length > 0 && /^[a-zA-Z0-9-]+$/.test(middle);
+  });
+}
 
 /**
  * CORS ヘッダーを生成する共通ユーティリティ
- * ドットを正しくエスケープし、* を安全なサブドメインパターンに変換
  */
 export function corsHeaders(req: NextRequest, methods: string = "GET, OPTIONS") {
   const origin = req.headers.get("origin") || "";
-  // 正規表現特殊文字をエスケープ後、\* を [a-zA-Z0-9-]+ に変換
-  const escaped = ALLOWED_ORIGIN.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace("\\*", "[a-zA-Z0-9-]+");
-  const allowed = origin !== "" && new RegExp(`^${escaped}$`).test(origin);
+  const allowed = origin !== "" && isAllowedOrigin(origin);
   return {
     "Access-Control-Allow-Origin": allowed ? origin : "",
     "Access-Control-Allow-Methods": methods,

@@ -1,10 +1,12 @@
-export interface DesignToken {
-  name: string;
-  type: "color" | "spacing" | "typography" | "borderRadius" | "shadow" | "effect";
-  value: unknown;
-  figmaVariable?: string;
-  modes?: Record<string, unknown>;
-}
+export type ColorValue = string | { r: number; g: number; b: number; a?: number };
+export type TypographyValue = { fontSize?: number; fontWeight?: string; fontFamily?: string; lineHeight?: { value?: number } };
+export type SpacingValue = number;
+
+export type DesignToken =
+  | { name: string; type: "color"; value: ColorValue; figmaVariable?: string; modes?: Record<string, ColorValue> }
+  | { name: string; type: "typography"; value: TypographyValue; figmaVariable?: string; modes?: Record<string, TypographyValue> }
+  | { name: string; type: "spacing"; value: SpacingValue; figmaVariable?: string; modes?: Record<string, SpacingValue> }
+  | { name: string; type: "borderRadius" | "shadow" | "effect"; value: unknown; figmaVariable?: string; modes?: Record<string, unknown> };
 
 export interface PropDefinition {
   name: string;
