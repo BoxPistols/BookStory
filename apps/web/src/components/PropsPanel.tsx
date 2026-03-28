@@ -12,15 +12,9 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { alpha, useTheme } from "@mui/material/styles";
+import type { PropDefinition } from "@bookstory/core";
 
-export interface PropDefinition {
-  name: string;
-  type: "string" | "boolean" | "select" | "number" | "color";
-  defaultValue: unknown;
-  options?: string[];
-  min?: number;
-  max?: number;
-}
+export type { PropDefinition };
 
 interface PropsPanelProps {
   props: PropDefinition[];

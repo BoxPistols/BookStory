@@ -1,21 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { corsHeaders } from "@/lib/cors";
 import { getAllColors, TYPOGRAPHY, SPACING, SHAPE, COMPONENT_META } from "@/lib/design-tokens";
 
 // WebテーマからFigmaにインポート可能なトークンJSONを返す
-// CORSヘッダー付き（Figmaプラグインから直接fetch可能）
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
-
-export async function OPTIONS() {
-  return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
+export async function OPTIONS(req: NextRequest) {
+  return new NextResponse(null, { status: 204, headers: corsHeaders(req) });
 }
 
-export async function GET() {
-  // design-tokens.ts から自動生成（ハードコード二重管理なし）
+export async function GET(req: NextRequest) {
   const tokens = {
     colors: {
       light: getAllColors("light"),
@@ -27,5 +20,5 @@ export async function GET() {
     components: COMPONENT_META,
   };
 
-  return NextResponse.json(tokens, { headers: CORS_HEADERS });
+  return NextResponse.json(tokens, { headers: corsHeaders(req) });
 }

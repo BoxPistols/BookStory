@@ -1,36 +1,30 @@
 import { NextResponse } from "next/server";
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
+import type { CatalogComponent, Catalog, DesignToken } from "@bookstory/core";
 
-// GitHub Pages静的エクスポート対応
-export const dynamic = "force-static";
-
-interface CatalogComponent {
-  id: string;
-  name: string;
-  filePath?: string;
-  category: string;
-  props: { name: string; type: string; required: boolean; defaultValue?: string }[];
-  exportName?: string;
-}
-
-interface Catalog {
+interface RawCatalog {
   generatedAt: string | null;
   componentDir?: string;
   components: CatalogComponent[];
+  tokens?: DesignToken[];
 }
 
-function readJson(filePath: string): Catalog | null {
+function readJson(filePath: string): RawCatalog | null {
   if (!existsSync(filePath)) return null;
-  return JSON.parse(readFileSync(filePath, "utf-8"));
+  try {
+    return JSON.parse(readFileSync(filePath, "utf-8"));
+  } catch {
+    console.warn(`[BookStory] JSONパースエラー: ${filePath}`);
+    return null;
+  }
 }
 
 export async function GET() {
   const roots = [process.cwd(), resolve(process.cwd(), "../..")];
 
-  // CLIスキャン + Figmaプラグインの両ソースをマージ
   const components: CatalogComponent[] = [];
-  const tokens: unknown[] = [];
+  const tokens: DesignToken[] = [];
   const seen = new Set<string>();
   let generatedAt: string | null = null;
   let componentDir = "";
@@ -51,15 +45,14 @@ export async function GET() {
       if (!generatedAt || (figma.generatedAt && figma.generatedAt > generatedAt)) {
         generatedAt = figma.generatedAt;
       }
-      for (const c of (figma as { components: CatalogComponent[] }).components) {
+      for (const c of figma.components) {
         const comp = { ...c, category: c.category || "Figma" };
         if (!seen.has(comp.id)) { seen.add(comp.id); components.push(comp); }
       }
-      // トークンもマージ
-      const figmaTokens = (figma as { tokens?: unknown[] }).tokens;
-      if (figmaTokens) tokens.push(...figmaTokens);
+      if (figma.tokens) tokens.push(...figma.tokens);
     }
   }
 
-  return NextResponse.json({ generatedAt, componentDir, components, tokens });
+  const catalog: Catalog = { generatedAt, componentDir, components, tokens };
+  return NextResponse.json(catalog);
 }

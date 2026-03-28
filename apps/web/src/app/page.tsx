@@ -2,30 +2,28 @@
 
 import { useState, useCallback, useMemo } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
+import Alert from "@mui/material/Alert";
 import { Sidebar, SidebarItem } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Preview, VariantItem } from "@/components/Preview";
 import { PropsPanel, PropDefinition } from "@/components/PropsPanel";
 import { ComponentRenderer, REGISTERED_COMPONENTS } from "@/components/ComponentRenderer";
-import { FigmaRenderer, FigmaVariantGrid } from "@/components/FigmaRenderer";
+import { FigmaRenderer } from "@/components/FigmaRenderer";
 import type { FigmaNodeData } from "@/components/FigmaRenderer";
-import { TokenViewer } from "@/components/TokenViewer";
 import { useCatalog } from "@/lib/use-catalog";
 import { useKeyboardNav } from "@/lib/use-keyboard-nav";
 import { TopPage } from "@/components/TopPage";
+import { FigmaTokenView } from "@/components/FigmaTokenView";
+import { SyncLogView } from "@/components/SyncLogView";
+import { OnboardingGuide } from "@/components/OnboardingGuide";
+import type { DesignToken } from "@bookstory/core";
 import {
   sidebarItems as demoSidebarItems,
   componentProps,
   componentDescriptions,
   generateCode,
 } from "@/lib/demo-data";
-
-const tokenViews = ["colors", "typography", "spacing"] as const;
 
 // Figmaコンポーネント名→レンダラーID自動マッチ（レジストリに登録済みなら自動対応）
 const REGISTERED_SET = new Set(REGISTERED_COMPONENTS);
@@ -63,11 +61,12 @@ export default function Home() {
   const [propValues, setPropValues] = useState<Record<string, Record<string, unknown>>>({});
   const [inspectActive, setInspectActive] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { catalog } = useCatalog();
+  const { catalog, error } = useCatalog();
 
   // Figmaカタログからトップレベルコンポーネントを抽出してサイドバーに追加
-  const { sidebarItems, figmaComponents } = useMemo(() => {
-    const figmaComps: { id: string; name: string; description: string; props: PropDefinition[]; variantCount: number; variants?: Record<string, string[]> }[] = [];
+  const { sidebarItems, figmaComponents, tokens } = useMemo(() => {
+    const figmaComps: { id: string; name: string; description: string; props: PropDefinition[]; variantCount: number; variants?: Record<string, string[]>; nodeTree?: unknown }[] = [];
+    const allTokens: DesignToken[] = [];
 
     if (catalog) {
       // トップレベルコンポーネントのみ（バリアント "=" と子コンポーネント "/" を除外）
@@ -76,14 +75,14 @@ export default function Home() {
         const variantCount = catalog.components.filter(
           (v) => v.name.includes("=") && v.id.startsWith(comp.id.split(":")[0])
         ).length;
-        // Figma propsをPropDefinition形式に変換（MUIは小文字のためlowercase）
+        // Figma propsをPropDefinition形式に変換
         const props: PropDefinition[] = (comp.props || []).map((p) => {
           const opts = "options" in p ? (p as { options?: string[] }).options : undefined;
           const lcOpts = opts?.map((o) => o.toLowerCase());
           return {
             name: p.name,
             type: (p.type === "select" ? "select" : "string") as PropDefinition["type"],
-            defaultValue: p.defaultValue ? p.defaultValue.toLowerCase() : "",
+            defaultValue: p.defaultValue ? String(p.defaultValue).toLowerCase() : "",
             options: lcOpts,
           };
         });
@@ -101,8 +100,11 @@ export default function Home() {
           props,
           variantCount,
           variants: comp.variants,
+          nodeTree: comp.nodeTree,
         });
       }
+
+      if (catalog.tokens) allTokens.push(...catalog.tokens);
     }
 
     // コンポーネント項目
@@ -114,16 +116,15 @@ export default function Home() {
 
     // トークンカテゴリをFigmaデータから生成
     const tokenItems: SidebarItem[] = [];
-    if (catalog) {
-      const tokenTypes = new Set((catalog as { tokens?: { type: string }[] }).tokens?.map((t) => t.type) || []);
-      if (tokenTypes.has("color")) tokenItems.push({ id: "figma-token-color", label: "Color", category: "Tokens" });
-      if (tokenTypes.has("typography")) tokenItems.push({ id: "figma-token-typography", label: "Typography", category: "Tokens" });
-      if (tokenTypes.has("spacing")) tokenItems.push({ id: "figma-token-spacing", label: "Spacing", category: "Tokens" });
-    }
+    const tokenTypes = new Set(allTokens.map((t) => t.type));
+    if (tokenTypes.has("color")) tokenItems.push({ id: "figma-token-color", label: "Color", category: "Tokens" });
+    if (tokenTypes.has("typography")) tokenItems.push({ id: "figma-token-typography", label: "Typography", category: "Tokens" });
+    if (tokenTypes.has("spacing")) tokenItems.push({ id: "figma-token-spacing", label: "Spacing", category: "Tokens" });
 
     return {
       sidebarItems: [...tokenItems, ...componentItems, ...demoSidebarItems],
       figmaComponents: figmaComps,
+      tokens: allTokens,
     };
   }, [catalog]);
 
@@ -176,19 +177,31 @@ export default function Home() {
   const isFigmaTokenView = selectedId?.startsWith("figma-token-") ?? false;
   const figmaTokenType = isFigmaTokenView ? selectedId!.replace("figma-token-", "") : null;
   const isScannedView = selectedId === "sync-log";
-  // 旧Exampleのトークンビュー（削除済みだが安全のため残す）
-  const isTokenView = false;
-  const isComponentView = selectedId && !isTokenView && !isScannedView && !isFigmaView && !isFigmaTokenView;
+  const isComponentView = selectedId && !isScannedView && !isFigmaView && !isFigmaTokenView;
   const description = selectedId ? componentDescriptions[selectedId] : undefined;
 
   // FigmaコンポーネントのレンダラーID（レジストリ自動マッチ）
   const figmaRendererId = activeFigma ? figmaToRenderer(activeFigma.name) : undefined;
 
+  // nodeTree の有無で FigmaRenderer vs ComponentRenderer を判定
+  const hasNodeTree = activeFigma?.nodeTree && typeof activeFigma.nodeTree === "object" && "css" in (activeFigma.nodeTree as Record<string, unknown>);
+  const renderMode: "figma" | "mui" | undefined = isFigmaView
+    ? hasNodeTree ? "figma" : figmaRendererId ? "mui" : undefined
+    : undefined;
+
+  // 同期ステータスの動的判定
+  const figmaStatus = useMemo<"synced" | "outdated" | "missing">(() => {
+    if (!catalog?.generatedAt) return "missing";
+    const syncedAt = new Date(catalog.generatedAt).getTime();
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    if (syncedAt < oneDayAgo) return "outdated";
+    return "synced";
+  }, [catalog]);
+
   // バリアント一覧を Figma スキャンデータから自動生成
   const variants = useMemo<VariantItem[]>(() => {
     if (!activeFigma || !figmaRendererId) return [];
 
-    // Figma コンポーネントのバリアント情報から全組み合わせを生成
     const figmaVariants = activeFigma.variants || {};
     const variantKeys = Object.keys(figmaVariants);
     if (variantKeys.length === 0) return [];
@@ -217,6 +230,9 @@ export default function Home() {
     });
   }, [activeFigma, figmaRendererId]);
 
+  // Figma未接続でコンポーネントが0のとき
+  const isEmpty = figmaComponents.length === 0 && (!catalog || catalog.components.length === 0);
+
   return (
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       <Sidebar
@@ -231,98 +247,42 @@ export default function Home() {
         <Header onMenuToggle={() => setMobileOpen(true)} />
 
         <Box sx={{ flex: 1, display: "flex", flexDirection: { xs: "column", md: "row" }, overflow: "hidden" }}>
+          {/* トップページ or オンボーディング */}
           {isTopPage && (
-            <TopPage
-              tokenCounts={{
-                color: catalog ? (catalog as { tokens?: { type: string }[] }).tokens?.filter((t) => t.type === "color").length || 0 : 0,
-                typography: catalog ? (catalog as { tokens?: { type: string }[] }).tokens?.filter((t) => t.type === "typography").length || 0 : 0,
-                spacing: catalog ? (catalog as { tokens?: { type: string }[] }).tokens?.filter((t) => t.type === "spacing").length || 0 : 0,
-              }}
-              components={figmaComponents.map((c) => ({ name: c.name, id: c.id, description: c.description }))}
-              onSelect={handleSelect}
-            />
+            isEmpty ? (
+              <OnboardingGuide error={error} />
+            ) : (
+              <TopPage
+                tokenCounts={{
+                  color: tokens.filter((t) => t.type === "color").length,
+                  typography: tokens.filter((t) => t.type === "typography").length,
+                  spacing: tokens.filter((t) => t.type === "spacing").length,
+                }}
+                components={figmaComponents.map((c) => ({ name: c.name, id: c.id, description: c.description }))}
+                onSelect={handleSelect}
+              />
+            )
           )}
 
-          {isFigmaTokenView && catalog && (() => {
-            const allTokens = (catalog as { tokens?: { name: string; type: string; value: unknown; modes?: Record<string, unknown> }[] }).tokens || [];
-            const filtered = allTokens.filter((t) => t.type === figmaTokenType);
-            return (
-              <Box sx={{ flex: 1, p: { xs: 2, md: 5 }, overflow: "auto" }}>
-                <Typography variant="h5" sx={{ mb: 0.5 }}>
-                  {figmaTokenType === "color" ? "Color Tokens" : figmaTokenType === "typography" ? "Typography Tokens" : "Spacing Tokens"}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  {filtered.length} トークン — Figma Variables から取得
-                </Typography>
+          {/* エラー表示（トップページ以外で） */}
+          {error && !isTopPage && (
+            <Alert severity="error" variant="outlined" sx={{ m: 2, borderRadius: 2 }}>
+              {error}
+            </Alert>
+          )}
 
-                {figmaTokenType === "color" && (
-                  <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 2 }}>
-                    {filtered.map((t) => {
-                      const val = t.value as { r?: number; g?: number; b?: number } | string;
-                      const hex = typeof val === "string" ? val
-                        : val && typeof val.r === "number"
-                          ? `#${Math.round(val.r * 255).toString(16).padStart(2, "0")}${Math.round(val.g! * 255).toString(16).padStart(2, "0")}${Math.round(val.b! * 255).toString(16).padStart(2, "0")}`
-                          : "#000";
-                      return (
-                        <Paper key={t.name} variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
-                          <Box sx={{ height: 64, bgcolor: hex }} />
-                          <Box sx={{ p: 1.5 }}>
-                            <Typography variant="body2" fontWeight={600} sx={{ fontSize: "0.75rem" }}>{t.name.split("/").pop()}</Typography>
-                            <Typography variant="caption" color="text.secondary" sx={{ fontFamily: "'JetBrains Mono', monospace" }}>{hex}</Typography>
-                          </Box>
-                        </Paper>
-                      );
-                    })}
-                  </Box>
-                )}
+          {/* Figma トークンビュー */}
+          {isFigmaTokenView && figmaTokenType && (
+            <FigmaTokenView tokenType={figmaTokenType} tokens={tokens} />
+          )}
 
-                {figmaTokenType === "typography" && (
-                  <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
-                    {filtered.map((t) => {
-                      const val = t.value as { fontSize?: number; fontWeight?: string; fontFamily?: string; lineHeight?: { value?: number } };
-                      return (
-                        <Box key={t.name} sx={{ px: 2, py: 1.5, borderTop: 1, borderColor: "divider", display: "flex", alignItems: "baseline", gap: 2, "&:first-of-type": { borderTop: 0 } }}>
-                          <Typography variant="caption" color="text.secondary" sx={{ minWidth: 160, fontSize: "0.6875rem" }}>
-                            {t.name} / {val.fontSize}px
-                          </Typography>
-                          <Typography sx={{ fontWeight: val.fontWeight === "Bold" ? 700 : val.fontWeight === "Semi Bold" ? 600 : 400, fontSize: val.fontSize, fontFamily: val.fontFamily || "Inter", lineHeight: 1.4 }}>
-                            The quick brown fox
-                          </Typography>
-                        </Box>
-                      );
-                    })}
-                  </Paper>
-                )}
-
-                {figmaTokenType === "spacing" && (
-                  <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
-                    <Box sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr", px: 2, py: 1, bgcolor: "action.hover", gap: 1 }}>
-                      <Typography variant="caption" fontWeight={700}>トークン</Typography>
-                      <Typography variant="caption" fontWeight={700}>値</Typography>
-                      <Typography variant="caption" fontWeight={700}>プレビュー</Typography>
-                    </Box>
-                    {filtered.map((t) => {
-                      const val = typeof t.value === "number" ? t.value : 0;
-                      return (
-                        <Box key={t.name} sx={{ display: "grid", gridTemplateColumns: "120px 80px 1fr", px: 2, py: 1, borderTop: 1, borderColor: "divider", gap: 1, alignItems: "center" }}>
-                          <Typography variant="body2" fontWeight={600} sx={{ fontSize: "0.75rem" }}>{t.name.split("/").pop()}</Typography>
-                          <Typography variant="body2" color="text.secondary" sx={{ fontFamily: "'JetBrains Mono', monospace" }}>{val}px</Typography>
-                          <Box sx={{ height: 8, width: val, bgcolor: "primary.main", borderRadius: 0.5 }} />
-                        </Box>
-                      );
-                    })}
-                  </Paper>
-                )}
-              </Box>
-            );
-          })()}
-
+          {/* Figma コンポーネントビュー */}
           {isFigmaView && activeFigma && (
             <>
               <Preview
                 title={activeFigma.name}
                 code={figmaRendererId ? generateCode(figmaRendererId, mergedValues) : "// Figma コンポーネント"}
-                figmaStatus="synced"
+                figmaStatus={figmaStatus}
                 description={
                   activeFigma.description
                     ? {
@@ -335,13 +295,11 @@ export default function Home() {
                 }
                 variants={figmaRendererId ? variants : []}
                 onInspectChange={setInspectActive}
+                renderMode={renderMode}
               >
                 {/* Figma ノードツリーがあれば完全再現、なければ MUI フォールバック */}
-                {(() => {
-                  const nt = (activeFigma as Record<string, unknown>).nodeTree;
-                  return nt && typeof nt === "object" && "css" in (nt as Record<string, unknown>);
-                })() ? (
-                  <FigmaRenderer nodeTree={(activeFigma as Record<string, unknown>).nodeTree as FigmaNodeData} />
+                {hasNodeTree ? (
+                  <FigmaRenderer nodeTree={activeFigma.nodeTree as FigmaNodeData} />
                 ) : figmaRendererId ? (
                   <ComponentRenderer
                     componentId={figmaRendererId}
@@ -365,111 +323,17 @@ export default function Home() {
             </>
           )}
 
-          {isScannedView && catalog && (() => {
-            // バリアントを親コンポーネントにグルーピング
-            const grouped = new Map<string, { name: string; variants: number; props: number; source: string }>();
-            for (const c of catalog.components) {
-              // "Variant=Contained, Color=Primary, Size=Small" → 親はButton等
-              const isVariant = c.name.includes("=");
-              // Figma由来はfilePathが空、CLI由来はfilePath有
-              const source = c.filePath ? "CLI" : "Figma";
-              if (isVariant) continue; // バリアントはスキップ（親でカウント）
-              const variantCount = catalog.components.filter(
-                (v) => v.name.startsWith("Variant=") && v.id.startsWith(c.id.split(":")[0])
-              ).length;
-              grouped.set(c.id, {
-                name: c.name,
-                variants: variantCount,
-                props: c.props.length,
-                source,
-              });
-            }
-            // バリアント名のものは親不明なので独立コンポーネントとしてカウントしない
-            const items = Array.from(grouped.values());
-            const figmaCount = items.filter((i) => i.source === "Figma").length;
-            const cliCount = items.filter((i) => i.source === "CLI").length;
+          {/* Sync Log ビュー */}
+          {isScannedView && catalog && (
+            <SyncLogView catalog={catalog} />
+          )}
 
-            const syncTime = catalog.generatedAt
-              ? new Date(catalog.generatedAt).toLocaleString("ja-JP")
-              : "—";
-
-            return (
-              <Box sx={{ flex: 1, p: { xs: 2, md: 5 }, overflow: "auto" }}>
-                <Typography variant="h5" sx={{ mb: 0.5 }}>
-                  Sync Log
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  最終同期: {syncTime}
-                  {" — "}
-                  {figmaCount > 0 && `Figma: ${figmaCount}`}
-                  {cliCount > 0 && ` / CLI: ${cliCount}`}
-                </Typography>
-
-                <Paper variant="outlined" sx={{ borderRadius: 2, overflow: "hidden" }}>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 100px 80px 80px 140px",
-                      px: 2,
-                      py: 1,
-                      bgcolor: "action.hover",
-                      gap: 1,
-                    }}
-                  >
-                    <Typography variant="caption" fontWeight={700}>コンポーネント</Typography>
-                    <Typography variant="caption" fontWeight={700}>ソース</Typography>
-                    <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>バリアント</Typography>
-                    <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>Props</Typography>
-                    <Typography variant="caption" fontWeight={700} sx={{ textAlign: "right" }}>更新日時</Typography>
-                  </Box>
-                  {items.map((item) => (
-                    <Box
-                      key={item.name}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 100px 80px 80px 140px",
-                        px: 2,
-                        py: 0.75,
-                        gap: 1,
-                        borderTop: 1,
-                        borderColor: "divider",
-                        "&:hover": { bgcolor: "action.hover" },
-                      }}
-                    >
-                      <Typography variant="body2" fontWeight={600}>{item.name}</Typography>
-                      <Chip
-                        label={item.source}
-                        size="small"
-                        variant="outlined"
-                        color={item.source === "Figma" ? "primary" : "default"}
-                        sx={{ width: "fit-content", fontSize: "0.6875rem" }}
-                      />
-                      <Typography variant="body2" color="text.secondary" sx={{ textAlign: "right" }}>
-                        {item.variants || "—"}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ textAlign: "right" }}>
-                        {item.props}
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        sx={{ textAlign: "right", fontSize: "0.6875rem" }}
-                      >
-                        {syncTime}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Paper>
-              </Box>
-            );
-          })()}
-
+          {/* デモコンポーネントビュー */}
           {isComponentView && (
             <>
               <Preview
                 title={sidebarItems.find((i) => i.id === selectedId)?.label || ""}
                 code={generateCode(selectedId, mergedValues)}
-                figmaStatus="synced"
                 description={description}
                 variants={variants}
                 onInspectChange={setInspectActive}
@@ -489,20 +353,6 @@ export default function Home() {
                 />
               )}
             </>
-          )}
-
-          {!selectedId && (
-            <Box
-              sx={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "text.secondary",
-              }}
-            >
-              サイドバーからコンポーネントを選択してください
-            </Box>
           )}
         </Box>
       </Box>
