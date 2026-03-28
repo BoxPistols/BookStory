@@ -8,10 +8,11 @@ const ALLOWED_ORIGIN = process.env.BOOKSTORY_ALLOWED_ORIGIN || "https://*.vercel
 
 function corsHeaders(req: NextRequest) {
   const origin = req.headers.get("origin") || "";
-  const pattern = ALLOWED_ORIGIN.replace("*", ".*");
-  const allowed = new RegExp(`^${pattern}$`).test(origin) || origin === "";
+  // ドットをエスケープしてから * を .* に変換（正しい正規表現）
+  const escaped = ALLOWED_ORIGIN.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace("\\*", ".*");
+  const allowed = origin !== "" && new RegExp(`^${escaped}$`).test(origin);
   return {
-    "Access-Control-Allow-Origin": allowed ? origin || "*" : "",
+    "Access-Control-Allow-Origin": allowed ? origin : "",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
