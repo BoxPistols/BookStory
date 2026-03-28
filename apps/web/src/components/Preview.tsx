@@ -11,7 +11,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Tooltip from "@mui/material/Tooltip";
 import SearchIcon from "@mui/icons-material/Search";
 import { alpha, useTheme } from "@mui/material/styles";
-import { useState, useRef, useCallback, ReactNode } from "react";
+import { useState, useRef, useCallback, ReactNode, Component, ErrorInfo } from "react";
 import { DescriptionPanel } from "./DescriptionPanel";
 import { CodeBlock } from "./CodeBlock";
 import { InspectOverlay, InspectedElement } from "./InspectOverlay";
@@ -31,8 +31,44 @@ interface PreviewProps {
   description?: ComponentDescription;
   variants?: VariantItem[];
   onInspectChange?: (active: boolean) => void;
+  renderMode?: "figma" | "mui";
 }
 
+// --- Error Boundary ---
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class PreviewErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("Preview render error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Alert severity="error" variant="outlined" sx={{ m: 2, borderRadius: 2 }}>
+          <Typography variant="body2" fontWeight={600} sx={{ mb: 0.5 }}>
+            コンポーネントの描画でエラーが発生しました
+          </Typography>
+          <Typography variant="caption" sx={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            {this.state.error?.message || "不明なエラー"}
+          </Typography>
+        </Alert>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// --- Variants Grid ---
 function VariantsGrid({ variants }: { variants: VariantItem[] }) {
   return (
     <Box
@@ -61,7 +97,7 @@ function VariantsGrid({ variants }: { variants: VariantItem[] }) {
               bgcolor: "background.default",
             }}
           >
-            {v.node}
+            <PreviewErrorBoundary>{v.node}</PreviewErrorBoundary>
           </Box>
           <Box sx={{ px: 1.5, py: 1, borderTop: 1, borderColor: "divider" }}>
             <Typography
@@ -80,8 +116,15 @@ function VariantsGrid({ variants }: { variants: VariantItem[] }) {
   );
 }
 
-export function Preview({ title, children, code, figmaStatus, description, variants, onInspectChange }: PreviewProps) {
-  const [tab, setTab] = useState(0);
+// --- Tab index management ---
+// Dynamic tabs: Preview(0), Variants(if non-empty), Code, Docs(if exists)
+interface TabDef {
+  key: string;
+  label: string;
+}
+
+export function Preview({ title, children, code, figmaStatus, description, variants, onInspectChange, renderMode }: PreviewProps) {
+  const [activeTabKey, setActiveTabKey] = useState("preview");
   const [inspectMode, setInspectMode] = useState(false);
   const [inspectedElement, setInspectedElement] = useState<InspectedElement | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -105,20 +148,37 @@ export function Preview({ title, children, code, figmaStatus, description, varia
     if (!next) {
       setInspectedElement(null);
     }
-    if (next && tab !== 0) {
-      setTab(0);
+    if (next && activeTabKey !== "preview") {
+      setActiveTabKey("preview");
     }
   };
+
+  // 動的タブ構築: バリアントが空なら非表示、ドキュメントなしなら非表示
+  const tabs: TabDef[] = [
+    { key: "preview", label: "プレビュー" },
+  ];
+  if (variants && variants.length > 0) {
+    tabs.push({ key: "variants", label: "バリアント" });
+  }
+  tabs.push({ key: "code", label: "コード" });
+  if (description?.usage) {
+    tabs.push({ key: "docs", label: "ドキュメント" });
+  }
+
+  const activeTabIndex = Math.max(0, tabs.findIndex((t) => t.key === activeTabKey));
 
   return (
     <>
       <Box sx={{ flex: 1, overflow: "auto" }}>
-        <Box sx={{ px: 5, py: 4, maxWidth: 960 }}>
+        <Box sx={{ px: { xs: 2, md: 5 }, py: 4, maxWidth: 960 }}>
           {/* タイトル */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
             <Typography variant="h5">{title}</Typography>
             {status && (
               <Chip label={status.label} color={status.color} size="small" variant="outlined" />
+            )}
+            {renderMode === "mui" && (
+              <Chip label="MUI近似" size="small" variant="outlined" color="info" />
             )}
           </Box>
 
@@ -137,14 +197,13 @@ export function Preview({ title, children, code, figmaStatus, description, varia
           {/* タブ + Inspect トグル */}
           <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
             <Tabs
-              value={tab}
-              onChange={(_, v) => setTab(v)}
+              value={activeTabIndex}
+              onChange={(_, v) => setActiveTabKey(tabs[v].key)}
               sx={{ flex: 1, "& .MuiTab-root": { minWidth: 0, px: 0, mr: 2 } }}
             >
-              <Tab label="プレビュー" />
-              <Tab label="バリアント" />
-              <Tab label="コード" />
-              {description?.usage && <Tab label="ドキュメント" />}
+              {tabs.map((t) => (
+                <Tab key={t.key} label={t.label} />
+              ))}
             </Tabs>
 
             <Tooltip title={inspectMode ? "Inspect OFF" : "要素を検証"} arrow>
@@ -173,7 +232,7 @@ export function Preview({ title, children, code, figmaStatus, description, varia
             </Tooltip>
           </Box>
 
-          {tab === 0 && (
+          {activeTabKey === "preview" && (
             <Paper
               ref={previewRef}
               variant="outlined"
@@ -190,24 +249,24 @@ export function Preview({ title, children, code, figmaStatus, description, varia
                 userSelect: inspectMode ? "none" : "auto",
               }}
             >
-              {children}
+              <PreviewErrorBoundary>{children}</PreviewErrorBoundary>
               <InspectOverlay
                 containerRef={previewRef}
-                active={inspectMode && tab === 0}
+                active={inspectMode && activeTabKey === "preview"}
                 onInspect={handleInspect}
               />
             </Paper>
           )}
 
-          {tab === 1 && variants && (
+          {activeTabKey === "variants" && variants && (
             <VariantsGrid variants={variants} />
           )}
 
-          {tab === 2 && (
+          {activeTabKey === "code" && (
             <CodeBlock code={code || "// コードが生成されていません"} />
           )}
 
-          {tab === 3 && description && <DescriptionPanel description={description} />}
+          {activeTabKey === "docs" && description && <DescriptionPanel description={description} />}
         </Box>
       </Box>
 

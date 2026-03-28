@@ -9,6 +9,6 @@
   "editorType": ["figma"],
   "documentAccess": "dynamic-page",
   "networkAccess": {
-    "allowedDomains": ["https://*.vercel.app"]
+    "allowedDomains": ["https://*.vercel.app", "http://localhost:3200"]
   }
 }

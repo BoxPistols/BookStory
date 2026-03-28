@@ -1,6 +1,6 @@
 "use client";
 
-import { createElement, ReactNode } from "react";
+import { ReactNode } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
@@ -30,16 +30,13 @@ import Skeleton from "@mui/material/Skeleton";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Pagination from "@mui/material/Pagination";
-import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Snackbar from "@mui/material/Snackbar";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Stepper from "@mui/material/Stepper";
@@ -72,49 +69,51 @@ type V = Record<string, unknown>;
 type Renderer = (v: V) => ReactNode;
 
 // MUI propsに渡すための安全なキャスト
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const s = (v: unknown, fallback: string = "") => (v as string) || fallback;
+// MUI の各コンポーネントは variant/color/size に異なるリテラル型を要求するため、
+// Figma からの動的な値を安全に渡すためにジェネリックキャストを使用
+const s = <T extends string = string>(v: unknown, fallback: T): T =>
+  (typeof v === "string" && v !== "" ? v : fallback) as T;
 const n = (v: unknown, fallback: number = 0) => (typeof v === "number" ? v : fallback);
 const b = (v: unknown) => v === true;
 
 const REGISTRY: Record<string, Renderer> = {
-  button: (v) => <Button variant={s(v.variant,"contained") as any} color={s(v.color,"primary") as any} size={s(v.size,"medium") as any} disabled={b(v.disabled)}>{s(v.label,"ボタン")}</Button>,
-  iconbutton: (v) => <IconButton color={s(v.color,"primary") as any} size={s(v.size,"medium") as any}><MailIcon /></IconButton>,
-  fab: (v) => <Fab color={s(v.color,"primary") as any} size={s(v.size,"medium") as any}><AddIcon /></Fab>,
-  chip: (v) => <Chip label={s(v.label,"チップ")} variant={s(v.variant,"filled") as any} color={s(v.color,"primary") as any} size={s(v.size,"medium") as any} />,
-  checkbox: (v) => <FormControlLabel control={<Checkbox checked={b(v.checked)} color={s(v.color,"primary") as any} />} label={s(v.label,"チェック")} />,
-  radio: (v) => <RadioGroup value={s(v.value,"a")}><FormControlLabel value="a" control={<Radio />} label={s(v.label,"選択肢 A")} /><FormControlLabel value="b" control={<Radio />} label="選択肢 B" /></RadioGroup>,
-  switch: (v) => <FormControlLabel control={<Switch checked={v.state === "on" || b(v.checked)} size={s(v.size,"medium") as any} />} label={s(v.label,"トグル")} />,
-  slider: (v) => <Box sx={{ width: 200 }}><Slider defaultValue={n(v.value,50)} size={s(v.size,"medium") as any} color={s(v.color,"primary") as any} /></Box>,
-  rating: (v) => <Rating value={n(v.value,3)} size={s(v.size,"medium") as any} />,
+  button: (v) => <Button variant={s<"contained" | "outlined" | "text">(v.variant, "contained")} color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "inherit">(v.color, "primary")} size={s<"small" | "medium" | "large">(v.size, "medium")} disabled={b(v.disabled)}>{s(v.label, "ボタン")}</Button>,
+  iconbutton: (v) => <IconButton color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "inherit" | "default">(v.color, "primary")} size={s<"small" | "medium" | "large">(v.size, "medium")}><MailIcon /></IconButton>,
+  fab: (v) => <Fab color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "inherit" | "default">(v.color, "primary")} size={s<"small" | "medium" | "large">(v.size, "medium")}><AddIcon /></Fab>,
+  chip: (v) => <Chip label={s(v.label, "チップ")} variant={s<"filled" | "outlined">(v.variant, "filled")} color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "default">(v.color, "primary")} size={s<"small" | "medium">(v.size, "medium")} />,
+  checkbox: (v) => <FormControlLabel control={<Checkbox checked={b(v.checked)} color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "default">(v.color, "primary")} />} label={s(v.label, "チェック")} />,
+  radio: (v) => <RadioGroup value={s(v.value, "a")}><FormControlLabel value="a" control={<Radio />} label={s(v.label, "選択肢 A")} /><FormControlLabel value="b" control={<Radio />} label="選択肢 B" /></RadioGroup>,
+  switch: (v) => <FormControlLabel control={<Switch checked={v.state === "on" || b(v.checked)} size={s<"small" | "medium">(v.size, "medium")} />} label={s(v.label, "トグル")} />,
+  slider: (v) => <Box sx={{ width: 200 }}><Slider defaultValue={n(v.value, 50)} size={s<"small" | "medium">(v.size, "medium")} color={s<"primary" | "secondary">(v.color, "primary")} /></Box>,
+  rating: (v) => <Rating value={n(v.value, 3)} size={s<"small" | "medium" | "large">(v.size, "medium")} />,
   textfield: (v) => {
-    const label = s(v.label);
+    const label = s(v.label, "");
     return (
       <FormControl fullWidth disabled={b(v.disabled)} error={b(v.error)} sx={{ maxWidth: 360 }}>
         {label && <InputLabel shrink sx={{ position: "static", transform: "none", mb: 0.5, fontSize: "0.8125rem", fontWeight: 600, color: "text.primary" }}>{label}{b(v.required) && <Box component="span" sx={{ color: "error.main", ml: 0.5 }}>*</Box>}</InputLabel>}
-        <TextField variant={s(v.variant,"outlined") as any} size={s(v.size,"medium") as any} disabled={b(v.disabled)} error={b(v.error)} placeholder={s(v.placeholder)} />
-        {s(v.helperText) && <FormHelperText>{s(v.helperText)}</FormHelperText>}
+        <TextField variant={s<"outlined" | "filled" | "standard">(v.variant, "outlined")} size={s<"small" | "medium">(v.size, "medium")} disabled={b(v.disabled)} error={b(v.error)} placeholder={s(v.placeholder, "")} />
+        {s(v.helperText, "") && <FormHelperText>{s(v.helperText, "")}</FormHelperText>}
       </FormControl>
     );
   },
-  alert: (v) => <Alert severity={s(v.severity,"info") as any} variant={s(v.variant,"standard") as any} sx={{ minWidth: 300 }}>{s(v.message,"アラートメッセージ")}</Alert>,
-  badge: (v) => <Badge badgeContent={n(v.count,4)} color={s(v.color,"primary") as any}><MailIcon color="action" /></Badge>,
-  avatar: (v) => <Avatar sx={{ width: v.size === "large" ? 56 : v.size === "small" ? 24 : 40, height: v.size === "large" ? 56 : v.size === "small" ? 24 : 40, bgcolor: "primary.main" }}>{v.variant === "icon" ? <PersonIcon /> : s(v.label,"A")}</Avatar>,
-  tooltip: (v) => <Tooltip title={s(v.title,"ツールチップ")} open><Button variant="outlined">{s(v.label,"ホバー")}</Button></Tooltip>,
-  skeleton: (v) => <Skeleton variant={s(v.variant,"rectangular") as any} width={n(v.width,200)} height={n(v.height,40)} />,
+  alert: (v) => <Alert severity={s<"error" | "warning" | "info" | "success">(v.severity, "info")} variant={s<"standard" | "filled" | "outlined">(v.variant, "standard")} sx={{ minWidth: 300 }}>{s(v.message, "アラートメッセージ")}</Alert>,
+  badge: (v) => <Badge badgeContent={n(v.count, 4)} color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "default">(v.color, "primary")}><MailIcon color="action" /></Badge>,
+  avatar: (v) => <Avatar sx={{ width: v.size === "large" ? 56 : v.size === "small" ? 24 : 40, height: v.size === "large" ? 56 : v.size === "small" ? 24 : 40, bgcolor: "primary.main" }}>{v.variant === "icon" ? <PersonIcon /> : s(v.label, "A")}</Avatar>,
+  tooltip: (v) => <Tooltip title={s(v.title, "ツールチップ")} open><Button variant="outlined">{s(v.label, "ホバー")}</Button></Tooltip>,
+  skeleton: (v) => <Skeleton variant={s<"rectangular" | "circular" | "text">(v.variant, "rectangular")} width={n(v.width, 200)} height={n(v.height, 40)} />,
   breadcrumbs: () => <Breadcrumbs><Link underline="hover" color="inherit" href="#">ホーム</Link><Link underline="hover" color="inherit" href="#">カテゴリ</Link><Typography color="text.primary">現在のページ</Typography></Breadcrumbs>,
-  pagination: (v) => <Pagination count={n(v.count,10)} color={s(v.color,"primary") as any} size={s(v.size,"medium") as any} />,
-  card: (v) => <Card elevation={n(v.elevation,1)} sx={{ maxWidth: 345 }}><CardContent><Typography variant="h6" gutterBottom>{s(v.title,"カード")}</Typography><Typography variant="body2" color="text.secondary">{s(v.content,"カードの内容")}</Typography></CardContent></Card>,
+  pagination: (v) => <Pagination count={n(v.count, 10)} color={s<"primary" | "secondary" | "standard">(v.color, "primary")} size={s<"small" | "medium" | "large">(v.size, "medium")} />,
+  card: (v) => <Card elevation={n(v.elevation, 1)} sx={{ maxWidth: 345 }}><CardContent><Typography variant="h6" gutterBottom>{s(v.title, "カード")}</Typography><Typography variant="body2" color="text.secondary">{s(v.content, "カードの内容")}</Typography></CardContent></Card>,
   divider: () => <Box sx={{ width: 300 }}><Typography variant="body2" sx={{ mb: 1 }}>上のコンテンツ</Typography><Divider /><Typography variant="body2" sx={{ mt: 1 }}>下のコンテンツ</Typography></Box>,
-  linearprogress: (v) => <Box sx={{ width: 300 }}><LinearProgress variant="determinate" value={n(v.value,60)} color={s(v.color,"primary") as any} /></Box>,
-  circularprogress: (v) => <CircularProgress variant="determinate" value={n(v.value,60)} color={s(v.color,"primary") as any} size={v.size === "large" ? 56 : v.size === "small" ? 24 : 40} />,
+  linearprogress: (v) => <Box sx={{ width: 300 }}><LinearProgress variant="determinate" value={n(v.value, 60)} color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "inherit">(v.color, "primary")} /></Box>,
+  circularprogress: (v) => <CircularProgress variant="determinate" value={n(v.value, 60)} color={s<"primary" | "secondary" | "error" | "warning" | "info" | "success" | "inherit">(v.color, "primary")} size={v.size === "large" ? 56 : v.size === "small" ? 24 : 40} />,
 
   // 複合コンポーネント（常に開いた状態でプレビュー）
   dialog: (v) => (
     <Paper elevation={24} sx={{ width: 360, borderRadius: 2 }}>
-      <DialogTitle>{s(v.title,"確認")}</DialogTitle>
-      <DialogContent><Typography variant="body2">{s(v.message,"この操作を実行しますか？")}</Typography></DialogContent>
-      <DialogActions><Button color="inherit">キャンセル</Button><Button variant="contained">{s(v.action,"確認")}</Button></DialogActions>
+      <DialogTitle>{s(v.title, "確認")}</DialogTitle>
+      <DialogContent><Typography variant="body2">{s(v.message, "この操作を実行しますか？")}</Typography></DialogContent>
+      <DialogActions><Button color="inherit">キャンセル</Button><Button variant="contained">{s(v.action, "確認")}</Button></DialogActions>
     </Paper>
   ),
 
@@ -131,12 +130,12 @@ const REGISTRY: Record<string, Renderer> = {
 
   snackbar: (v) => (
     <Paper elevation={6} sx={{ display: "flex", alignItems: "center", gap: 1, px: 2, py: 1.5, borderRadius: 1, minWidth: 280 }}>
-      <Typography variant="body2" sx={{ flex: 1 }}>{s(v.message,"操作が完了しました")}</Typography>
+      <Typography variant="body2" sx={{ flex: 1 }}>{s(v.message, "操作が完了しました")}</Typography>
       <Button size="small" color="primary">閉じる</Button>
     </Paper>
   ),
 
-  tabs: (v) => (
+  tabs: () => (
     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
       <Tabs value={0} textColor="primary" indicatorColor="primary">
         <Tab label="タブ 1" /><Tab label="タブ 2" /><Tab label="タブ 3" />
@@ -145,7 +144,7 @@ const REGISTRY: Record<string, Renderer> = {
   ),
 
   stepper: (v) => (
-    <Stepper activeStep={n(v.step,1)} sx={{ width: 400 }}>
+    <Stepper activeStep={n(v.step, 1)} sx={{ width: 400 }}>
       <Step><StepLabel>入力</StepLabel></Step>
       <Step><StepLabel>確認</StepLabel></Step>
       <Step><StepLabel>完了</StepLabel></Step>
@@ -154,7 +153,7 @@ const REGISTRY: Record<string, Renderer> = {
 
   accordion: (v) => (
     <Box sx={{ width: 360 }}>
-      <Accordion defaultExpanded><AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography>{s(v.title,"セクション 1")}</Typography></AccordionSummary><AccordionDetails><Typography variant="body2" color="text.secondary">アコーディオンの内容がここに表示されます。</Typography></AccordionDetails></Accordion>
+      <Accordion defaultExpanded><AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography>{s(v.title, "セクション 1")}</Typography></AccordionSummary><AccordionDetails><Typography variant="body2" color="text.secondary">アコーディオンの内容がここに表示されます。</Typography></AccordionDetails></Accordion>
       <Accordion><AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography>セクション 2</Typography></AccordionSummary><AccordionDetails><Typography variant="body2" color="text.secondary">追加のコンテンツ。</Typography></AccordionDetails></Accordion>
     </Box>
   ),
