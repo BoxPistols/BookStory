@@ -35,16 +35,35 @@ interface PreviewProps {
 }
 
 // --- Error Boundary ---
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  resetKey?: string;
+}
+
 interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
 }
 
-class PreviewErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryState> {
+class PreviewErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
+  }
+
+  static getDerivedStateFromProps(props: ErrorBoundaryProps, state: ErrorBoundaryState): ErrorBoundaryState | null {
+    // resetKey が変わったらエラー状態をリセット（コンポーネント切り替え時）
+    if (state.hasError && props.resetKey !== undefined) {
+      return null; // React will compare with previous props via key prop instead
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false, error: null });
+    }
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
@@ -97,7 +116,7 @@ function VariantsGrid({ variants }: { variants: VariantItem[] }) {
               bgcolor: "background.default",
             }}
           >
-            <PreviewErrorBoundary>{v.node}</PreviewErrorBoundary>
+            <PreviewErrorBoundary resetKey={v.label}>{v.node}</PreviewErrorBoundary>
           </Box>
           <Box sx={{ px: 1.5, py: 1, borderTop: 1, borderColor: "divider" }}>
             <Typography
@@ -249,7 +268,7 @@ export function Preview({ title, children, code, figmaStatus, description, varia
                 userSelect: inspectMode ? "none" : "auto",
               }}
             >
-              <PreviewErrorBoundary>{children}</PreviewErrorBoundary>
+              <PreviewErrorBoundary resetKey={title}>{children}</PreviewErrorBoundary>
               <InspectOverlay
                 containerRef={previewRef}
                 active={inspectMode && activeTabKey === "preview"}

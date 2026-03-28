@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { corsHeaders } from "@/lib/cors";
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPO;
 const BOOKSTORY_API_KEY = process.env.BOOKSTORY_API_KEY;
-
-const ALLOWED_ORIGIN = process.env.BOOKSTORY_ALLOWED_ORIGIN || "https://*.vercel.app";
-
-function corsHeaders(req: NextRequest) {
-  const origin = req.headers.get("origin") || "";
-  // ドットをエスケープしてから * を .* に変換（正しい正規表現）
-  const escaped = ALLOWED_ORIGIN.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace("\\*", ".*");
-  const allowed = origin !== "" && new RegExp(`^${escaped}$`).test(origin);
-  return {
-    "Access-Control-Allow-Origin": allowed ? origin : "",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  };
-}
 
 function jsonRes(data: unknown, status = 200, headers: Record<string, string> = {}) {
   return NextResponse.json(data, { status, headers });
@@ -24,22 +11,24 @@ function jsonRes(data: unknown, status = 200, headers: Record<string, string> = 
 
 // CORSプリフライト
 export async function OPTIONS(req: NextRequest) {
-  return new NextResponse(null, { status: 204, headers: corsHeaders(req) });
+  return new NextResponse(null, { status: 204, headers: corsHeaders(req, "POST, OPTIONS") });
 }
 
 // ペイロードサイズ上限 (5MB)
 const MAX_PAYLOAD_SIZE = 5 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
-  const headers = corsHeaders(req);
+  const headers = corsHeaders(req, "POST, OPTIONS");
 
-  // 認証チェック
-  if (BOOKSTORY_API_KEY) {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
-    if (token !== BOOKSTORY_API_KEY) {
-      return jsonRes({ error: "認証エラー: 無効なAPIキーです" }, 401, headers);
-    }
+  // 認証チェック（BOOKSTORY_API_KEY 未設定時は警告ログ+拒否）
+  if (!BOOKSTORY_API_KEY) {
+    console.warn("[BookStory] BOOKSTORY_API_KEY が未設定です。Publish APIは認証なしでは利用できません。");
+    return jsonRes({ error: "サーバーにBOOKSTORY_API_KEYが未設定です。管理者に連絡してください。" }, 500, headers);
+  }
+  const authHeader = req.headers.get("authorization");
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (token !== BOOKSTORY_API_KEY) {
+    return jsonRes({ error: "認証エラー: 無効なAPIキーです" }, 401, headers);
   }
 
   if (!GITHUB_TOKEN || !GITHUB_REPO) {
@@ -183,7 +172,6 @@ export async function POST(req: NextRequest) {
     // 6. マージ結果を確認してからブランチ削除
     if (!mergeRes.ok) {
       const err = await mergeRes.json();
-      // マージ失敗時はブランチを残してPR作成を案内
       return jsonRes({
         error: `マージ失敗（コンフリクトの可能性）: ${err.message || mergeRes.status}`,
         branch: branchName,

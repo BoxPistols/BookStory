@@ -88,7 +88,7 @@ export function SyncLogView({ catalog }: SyncLogViewProps) {
               sx={{ width: "fit-content", fontSize: "0.6875rem" }}
             />
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: { md: "right" } }}>
-              {item.variants || "—"}
+              {item.variants ?? "—"}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: { md: "right" } }}>
               {item.props}

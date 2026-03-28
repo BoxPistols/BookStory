@@ -12,7 +12,12 @@ interface RawCatalog {
 
 function readJson(filePath: string): RawCatalog | null {
   if (!existsSync(filePath)) return null;
-  return JSON.parse(readFileSync(filePath, "utf-8"));
+  try {
+    return JSON.parse(readFileSync(filePath, "utf-8"));
+  } catch {
+    console.warn(`[BookStory] JSONパースエラー: ${filePath}`);
+    return null;
+  }
 }
 
 export async function GET() {

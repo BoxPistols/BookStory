@@ -1,20 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { corsHeaders } from "@/lib/cors";
 import { getAllColors, TYPOGRAPHY, SPACING, SHAPE, COMPONENT_META } from "@/lib/design-tokens";
 
 // WebテーマからFigmaにインポート可能なトークンJSONを返す
-
-const ALLOWED_ORIGIN = process.env.BOOKSTORY_ALLOWED_ORIGIN || "https://*.vercel.app";
-
-function corsHeaders(req: NextRequest) {
-  const origin = req.headers.get("origin") || "";
-  const escaped = ALLOWED_ORIGIN.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace("\\*", ".*");
-  const allowed = origin !== "" && new RegExp(`^${escaped}$`).test(origin);
-  return {
-    "Access-Control-Allow-Origin": allowed ? origin : "",
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-}
 
 export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, { status: 204, headers: corsHeaders(req) });

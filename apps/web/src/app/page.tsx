@@ -334,7 +334,6 @@ export default function Home() {
               <Preview
                 title={sidebarItems.find((i) => i.id === selectedId)?.label || ""}
                 code={generateCode(selectedId, mergedValues)}
-                figmaStatus={figmaStatus}
                 description={description}
                 variants={variants}
                 onInspectChange={setInspectActive}
