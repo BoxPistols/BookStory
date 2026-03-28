@@ -1,4 +1,4 @@
-# BookStory 仕様書 v2
+# BookStory 仕様書 v3
 
 ## 1. コンセプト
 
@@ -25,7 +25,7 @@ Storybook の代替。デザイナーは React を一切知る必要がない。
 | 役割 | 何をするか | 何を見るか |
 |------|-----------|-----------|
 | **デザイナー** | Figma で MUI コンポーネントをカスタマイズ | Figma + Web プレビュー |
-| **エンジニア** | Web プレビューを見て MUI で実装 | Web プレビュー + Props 仕様 |
+| **エンジニア** | Web プレビューを見て MUI で実装 | Web プレビュー + Props 仕様 + コード |
 | **BookStory** | Figma → Web を自動同期 | — |
 
 ### デザイナーに見えるもの
@@ -39,6 +39,20 @@ Storybook の代替。デザイナーは React を一切知る必要がない。
 - React コード / import 文
 - Props パネル（エンジニア向け）
 - ComponentRenderer の実装
+
+### CLI ツールの位置づけ
+
+CLI（`bookstory` コマンド）は **エンジニア向け補助ツール** です。
+デザイナーは CLI を使う必要はありません。
+
+| コマンド | 用途 | 対象 |
+|---------|------|------|
+| `bookstory init` | プロジェクト初期設定 | エンジニア |
+| `bookstory scan` | TSX ファイルからコンポーネント抽出 | エンジニア |
+| `bookstory dev` | ローカル開発サーバー起動 | エンジニア |
+
+CLI スキャン結果は `.bookstory/catalog.json` に出力され、
+Figma Plugin からの `.bookstory/figma-catalog.json` と自動マージされます。
 
 ## 3. MUI Props パターンの運用
 
@@ -160,6 +174,16 @@ Figma Node Tree
 </div>
 ```
 
+### レンダリング戦略
+
+Web カタログでは 2 つのレンダリングモードがあります:
+
+| モード | 条件 | 表示 |
+|--------|------|------|
+| **Figma 完全再現** | nodeTree が存在 | Figma デザインを CSS で完全再現 |
+| **MUI 近似** | nodeTree なし + レジストリ登録済み | MUI コンポーネントで近似表示（「MUI近似」バッジ表示） |
+| **未対応** | nodeTree なし + レジストリ未登録 | 「プレビュー未対応」メッセージ |
+
 ### Figma → CSS 変換ルール
 
 | Figma | CSS |
@@ -180,30 +204,74 @@ Figma Node Tree
 | Opacity | `opacity` |
 | Clip content | `overflow: hidden` |
 
-## 7. 現在の課題
+## 7. セキュリティ
 
-| 課題 | 優先度 | 説明 |
-|------|--------|------|
-| Figma→CSS 完全再現レンダラー | 高 | 現在の ComponentRenderer を置き換える |
-| Figma コンポーネント品質 | 高 | 現状は「たたき台」。MUI 準拠のデザインが必要 |
-| バリアント画像書き出し | 中 | 各バリアントの Figma 見た目を Web に表示 |
-| [拡張] マーキング機能 | 中 | MUI 標準外の Props を検知・表示 |
-| レスポンシブプレビュー | 低 | 異なる画面幅での表示確認 |
+### API 認証
 
-## 8. ファイル構成
+| エンドポイント | メソッド | 認証 |
+|---------------|---------|------|
+| `/api/catalog` | GET | なし（読み取り専用） |
+| `/api/export` | GET | なし（読み取り専用、CORS 制限あり） |
+| `/api/publish` | POST | `BOOKSTORY_API_KEY` による Bearer 認証 |
+
+### 環境変数
+
+| 変数 | 必須 | 説明 |
+|------|------|------|
+| `GITHUB_TOKEN` | ○ | GitHub API アクセストークン（スコープ: `contents:write` のみ、対象リポジトリ限定推奨） |
+| `GITHUB_REPO` | ○ | 対象リポジトリ（例: `BoxPistols/BookStory`） |
+| `BOOKSTORY_API_KEY` | 推奨 | Figma Plugin → Publish API の認証キー |
+| `BOOKSTORY_ALLOWED_ORIGIN` | 任意 | CORS 許可オリジン（デフォルト: `https://*.vercel.app`） |
+
+### GitHub Token のスコープ
+
+最小権限の原則に従い、以下の設定を推奨:
+
+1. **Fine-grained personal access token** を使用
+2. **対象リポジトリ**: BookStory リポジトリのみ
+3. **権限**: `Contents: Read and Write` のみ
+4. **有効期限**: 90 日以内を推奨
+
+## 8. 現在の課題
+
+| 課題 | 優先度 | 状態 | 説明 |
+|------|--------|------|------|
+| ~~Figma→CSS 完全再現レンダラー~~ | ~~高~~ | ✅ 完了 | FigmaRenderer で実装済み |
+| Figma コンポーネント品質 | 高 | 進行中 | MUI 準拠のデザインが必要 |
+| バリアント画像書き出し | 中 | 未着手 | 各バリアントの Figma 見た目を Web に表示 |
+| [拡張] マーキング機能 | 中 | 未着手 | MUI 標準外の Props を検知・表示 |
+| レスポンシブプレビュー | 低 | 未着手 | 異なる画面幅での表示確認 |
+| トークン双方向同期のコンフリクト検知 | 中 | 未着手 | タイムスタンプベースの上書き防止 |
+
+## 9. ファイル構成
 
 ```
 BookStory/
-├── apps/web/                        # Web カタログ
-│   ├── src/lib/design-tokens.ts     # トークン Single Source of Truth
-│   ├── src/lib/theme.ts             # MUI テーマ（design-tokens から生成）
-│   ├── src/app/api/publish/         # Figma → GitHub 中継
-│   ├── src/app/api/export/          # Web → Figma トークン提供
-│   └── src/app/api/catalog/         # カタログ JSON 提供
-├── packages/figma-plugin/           # Figma プラグイン
-│   ├── src/code.ts                  # スキャン + ノードツリー抽出
-│   ├── build.mjs                    # ビルド + UI HTML
-│   └── manifest.json
+├── apps/web/                        # Web カタログ（Next.js 16）
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── page.tsx             # メインカタログビューア
+│   │   │   └── api/
+│   │   │       ├── catalog/         # カタログ JSON 提供
+│   │   │       ├── publish/         # Figma → GitHub 中継（認証付き）
+│   │   │       └── export/          # Web → Figma トークン提供
+│   │   ├── components/
+│   │   │   ├── ComponentRenderer    # MUI コンポーネントレジストリ
+│   │   │   ├── FigmaRenderer        # Figma CSS 完全再現
+│   │   │   ├── FigmaTokenView       # トークン表示
+│   │   │   ├── SyncLogView          # 同期ログ表示
+│   │   │   ├── OnboardingGuide      # 初回利用ガイド
+│   │   │   ├── Preview              # プレビュー + ErrorBoundary
+│   │   │   └── ...
+│   │   └── lib/
+│   │       ├── design-tokens.ts     # トークン Single Source of Truth
+│   │       ├── theme.ts             # MUI テーマ
+│   │       └── use-catalog.ts       # カタログ取得 hook（エラー対応）
+│   └── ...
+├── packages/
+│   ├── cli/                         # CLI ツール（エンジニア向け）
+│   ├── figma-plugin/                # Figma プラグイン
+│   └── core/                        # 共有型定義（Catalog, DesignToken 等）
 ├── docs/
 │   └── SPEC.md                      # この仕様書
 └── .bookstory/

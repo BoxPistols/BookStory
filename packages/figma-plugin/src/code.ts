@@ -485,6 +485,9 @@ figma.ui.onmessage = async function (msg: { type: string; serverUrl?: string }) 
           let variable = existingVars[name];
           if (!variable) {
             variable = figma.variables.createVariable(name, colorCol, "COLOR");
+            colorCreated++;
+          } else {
+            colorUpdated++;
           }
           variable.setValueForMode(lightModeId, hexToRgb(lightHex));
           variable.setValueForMode(darkModeId, hexToRgb(darkHex));

@@ -4,6 +4,8 @@
 // Figma のレイヤー構造をそのままブラウザの DOM に変換する
 
 import { CSSProperties } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export interface FigmaNodeData {
   type: string;
@@ -76,7 +78,7 @@ export function FigmaRenderer({ nodeTree }: FigmaRendererProps) {
   );
 }
 
-// バリアント比較グリッド
+// バリアント比較グリッド（MUIテーマ対応）
 interface FigmaVariantGridProps {
   variantTrees: Record<string, FigmaNodeData>;
 }
@@ -86,47 +88,55 @@ export function FigmaVariantGrid({ variantTrees }: FigmaVariantGridProps) {
   if (entries.length === 0) return null;
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-        gap: "16px",
+        gap: 2,
       }}
     >
       {entries.map(([variantName, tree]) => (
-        <div
+        <Box
           key={variantName}
-          style={{
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 2,
             overflow: "hidden",
           }}
         >
-          <div
-            style={{
+          <Box
+            sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              minHeight: "80px",
-              padding: "16px",
-              backgroundColor: "#fafafa",
+              minHeight: 80,
+              p: 2,
+              bgcolor: "background.default",
             }}
           >
             <FigmaRenderer nodeTree={tree} />
-          </div>
-          <div
-            style={{
-              padding: "8px 12px",
-              borderTop: "1px solid #e0e0e0",
-              fontSize: "12px",
-              fontFamily: "'JetBrains Mono', monospace",
-              color: "#666",
+          </Box>
+          <Box
+            sx={{
+              px: 1.5,
+              py: 1,
+              borderTop: 1,
+              borderColor: "divider",
             }}
           >
-            {variantName}
-          </div>
-        </div>
+            <Typography
+              variant="caption"
+              sx={{
+                fontFamily: "'JetBrains Mono', monospace",
+                color: "text.secondary",
+              }}
+            >
+              {variantName}
+            </Typography>
+          </Box>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 }
