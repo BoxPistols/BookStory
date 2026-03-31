@@ -24,7 +24,21 @@ function toCamelCase(str: string): string {
 
 function cssToStyle(css: Record<string, string>): CSSProperties {
   const style: Record<string, string> = {};
+  // Auto Layout コンテナは主軸方向の固定サイズを min に変換（潰れ防止）
+  const isColumnFlex = css["display"] === "flex" && css["flex-direction"] === "column";
+  const isRowFlex = css["display"] === "flex" && css["flex-direction"] === "row";
+
   for (const [key, value] of Object.entries(css)) {
+    if (isColumnFlex && key === "height") {
+      style["minHeight"] = value;
+      style["height"] = "auto";
+      continue;
+    }
+    if (isRowFlex && key === "width") {
+      style["minWidth"] = value;
+      style["width"] = "auto";
+      continue;
+    }
     style[toCamelCase(key)] = value;
   }
   return style as CSSProperties;

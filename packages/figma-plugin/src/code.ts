@@ -143,6 +143,16 @@ function extractNodeTree(node: SceneNode, depth: number): FigmaNodeData | null {
     css["display"] = "flex";
     css["flex-direction"] = node.layoutMode === "HORIZONTAL" ? "row" : "column";
 
+    // Hug Contents の軸は固定サイズを除外（Auto Layout に任せる）
+    if ("primaryAxisSizingMode" in node && node.primaryAxisSizingMode === "AUTO") {
+      if (node.layoutMode === "VERTICAL") delete css["height"];
+      else delete css["width"];
+    }
+    if ("counterAxisSizingMode" in node && node.counterAxisSizingMode === "AUTO") {
+      if (node.layoutMode === "VERTICAL") delete css["width"];
+      else delete css["height"];
+    }
+
     if ("itemSpacing" in node && typeof node.itemSpacing === "number" && node.itemSpacing > 0) {
       css["gap"] = node.itemSpacing + "px";
     }
