@@ -1,14 +1,11 @@
 {
   "name": "BookStory",
-  "id": "bookstory-figma-plugin",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html",
-  "capabilities": [],
-  "enableProposedApi": false,
   "editorType": ["figma"],
   "documentAccess": "dynamic-page",
   "networkAccess": {
-    "allowedDomains": ["https://*.vercel.app", "http://localhost:3200"]
+    "allowedDomains": ["https://*.vercel.app", "http://localhost"]
   }
 }
