@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { corsHeaders } from "@/lib/cors";
+import type { CatalogComponent, DesignToken } from "@bookstory/core";
+import { buildCommitMessage, diffCatalogs, type CatalogLike } from "@/lib/catalog-diff";
+import { validateCatalog } from "@/lib/catalog-validate";
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPO;
@@ -85,6 +88,19 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // トークン/コンポーネントの整合性検査（エラーは拒否、警告はレスポンスで返す）
+  const validation = validateCatalog({
+    components: components as CatalogComponent[],
+    tokens: tokens as DesignToken[],
+  });
+  if (validation.errors.length > 0) {
+    return jsonRes(
+      { error: "データ検証エラー", issues: validation.errors },
+      400,
+      headers
+    );
+  }
+
   const baseUrl = `https://api.github.com/repos/${GITHUB_REPO}`;
   const ghHeaders: Record<string, string> = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -139,7 +155,9 @@ export async function POST(req: NextRequest) {
       "utf-8"
     ).toString("base64");
 
+    // 既存カタログを取得して差分ベースのコミットメッセージを構築
     let fileSha: string | undefined;
+    let previousCatalog: CatalogLike | null = null;
     const existRes = await fetch(
       `${baseUrl}/contents/.bookstory/figma-catalog.json?ref=${defaultBranch}`,
       { headers: ghHeaders }
@@ -147,10 +165,30 @@ export async function POST(req: NextRequest) {
     if (existRes.ok) {
       const existData = await existRes.json();
       fileSha = existData.sha;
+      if (typeof existData.content === "string") {
+        try {
+          const decoded = Buffer.from(existData.content, "base64").toString("utf-8");
+          const parsed = JSON.parse(decoded);
+          if (parsed && typeof parsed === "object" && Array.isArray(parsed.components)) {
+            previousCatalog = parsed as CatalogLike;
+          }
+        } catch {
+          // 旧カタログが壊れていたら初回扱いにしてフル反映
+        }
+      }
     }
 
+    const diff = diffCatalogs(previousCatalog, {
+      components: components as CatalogComponent[],
+      tokens: tokens as DesignToken[],
+    });
+    const commitMessage = buildCommitMessage(diff, {
+      components: components.length,
+      tokens: tokens.length,
+    });
+
     const commitBody: Record<string, string> = {
-      message: `BookStory: Figmaデザイン同期 (${components.length} components, ${tokens.length} tokens)`,
+      message: commitMessage,
       content,
       branch: branchName,
     };
@@ -177,7 +215,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         base: defaultBranch,
         head: branchName,
-        commit_message: `BookStory: Figmaデザイン同期 (${components.length} components, ${tokens.length} tokens)`,
+        commit_message: commitMessage,
       }),
     });
 
@@ -197,9 +235,19 @@ export async function POST(req: NextRequest) {
       headers: ghHeaders,
     }).catch(() => {});
 
+    const summary: string[] = [];
+    if (diff.components.added.length) summary.push(`+${diff.components.added.length} 追加`);
+    if (diff.components.modified.length) summary.push(`~${diff.components.modified.length} 更新`);
+    if (diff.components.removed.length) summary.push(`-${diff.components.removed.length} 削除`);
+    const message = summary.length
+      ? `${components.length} コンポーネント / ${tokens.length} トークンを反映（${summary.join(" / ")}）`
+      : `${components.length} コンポーネント / ${tokens.length} トークンを反映（変更なし）`;
+
     return jsonRes({
       success: true,
-      message: `${components.length} コンポーネント / ${tokens.length} トークンを反映しました`,
+      message,
+      diff,
+      warnings: validation.warnings,
     }, 200, headers);
   } catch (err) {
     return jsonRes(
