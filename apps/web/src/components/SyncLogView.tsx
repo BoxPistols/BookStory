@@ -19,9 +19,17 @@ export function SyncLogView({ catalog }: SyncLogViewProps) {
       const isVariant = c.name.includes("=");
       const source = c.filePath ? "CLI" : "Figma";
       if (isVariant) continue;
-      const variantCount = catalog.components.filter(
-        (v) => v.name.startsWith("Variant=") && v.id.startsWith(c.id.split(":")[0])
+      // variants 定義を優先、無ければ ID 一致で推定（":" 区切りで厳密化）
+      const declaredVariants = c.variants ? Object.values(c.variants) : [];
+      const declaredCount = declaredVariants.reduce(
+        (acc, values) => acc * (values?.length || 1),
+        declaredVariants.length ? 1 : 0
+      );
+      const compPrefix = c.id.split(":")[0] + ":";
+      const derivedCount = catalog.components.filter(
+        (v) => v.name.includes("=") && v.id.startsWith(compPrefix)
       ).length;
+      const variantCount = declaredCount || derivedCount;
       grouped.set(c.id, {
         name: c.name,
         variants: variantCount,
