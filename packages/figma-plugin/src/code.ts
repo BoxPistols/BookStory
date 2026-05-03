@@ -376,6 +376,34 @@ async function scanTokens(): Promise<ExtractedToken[]> {
   }
 
   // バリアブルコレクション（async API必須）
+  // VARIABLE_ALIAS はチェーンを辿って実値に解決。未解決・不正値はスキップして送信側を汚さない。
+  // alias 先のコレクションのモード名と一致する値を優先し、Light→Dark の意図を保つ。
+  async function resolveValue(raw: unknown, modeName: string, depth: number): Promise<unknown> {
+    if (depth > 5) return undefined;
+    if (raw && typeof raw === "object" && "type" in raw && (raw as { type: string }).type === "VARIABLE_ALIAS") {
+      const aliasId = (raw as { id: string }).id;
+      const aliased = await figma.variables.getVariableByIdAsync(aliasId);
+      if (!aliased) return undefined;
+      const aliasedCollection = await figma.variables.getVariableCollectionByIdAsync(aliased.variableCollectionId);
+      // 同じモード名があれば優先、なければ第1モード
+      let pickedModeId: string | undefined;
+      if (aliasedCollection) {
+        const matching = aliasedCollection.modes.find(function(m) { return m.name === modeName; });
+        if (matching) pickedModeId = matching.modeId;
+      }
+      if (!pickedModeId) pickedModeId = Object.keys(aliased.valuesByMode)[0];
+      if (!pickedModeId) return undefined;
+      return resolveValue(aliased.valuesByMode[pickedModeId], modeName, depth + 1);
+    }
+    return raw;
+  }
+
+  function isValidColorValue(v: unknown): boolean {
+    return !!v && typeof v === "object" && typeof (v as { r?: unknown }).r === "number"
+      && typeof (v as { g?: unknown }).g === "number"
+      && typeof (v as { b?: unknown }).b === "number";
+  }
+
   try {
     const collections = await figma.variables.getLocalVariableCollectionsAsync();
     for (const collection of collections) {
@@ -383,21 +411,30 @@ async function scanTokens(): Promise<ExtractedToken[]> {
         const variable = await figma.variables.getVariableByIdAsync(varId);
         if (!variable) continue;
 
-        const modes: Record<string, unknown> = {};
-        for (const mode of collection.modes) {
-          const val = variable.valuesByMode[mode.modeId];
-          modes[mode.name] = val;
-        }
-
         let type: ExtractedToken["type"] = "color";
         if (variable.resolvedType === "FLOAT") type = "spacing";
         else if (variable.resolvedType === "STRING") type = "typography";
 
+        // モードごとに解決（alias 先も同じモード名を優先して辿る）
+        const resolvedModes: Record<string, unknown> = {};
+        for (const mode of collection.modes) {
+          const resolved = await resolveValue(variable.valuesByMode[mode.modeId], mode.name, 0);
+          if (resolved !== undefined) resolvedModes[mode.name] = resolved;
+        }
+
+        const values = Object.values(resolvedModes);
+        if (values.length === 0) continue; // 全モードが解決不能ならスキップ
+
+        const primary = values[0];
+        // 型ごとに妥当性を検証
+        if (type === "color" && !isValidColorValue(primary)) continue;
+        if (type === "spacing" && (typeof primary !== "number" || !isFinite(primary))) continue;
+
         tokens.push({
           name: collection.name + "/" + variable.name,
           type,
-          value: Object.values(variable.valuesByMode)[0],
-          modes: Object.keys(modes).length > 1 ? modes : undefined,
+          value: primary,
+          modes: Object.keys(resolvedModes).length > 1 ? resolvedModes : undefined,
         });
       }
     }
