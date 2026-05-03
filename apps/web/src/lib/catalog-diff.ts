@@ -47,7 +47,7 @@ function compareComponent(oldC: CatalogComponent, newC: CatalogComponent): strin
   const reasons: string[] = [];
   if ((oldC.description || "") !== (newC.description || "")) reasons.push("description");
   if (variantSignature(oldC.variants) !== variantSignature(newC.variants)) reasons.push("variants");
-  if ((oldC.props?.length ?? 0) !== (newC.props?.length ?? 0)) reasons.push("props");
+  if (stableJson(oldC.props ?? []) !== stableJson(newC.props ?? [])) reasons.push("props");
   if (stableJson(oldC.nodeTree) !== stableJson(newC.nodeTree)) reasons.push("nodeTree");
   return reasons;
 }
