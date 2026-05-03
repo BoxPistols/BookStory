@@ -73,11 +73,11 @@ export default function Home() {
       const topLevel = catalog.components.filter((c) => !c.name.includes("=") && !c.name.includes("/"));
       for (const comp of topLevel) {
         // バリアント数: 自身の variants 定義があればそれ、無ければ ID 一致で推定
+        // 空配列の軸は「0 通り」として扱い、過大カウントを避ける
         const declaredVariants = comp.variants ? Object.values(comp.variants) : [];
-        const declaredCount = declaredVariants.reduce(
-          (acc, values) => acc * (values?.length || 1),
-          declaredVariants.length ? 1 : 0
-        );
+        const declaredCount = declaredVariants.length
+          ? declaredVariants.reduce((acc, values) => acc * (values?.length ?? 0), 1)
+          : 0;
         const compPrefix = comp.id.split(":")[0] + ":";
         const derivedCount = catalog.components.filter(
           (v) => v.name.includes("=") && v.id.startsWith(compPrefix)

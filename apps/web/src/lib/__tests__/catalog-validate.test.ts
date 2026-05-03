@@ -46,6 +46,13 @@ describe("validateTokens", () => {
     expect(res.warnings.some((w) => w.includes("Spacing"))).toBe(true);
   });
 
+  it("Spacing が負数なら warning", () => {
+    const res = validateTokens([
+      { name: "Spacing/neg", type: "spacing", value: -4 } as DesignToken,
+    ]);
+    expect(res.warnings.some((w) => w.includes("Spacing/neg"))).toBe(true);
+  });
+
   it("Typography の必須欠損は warning", () => {
     const res = validateTokens([
       { name: "Heading/X", type: "typography", value: { fontSize: 16 } as DesignToken["value"] } as DesignToken,

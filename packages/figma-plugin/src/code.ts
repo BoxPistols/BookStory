@@ -377,15 +377,23 @@ async function scanTokens(): Promise<ExtractedToken[]> {
 
   // バリアブルコレクション（async API必須）
   // VARIABLE_ALIAS はチェーンを辿って実値に解決。未解決・不正値はスキップして送信側を汚さない。
-  async function resolveValue(raw: unknown, depth: number): Promise<unknown> {
+  // alias 先のコレクションのモード名と一致する値を優先し、Light→Dark の意図を保つ。
+  async function resolveValue(raw: unknown, modeName: string, depth: number): Promise<unknown> {
     if (depth > 5) return undefined;
     if (raw && typeof raw === "object" && "type" in raw && (raw as { type: string }).type === "VARIABLE_ALIAS") {
       const aliasId = (raw as { id: string }).id;
       const aliased = await figma.variables.getVariableByIdAsync(aliasId);
       if (!aliased) return undefined;
-      const firstKey = Object.keys(aliased.valuesByMode)[0];
-      if (!firstKey) return undefined;
-      return resolveValue(aliased.valuesByMode[firstKey], depth + 1);
+      const aliasedCollection = await figma.variables.getVariableCollectionByIdAsync(aliased.variableCollectionId);
+      // 同じモード名があれば優先、なければ第1モード
+      let pickedModeId: string | undefined;
+      if (aliasedCollection) {
+        const matching = aliasedCollection.modes.find(function(m) { return m.name === modeName; });
+        if (matching) pickedModeId = matching.modeId;
+      }
+      if (!pickedModeId) pickedModeId = Object.keys(aliased.valuesByMode)[0];
+      if (!pickedModeId) return undefined;
+      return resolveValue(aliased.valuesByMode[pickedModeId], modeName, depth + 1);
     }
     return raw;
   }
@@ -407,10 +415,10 @@ async function scanTokens(): Promise<ExtractedToken[]> {
         if (variable.resolvedType === "FLOAT") type = "spacing";
         else if (variable.resolvedType === "STRING") type = "typography";
 
-        // モードごとに解決
+        // モードごとに解決（alias 先も同じモード名を優先して辿る）
         const resolvedModes: Record<string, unknown> = {};
         for (const mode of collection.modes) {
-          const resolved = await resolveValue(variable.valuesByMode[mode.modeId], 0);
+          const resolved = await resolveValue(variable.valuesByMode[mode.modeId], mode.name, 0);
           if (resolved !== undefined) resolvedModes[mode.name] = resolved;
         }
 

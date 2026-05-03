@@ -39,6 +39,32 @@ describe("diffCatalogs", () => {
     expect(isEmptyDiff(d)).toBe(true);
   });
 
+  it("props の中身（options/default）変更を modified として検出", () => {
+    const a = {
+      components: [
+        comp({
+          id: "1",
+          name: "Button",
+          props: [{ name: "size", type: "select", options: ["S", "M"], defaultValue: "S" }],
+        }),
+      ],
+      tokens: [],
+    };
+    const b = {
+      components: [
+        comp({
+          id: "1",
+          name: "Button",
+          props: [{ name: "size", type: "select", options: ["S", "M", "L"], defaultValue: "M" }],
+        }),
+      ],
+      tokens: [],
+    };
+    const d = diffCatalogs(a, b);
+    expect(d.components.modified).toHaveLength(1);
+    expect(d.components.modified[0].reasons).toContain("props");
+  });
+
   it("description / variants / nodeTree の変更を検出", () => {
     const a = {
       components: [

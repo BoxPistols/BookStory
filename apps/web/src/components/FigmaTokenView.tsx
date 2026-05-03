@@ -40,7 +40,7 @@ function extractLineHeight(
     const v = lh as { value?: unknown; unit?: unknown };
     if (typeof v.value === "number") {
       if (v.unit === "PERCENT") {
-        return { ratio: v.value / 100 || 1.4, display: `${Math.round(v.value)}%` };
+        return { ratio: v.value / 100, display: `${Math.round(v.value)}%` };
       }
       if (v.unit === "PIXELS" && fontSize && fontSize > 0) {
         return { ratio: v.value / fontSize, display: `${Math.round(v.value)}px` };
@@ -51,12 +51,19 @@ function extractLineHeight(
   return { ratio: 1.4, display: "auto" };
 }
 
-function extractLetterSpacing(ls: unknown): string | null {
-  if (typeof ls === "number" && ls !== 0) return `${ls}px`;
+// 表示用ラベル（display）とサンプル Typography に渡せる CSS 値（css）を返す。
+// PERCENT は em に換算してプレビューに反映できるようにする。
+function extractLetterSpacing(ls: unknown): { display: string; css: string | undefined } | null {
+  if (typeof ls === "number" && ls !== 0) {
+    return { display: `${ls}px`, css: `${ls}px` };
+  }
   if (ls && typeof ls === "object") {
     const v = ls as { value?: unknown; unit?: unknown };
     if (typeof v.value === "number" && v.value !== 0) {
-      return v.unit === "PERCENT" ? `${v.value}%` : `${v.value}px`;
+      if (v.unit === "PERCENT") {
+        return { display: `${v.value}%`, css: `${v.value / 100}em` };
+      }
+      return { display: `${v.value}px`, css: `${v.value}px` };
     }
   }
   return null;
@@ -67,6 +74,9 @@ const TITLES: Record<string, string> = {
   typography: "Typography Tokens",
   spacing: "Spacing Tokens",
 };
+
+// Spacing プレビューバーの最大表示幅（px）。実値はこれを超えないようクリップ
+const SPACING_PREVIEW_MAX_PX = 320;
 
 export function FigmaTokenView({ tokenType, tokens }: FigmaTokenViewProps) {
   const filtered = tokens.filter((t) => t.type === tokenType);
@@ -168,7 +178,7 @@ export function FigmaTokenView({ tokenType, tokens }: FigmaTokenViewProps) {
                     sx={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.625rem" }}
                   >
                     {fontSize ?? "?"}px / w{weight} / lh {lh.display}
-                    {ls ? ` / ls ${ls}` : ""}
+                    {ls ? ` / ls ${ls.display}` : ""}
                   </Typography>
                 </Box>
                 <Typography
@@ -177,6 +187,7 @@ export function FigmaTokenView({ tokenType, tokens }: FigmaTokenViewProps) {
                     fontSize: fontSize,
                     fontFamily: val.fontFamily || "Inter",
                     lineHeight: lh.ratio,
+                    letterSpacing: ls?.css,
                   }}
                 >
                   The quick brown fox
@@ -197,7 +208,7 @@ export function FigmaTokenView({ tokenType, tokens }: FigmaTokenViewProps) {
           {filtered.map((t) => {
             const raw = typeof t.value === "number" ? t.value : NaN;
             const valid = Number.isFinite(raw) && raw >= 0;
-            const width = valid ? Math.min(raw, 320) : 0;
+            const width = valid ? Math.min(raw, SPACING_PREVIEW_MAX_PX) : 0;
             return (
               <Box key={t.name} sx={{ display: "grid", gridTemplateColumns: "160px 80px 1fr", px: 2, py: 1, borderTop: 1, borderColor: "divider", gap: 1, alignItems: "center" }}>
                 <Typography variant="body2" fontWeight={600} sx={{ fontSize: "0.75rem" }}>

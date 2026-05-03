@@ -61,7 +61,7 @@ export function validateTokens(tokens: DesignToken[]): ValidationResult {
         if (typeof v.fontFamily !== "string") warnings.push(`Typography ${t.name}: fontFamily 欠損`);
       }
     } else if (t.type === "spacing") {
-      if (typeof t.value !== "number" || !Number.isFinite(t.value)) {
+      if (typeof t.value !== "number" || !Number.isFinite(t.value) || t.value < 0) {
         warnings.push(`Spacing トークン ${t.name} の値が不正です`);
       }
     }
